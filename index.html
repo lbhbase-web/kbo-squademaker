@@ -46,3 +46,76 @@
     </div>
 </body>
 </html>
+// 1. 카드 종류별 특훈 기본값 및 최대 레벨/최종 스탯 규칙 정의
+const trainingRules = {
+    'impact': { base: 4, maxLevel: 3, total: 7 },
+    'sig': { base: 5, maxLevel: 3, total: 8 },
+    'national': { base: 4, maxLevel: 4, total: 8 },
+    'gg': { base: 3, maxLevel: 3, total: 6 },
+    'fa_impact': { base: 1, maxLevel: 4, total: 5 },
+    'fa_sig': { base: 2, maxLevel: 5, total: 7 },
+    'national_wildcard': { base: 1, maxLevel: 6, total: 7 }
+};
+
+// 2. 현재 선택된 게임 모드 상태
+let currentMode = 'ranking'; // 기본값: 랭킹 챌린지
+
+// 모드 선택 버튼 클릭 이벤트 연동 예시
+document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        currentMode = e.target.dataset.mode; // 모드 값 설정 (ranking, real, club, league, special 등)
+        updateSquadStats();
+    });
+});
+
+// 3. 역시너지 및 시너지 계산 함수
+function calculateSynergyAndPenalty(lineupCards) {
+    let counts = {
+        gg: 0,
+        live_allstar: 0,
+        impact: 0,
+        sig: 0,
+        national: 0,
+        wildcard: 0
+    };
+
+    // 라인업에 배치된 카드 집계
+    lineupCards.forEach(card => {
+        if (!card) return;
+        if (card.type === 'gg') counts.gg++;
+        if (card.type === 'live_allstar') counts.live_allstar++;
+        if (card.type === 'impact') counts.impact++;
+        if (card.type === 'sig') counts.sig++;
+        if (card.type === 'national') counts.national++;
+        if (card.type === 'national_wildcard') counts.wildcard++;
+    });
+
+    let penalty = 0;
+    
+    // 모드별 역시너지 규칙 적용 (예시: 랭킹 챌린지 기준 골글 6장 이상 패널티)
+    if (currentMode === 'ranking') {
+        if (counts.gg >= 8) penalty += 6;
+        else if (counts.gg === 7) penalty += 4;
+        else if (counts.gg === 6) penalty += 2;
+    } else if (currentMode === 'real') {
+        // 실시간 매치 역시너지 규칙
+        if (counts.gg >= 6) penalty += 6;
+        else if (counts.gg === 5) penalty += 4;
+    }
+    // 다른 모드별 조건도 동일하게 추가 가능
+
+    return { counts, penalty };
+}
+
+// 4. 스쿼드 전체 능력치 및 UI 갱신 함수
+function updateSquadStats() {
+    // 예시 라인업 데이터 배열 (화면의 선택된 카드들)
+    const lineupCards = getSelectedLineupCards(); 
+    
+    const { counts, penalty } = calculateSynergyAndPenalty(lineupCards);
+
+    // UI에 실시간 반영 (총 OVR, 역시너지 카운트 등)
+    // document.getElementById('total-ovr').innerText = baseOvr - penalty;
+    // document.getElementById('gg-count').innerText = `${counts.gg}장`;
+    // document.getElementById('penalty-display').innerText = `역시너지 총합: -${penalty}`;
+}
