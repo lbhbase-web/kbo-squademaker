@@ -6,34 +6,207 @@
     <title>컴프야V26 스쿼드 메이커</title>
     <style>
         body { font-family: 'Apple SD Gothic Neo', sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        h1 { text-align: center; color: #1b4d3e; margin-bottom: 10px; }
-        .desc { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: #1b4d3e; margin-bottom: 5px; font-size: 22px; }
+        .desc { text-align: center; color: #666; font-size: 13px; margin-bottom: 20px; }
+        
+        /* 상단 컨트롤 영역 */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #f8f9fa; padding: 12px 15px; border-radius: 8px; flex-wrap: wrap; gap: 10px; }
+        .team-select select { padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; font-weight: bold; }
         
         /* 모드 선택 버튼 */
-        .modes { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-        .mode-btn { padding: 8px 16px; border: 1px solid #ddd; background: #fff; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .modes { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .mode-btn { padding: 6px 14px; border: 1px solid #ddd; background: #fff; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 12px; }
         .mode-btn.active { background: #2c7a51; color: white; border-color: #2c7a51; }
 
         /* 정보 패널 */
-        .info-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 25px; }
-        .info-item .label { font-size: 12px; color: #777; margin-bottom: 5px; }
-        .info-item .value { font-size: 18px; font-weight: bold; color: #1b4d3e; }
+        .info-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #eef2f1; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 25px; }
+        .info-item .label { font-size: 11px; color: #666; margin-bottom: 4px; }
+        .info-item .value { font-size: 16px; font-weight: bold; color: #1b4d3e; }
 
         /* 그라운드 영역 */
-        .ground { background: #1b4d3e; border-radius: 12px; padding: 20px; color: white; text-align: center; min-height: 300px; }
-        .positions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
-        .pos-card { background: rgba(255,255,255,0.15); border: 2px dashed rgba(255,255,255,0.4); border-radius: 8px; padding: 15px; cursor: pointer; transition: 0.2s; min-height: 70px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .ground { background: #1b4d3e; border-radius: 12px; padding: 20px; color: white; text-align: center; }
+        .positions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .pos-card { background: rgba(255,255,255,0.15); border: 2px dashed rgba(255,255,255,0.4); border-radius: 8px; padding: 12px; cursor: pointer; transition: 0.2s; min-height: 65px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .pos-card:hover { background: rgba(255,255,255,0.25); }
-        .pos-title { font-size: 12px; color: #ddd; margin-bottom: 4px; }
-        .pos-name { font-size: 14px; font-weight: bold; }
+        .pos-title { font-size: 11px; color: #ddd; margin-bottom: 3px; }
+        .pos-name { font-size: 13px; font-weight: bold; }
+
+        /* 모달 스타일 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; width: 90%; max-width: 500px; padding: 20px; border-radius: 12px; max-height: 80vh; overflow-y: auto; color: #333; text-align: left; }
+        .search-input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; font-size: 14px; }
+        .player-item { padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .player-item:hover { background: #f8f9fa; }
+        .badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #2c7a51; color: white; margin-right: 5px; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>컴프야V26 스쿼드 메이커</h1>
-        <div class="desc">선수 카드를 배치하여 나만의 최적의 스쿼드를 만들어보세요!</div>
+        <div class="desc">8,596장 전체 DB · 포지션별 선수 선택 및 스쿼드 관리</div>
+
+        <div class="top-bar">
+            <div class="team-select">
+                <label>선호구단: </label>
+                <select id="team-pref">
+                    <option value="SSG">SSG</option>
+                    <option value="KIA">KIA</option>
+                    <option value="삼성">삼성</option>
+                    <option value="LG">LG</option>
+                    <option value="한화">한화</option>
+                    <option value="KT">KT</option>
+                    <option value="NC">NC</option>
+                    <option value="두산">두산</option>
+                    <option value="롯데">롯데</option>
+                    <option value="키움">키움</option>
+                </select>
+            </div>
+            <div>
+                <button onclick="alert('모든 데이터가 저장되었습니다!')" style="padding: 6px 14px; background: #2c7a51; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">전체 저장</button>
+            </div>
+        </div>
+
+        <!-- 모드 선택 -->
+        <div class="modes">
+            <button class="mode-btn active">랭킹 챌린지</button>
+            <button class="mode-btn">실시간 매치</button>
+            <button class="mode-btn">클럽 대전</button>
+            <button class="mode-btn">리그 모드</button>
+            <button class="mode-btn">스페셜 매치</button>
+        </div>
+
+        <!-- 정보 패널 -->
+        <div class="info-panel">
+            <div class="info-item"><div class="label">총 세트덱 포인트</div><div class="value" id="setdeck-pt">0</div></div>
+            <div class="info-item"><div class="label">총 OVR</div><div class="value" id="total-ovr">0</div></div>
+            <div class="info-item"><div class="label">타자 / 투수 OVR</div><div class="value">0 / 0</div></div>
+            <div class="info-item"><div class="label">역시너지 페널티</div><div class="value" id="penalty">0</div></div>
+        </div>
+
+        <!-- 그라운드 영역 -->
+        <div class="ground">
+            <div style="font-size: 15px; font-weight: bold; margin-bottom: 5px;">🏟️ 선수 배치 그라운드</div>
+            <div style="font-size: 12px; color: #ddd;">포지션 카드를 눌러 임팩트, 시그니처 등급 선수를 검색하고 배치하세요!</div>
+            
+            <div class="positions-grid">
+                <div class="pos-card" onclick="openModal('LF')"><div class="pos-title">좌익수 (LF)</div><div class="pos-name" id="slot-LF">빈 자리</div></div>
+                <div class="pos-card" onclick="openModal('CF')"><div class="pos-title">중견수 (CF)</div><div class="pos-name" id="slot-CF">빈 자리</div></div>
+                <div class="pos-card" onclick="openModal('RF')"><div class="pos-title">우익수 (RF)</div><div class="pos-name" id="slot-RF">빈 자리</div></div>
+                <div class="pos-card" onclick="openModal('SS')"><div class="pos-title">유격수 (SS)</div><div class="pos-name" id="slot-SS">빈 자리</div></div>
+                <div class="pos-card" onclick="openModal('2B')"><div class="pos-title">2루수 (2B)</div><div class="pos-name" id="slot-2B">빈 자리</div></div>
+                <div class="pos-card" onclick="openModal('1B')"><div class="pos-title">1루수 (1B)</div><div class="pos-name" id="slot-1B">빈 자리</div></div>
+                <div class="pos-card" onclick="openModal('3B')"><div class="pos-title">3루수 (3B)</div><div class="pos-name" id="slot-3B">빈 자리</div></div>
+                <div class="pos-card" onclick="openModal('C')"><div class="pos-title">포수 (C)</div><div class="pos-name" id="slot-C">빈 자리</div></div>
+                <div class="pos-card" onclick="openModal('DH')"><div class="pos-title">지명타자 (DH)</div><div class="pos-name" id="slot-DH">빈 자리</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 선수 선택 검색 모달 -->
+    <div id="playerModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title" style="margin-top: 0; color: #1b4d3e;">선수 선택</h3>
+            <input type="text" id="playerSearchInput" class="search-input" placeholder="선수명, 등급(임팩트, 시그니처 등) 검색..." oninput="filterPlayers()">
+            <div id="modal-player-list" style="max-height: 350px; overflow-y: auto;"></div>
+            <div style="text-align: right; margin-top: 15px;">
+                <button onclick="closeModal()" style="padding: 6px 14px; background: #ddd; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allPlayers = [];
+        let squad = {};
+        let currentPos = '';
+
+        // 선수 데이터 로드
+        async function loadPlayerDatas() {
+            try {
+                const res1 = await fetch('players_8697.json');
+                const p1 = await res1.json();
+                const res2 = await fetch('added_101.json');
+                const p2 = await res2.json();
+                allPlayers = [...p1, ...p2];
+                console.log(`선수 데이터 로드 완료: 총 ${allPlayers.length}명`);
+            } catch (e) {
+                console.error("데이터 로드 실패:", e);
+            }
+        }
+        loadPlayerDatas();
+
+        function openModal(pos) {
+            currentPos = pos;
+            document.getElementById('modal-titleinnerText').innerText = `${pos} 선수 선택`;
+            document.getElementById('playerSearchInput').value = '';
+            renderPlayerList(allPlayers);
+            document.getElementById('playerModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('playerModal').style.display = 'none';
+        }
+
+        function renderPlayerList(list) {
+            const listContainer = document.getElementById('modal-player-list');
+            listContainer.innerHTML = '';
+
+            if (list.length === 0) {
+                listContainer.innerHTML = '<div style="padding: 15px; text-align: center; color: #777;">검색된 선수가 없습니다.</div>';
+                return;
+            }
+
+            // 최대 50개만 먼저 렌더링하여 속도 유지
+            list.slice(0, 50).forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'player-item';
+                item.innerHTML = `
+                    <div>
+                        <span class="badge">${p.grade || '일반'}</span>
+                        <strong>${p.name || '이름없음'}</strong> 
+                        <span style="font-size: 12px; color: #666;">(${p.team || ''})</span>
+                    </div>
+                    <div style="font-weight: bold; color: #1b4d3e;">OVR ${p.ovr || 70}</div>
+                `;
+                item.onclick = () => selectPlayer(p);
+                listContainer.appendChild(item);
+            });
+        }
+
+        function filterPlayers() {
+            const keyword = document.getElementById('playerSearchInput').value.toLowerCase();
+            const filtered = allPlayers.filter(p => 
+                (p.name && p.name.toLowerCase().includes(keyword)) ||
+                (p.grade && p.grade.toLowerCase().includes(keyword)) ||
+                (p.team && p.team.toLowerCase().includes(keyword))
+            );
+            renderPlayerList(filtered);
+        }
+
+        function selectPlayer(player) {
+            squad[currentPos] = player;
+            document.getElementById(`slot-${currentPos}`).innerText = `${player.name} (${player.ovr || 0})`;
+            updateSquadCalculation();
+            closeModal();
+        }
+
+        function updateSquadCalculation() {
+            let totalOvr = 0;
+            let count = 0;
+
+            for (let pos in squad) {
+                const player = squad[pos];
+                totalOvr += (player.ovr || 70);
+                count++;
+            }
+
+            const avgOvr = count > 0 ? Math.round(totalOvr / count) : 0;
+            document.getElementById('total-ovr').innerText = avgOvr;
+        }
+    </script>
+</body>
+</html>
 
         <!-- 모드 선택 -->
         <div class="modes">
