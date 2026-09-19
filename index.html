@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBO V26 Squad Maker</title>
+    <title>컴프야V26 스쿼드 메이커</title>
     <style>
         body {
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
@@ -23,8 +23,45 @@
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        .mode-selector {
+            margin: 20px 0;
+        }
+        .mode-btn {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .mode-btn.active {
+            background: #4a69bd;
+            color: white;
+            border-color: #4a69bd;
+        }
+        .info-panel {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+        .info-box h3 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
         .squad-board {
-            min-height: 400px;
+            min-height: 300px;
             border: 2px dashed #ccc;
             border-radius: 8px;
             margin-top: 20px;
@@ -32,91 +69,95 @@
             align-items: center;
             justify-content: center;
             color: #888;
+            background: #fafafa;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>KBO V26 Squad Maker</h1>
-        <p>26 라이브 선수 카드를 배치하여 나만의 스쿼드를 만들어보세요!</p>
-        
-        <div class="squad-board">
-            선수 배치 그라운드 (여기에 카드가 들어갑니다)
+        <h1>컴프야V26 스쿼드 메이커</h1>
+        <p>선수 카드를 배치하여 나만의 최적의 스쿼드를 만들어보세요!</p>
+
+        <!-- 게임 모드 선택 영역 -->
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="ranking">랭킹 챌린지</button>
+            <button class="mode-btn" data-mode="real">실시간 매치</button>
+            <button class="mode-btn" data-mode="club">클럽 대전</button>
+            <button class="mode-btn" data-mode="league">리그 모드</button>
+            <button class="mode-btn" data-mode="special">스페셜 매치</button>
+        </div>
+
+        <!-- 상단 정보 패널 (세트덱, OVR, 역시너지 현황) -->
+        <div class="info-panel">
+            <div class="info-box">
+                <h3>총 세트덱 포인트</h3>
+                <p id="total-setdeck">0</p>
+            </div>
+            <div class="info-box">
+                <h3>총 OVR</h3>
+                <p id="total-ovr">0</p>
+            </div>
+            <div class="info-box">
+                <h3>현재 선택 모드</h3>
+                <p id="display-mode">랭킹 챌린지</p>
+            </div>
+            <div class="info-box">
+                <h3>역시너지 페널티</h3>
+                <p id="penalty-score" style="color: #e74c3c;">0</p>
+            </div>
+        </div>
+
+        <!-- 선수 배치 그라운드 -->
+        <div class="squad-board" id="squad-board">
+            선수 배치 그라운드 (이곳에 라인업 카드가 표시됩니다)
         </div>
     </div>
-// 1. 카드 종류별 특훈 기본값 및 최대 레벨/최종 스탯 규칙 정의
-const trainingRules = {
-    'impact': { base: 4, maxLevel: 3, total: 7 },
-    'sig': { base: 5, maxLevel: 3, total: 8 },
-    'national': { base: 4, maxLevel: 4, total: 8 },
-    'gg': { base: 3, maxLevel: 3, total: 6 },
-    'fa_impact': { base: 1, maxLevel: 4, total: 5 },
-    'fa_sig': { base: 2, maxLevel: 5, total: 7 },
-    'national_wildcard': { base: 1, maxLevel: 6, total: 7 }
-};
 
-// 2. 현재 선택된 게임 모드 상태
-let currentMode = 'ranking'; // 기본값: 랭킹 챌린지
+    <!-- 특훈 및 역시너지 계산 로직 -->
+    <script>
+        // 1. 카드 종류별 특훈 기본값 및 최종값 규칙 정의
+        const trainingRules = {
+            'impact': { base: 4, maxLevel: 3, total: 7 },
+            'sig': { base: 5, maxLevel: 3, total: 8 },
+            'national': { base: 4, maxLevel: 4, total: 8 },
+            'gg': { base: 3, maxLevel: 3, total: 6 },
+            'fa_impact': { base: 1, maxLevel: 4, total: 5 },
+            'fa_sig': { base: 2, maxLevel: 5, total: 7 },
+            'national_wildcard': { base: 1, maxLevel: 6, total: 7 }
+        };
 
-// 모드 선택 버튼 클릭 이벤트 연동 예시
-document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        currentMode = e.target.dataset.mode; // 모드 값 설정 (ranking, real, club, league, special 등)
-        updateSquadStats();
-    });
-});
+        let currentMode = 'ranking';
 
-// 3. 역시너지 및 시너지 계산 함수
-function calculateSynergyAndPenalty(lineupCards) {
-    let counts = {
-        gg: 0,
-        live_allstar: 0,
-        impact: 0,
-        sig: 0,
-        national: 0,
-        wildcard: 0
-    };
+        // 2. 모드 선택 버튼 이벤트 처리
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        modeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                modeButtons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                currentMode = e.target.getAttribute('data-mode');
+                document.getElementById('display-mode').innerText = e.target.innerText;
+                
+                updateSquadCalculation();
+            });
+        });
 
-    // 라인업에 배치된 카드 집계
-    lineupCards.forEach(card => {
-        if (!card) return;
-        if (card.type === 'gg') counts.gg++;
-        if (card.type === 'live_allstar') counts.live_allstar++;
-        if (card.type === 'impact') counts.impact++;
-        if (card.type === 'sig') counts.sig++;
-        if (card.type === 'national') counts.national++;
-        if (card.type === 'national_wildcard') counts.wildcard++;
-    });
+        // 3. 역시너지 및 능력치 계산 함수
+        function updateSquadCalculation() {
+            let penalty = 0;
+            
+            // 모드별 역시너지 규칙 적용 예시 (추후 카드 데이터 연동 시 확장)
+            if (currentMode === 'ranking') {
+                // 랭킹 챌린지 기준 로직
+            } else if (currentMode === 'real') {
+                // 실시간 매치 기준 로직
+            }
 
-    let penalty = 0;
-    
-    // 모드별 역시너지 규칙 적용 (예시: 랭킹 챌린지 기준 골글 6장 이상 패널티)
-    if (currentMode === 'ranking') {
-        if (counts.gg >= 8) penalty += 6;
-        else if (counts.gg === 7) penalty += 4;
-        else if (counts.gg === 6) penalty += 2;
-    } else if (currentMode === 'real') {
-        // 실시간 매치 역시너지 규칙
-        if (counts.gg >= 6) penalty += 6;
-        else if (counts.gg === 5) penalty += 4;
-    }
-    // 다른 모드별 조건도 동일하게 추가 가능
+            document.getElementById('penalty-score').innerText = `-${penalty}`;
+        }
 
-    return { counts, penalty };
-}
-
-// 4. 스쿼드 전체 능력치 및 UI 갱신 함수
-function updateSquadStats() {
-    // 예시 라인업 데이터 배열 (화면의 선택된 카드들)
-    const lineupCards = getSelectedLineupCards(); 
-    
-    const { counts, penalty } = calculateSynergyAndPenalty(lineupCards);
-
-    // UI에 실시간 반영 (총 OVR, 역시너지 카운트 등)
-    // document.getElementById('total-ovr').innerText = baseOvr - penalty;
-    // document.getElementById('gg-count').innerText = `${counts.gg}장`;
-    // document.getElementById('penalty-display').innerText = `역시너지 총합: -${penalty}`;
-}
-
+        // 초기 실행
+        updateSquadCalculation();
+    </script>
 </body>
 </html>
