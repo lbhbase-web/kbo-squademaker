@@ -5,35 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>컴프야V26 스쿼드 메이커</title>
     <style>
-        body {
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
+        body { font-family: 'Apple SD Gothic Neo', sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: #1b4d3e; margin-bottom: 10px; }
+        .desc { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+        
+        /* 모드 선택 버튼 */
+        .modes { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .mode-btn { padding: 8px 16px; border: 1px solid #ddd; background: #fff; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .mode-btn.active { background: #2c7a51; color: white; border-color: #2c7a51; }
+
+        /* 정보 패널 */
+        .info-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 25px; }
+        .info-item .label { font-size: 12px; color: #777; margin-bottom: 5px; }
+        .info-item .value { font-size: 18px; font-weight: bold; color: #1b4d3e; }
+
+        /* 그라운드 영역 */
+        .ground { background: #1b4d3e; border-radius: 12px; padding: 20px; color: white; text-align: center; min-height: 300px; }
+        .positions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
+        .pos-card { background: rgba(255,255,255,0.15); border: 2px dashed rgba(255,255,255,0.4); border-radius: 8px; padding: 15px; cursor: pointer; transition: 0.2s; min-height: 70px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .pos-card:hover { background: rgba(255,255,255,0.25); }
+        .pos-title { font-size: 12px; color: #ddd; margin-bottom: 4px; }
+        .pos-name { font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>컴프야V26 스쿼드 메이커</h1>
+        <div class="desc">선수 카드를 배치하여 나만의 최적의 스쿼드를 만들어보세요!</div>
+
+        <!-- 모드 선택 -->
+        <div class="modes">
+            <button class="mode-btn active">랭킹 챌린지</button>
+            <button class="mode-btn">실시간 매치</button>
+            <button class="mode-btn">클럽 대전</button>
+            <button class="mode-btn">리그 모드</button>
+            <button class="mode-btn">스페셜 매치</button>
+        </div>
+
+        <!-- 정보 패널 -->
+        <div class="info-panel">
+            <div class="info-item"><div class="label">총 세트덱 포인트</div><div class="value" id="setdeck-pt">0</div></div>
+            <div class="info-item"><div class="label">총 OVR</div><div class="value" id="total-ovr">0</div></div>
+            <div class="info-item"><div class="label">현재 선택 모드</div><div class="value" style="font-size: 14px; line-height: 24px;">랭킹 챌린지</div></div>
+            <div class="info-item"><div class="label">역시너지 페널티</div><div class="value" id="penalty">0</div></div>
+        </div>
+
+        <!-- 그라운드 및 포지션 카드 -->
+        <div class="ground">
+            <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">🏟️ 선수 배치 그라운드</div>
+            <div style="font-size: 12px; color: #ccc;">포지션 카드를 눌러 선수를 검색하고 배치하세요!</div>
+            
+            <div class="positions-grid">
+                <div class="pos-card" onclick="openPlayerSelectModal('C')">
+                    <div class="pos-title">포수 (C)</div>
+                    <div class="pos-name" id="slot-C">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('1B')">
+                    <div class="pos-title">1루수 (1B)</div>
+                    <div class="pos-name" id="slot-1B">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('2B')">
+                    <div class="pos-title">2루수 (2B)</div>
+                    <div class="pos-name" id="slot-2B">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('3B')">
+                    <div class="pos-title">3루수 (3B)</div>
+                    <div class="pos-name" id="slot-3B">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('SS')">
+                    <div class="pos-title">유격수 (SS)</div>
+                    <div class="pos-name" id="slot-SS">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('OF')">
+                    <div class="pos-title">외야수 (OF)</div>
+                    <div class="pos-name" id="slot-OF">빈 자리</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allPlayers = [];
+        let squad = {};
+
+        // 선수 데이터 로드
+        async function loadPlayerDatas() {
+            try {
+                const res1 = await fetch('players_8697.json');
+                const p1 = await res1.json();
+                const res2 = await fetch('added_101.json');
+                const p2 = await res2.json();
+                allPlayers = [...p1, ...p2];
+                console.log(`선수 데이터 로드 완료: 총 ${allPlayers.length}명`);
+            } catch (e) {
+                console.error("데이터 로드 실패:", e);
+            }
         }
-        h1 {
-            color: #333;
+        loadPlayerDatas();
+
+        // 선수 검색 및 배치
+        function openPlayerSelectModal(position) {
+            const searchKeyword = prompt(`[${position}] 포지션에 배치할 선수 이름을 검색하세요:`);
+            if (!searchKeyword) return;
+
+            const matchedPlayers = allPlayers.filter(p => p.name && p.name.includes(searchKeyword));
+            if (matchedPlayers.length === 0) {
+                alert('검색된 선수가 없습니다.');
+                return;
+            }
+
+            const selectedPlayer = matchedPlayers[0];
+            squad[position] = selectedPlayer;
+
+            // 화면에 이름 반영
+            document.getElementById(`slot-${position}`).innerText = `${selectedPlayer.name} (${selectedPlayer.ovr || 0})`;
+            updateSquadCalculation();
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+        // OVR 계산 및 반영
+        function updateSquadCalculation() {
+            let totalOvr = 0;
+            let count = 0;
+
+            for (let pos in squad) {
+                const player = squad[pos];
+                totalOvr += (player.ovr || 70);
+                count++;
+            }
+
+            const avgOvr = count > 0 ? Math.round(totalOvr / count) : 0;
+            document.getElementById('total-ovr').innerText = avgOvr;
         }
-        .mode-selector {
-            margin: 20px 0;
-        }
-        .mode-btn {
-            padding: 8px 16px;
-            margin: 0 5px;
-            border: 1px solid #ccc;
-            background: #fff;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
+    </script>
+</body>
+</html>
         }
         .mode-btn.active {
             background: #4a69bd;
