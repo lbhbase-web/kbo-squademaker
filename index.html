@@ -141,6 +141,113 @@
     </script>
 </body>
 </html>
+
+        <!-- 모드 선택 -->
+        <div class="modes">
+            <button class="mode-btn active">랭킹 챌린지</button>
+            <button class="mode-btn">실시간 매치</button>
+            <button class="mode-btn">클럽 대전</button>
+            <button class="mode-btn">리그 모드</button>
+            <button class="mode-btn">스페셜 매치</button>
+        </div>
+
+        <!-- 정보 패널 -->
+        <div class="info-panel">
+            <div class="info-item"><div class="label">총 세트덱 포인트</div><div class="value" id="setdeck-pt">0</div></div>
+            <div class="info-item"><div class="label">총 OVR</div><div class="value" id="total-ovr">0</div></div>
+            <div class="info-item"><div class="label">현재 선택 모드</div><div class="value" style="font-size: 14px; line-height: 24px;">랭킹 챌린지</div></div>
+            <div class="info-item"><div class="label">역시너지 페널티</div><div class="value" id="penalty">0</div></div>
+        </div>
+
+        <!-- 그라운드 및 포지션 카드 -->
+        <div class="ground">
+            <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">🏟️ 선수 배치 그라운드</div>
+            <div style="font-size: 12px; color: #ccc;">포지션 카드를 눌러 선수를 검색하고 배치하세요!</div>
+            
+            <div class="positions-grid">
+                <div class="pos-card" onclick="openPlayerSelectModal('C')">
+                    <div class="pos-title">포수 (C)</div>
+                    <div class="pos-name" id="slot-C">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('1B')">
+                    <div class="pos-title">1루수 (1B)</div>
+                    <div class="pos-name" id="slot-1B">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('2B')">
+                    <div class="pos-title">2루수 (2B)</div>
+                    <div class="pos-name" id="slot-2B">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('3B')">
+                    <div class="pos-title">3루수 (3B)</div>
+                    <div class="pos-name" id="slot-3B">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('SS')">
+                    <div class="pos-title">유격수 (SS)</div>
+                    <div class="pos-name" id="slot-SS">빈 자리</div>
+                </div>
+                <div class="pos-card" onclick="openPlayerSelectModal('OF')">
+                    <div class="pos-title">외야수 (OF)</div>
+                    <div class="pos-name" id="slot-OF">빈 자리</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allPlayers = [];
+        let squad = {};
+
+        // 선수 데이터 로드
+        async function loadPlayerDatas() {
+            try {
+                const res1 = await fetch('players_8697.json');
+                const p1 = await res1.json();
+                const res2 = await fetch('added_101.json');
+                const p2 = await res2.json();
+                allPlayers = [...p1, ...p2];
+                console.log(`선수 데이터 로드 완료: 총 ${allPlayers.length}명`);
+            } catch (e) {
+                console.error("데이터 로드 실패:", e);
+            }
+        }
+        loadPlayerDatas();
+
+        // 선수 검색 및 배치
+        function openPlayerSelectModal(position) {
+            const searchKeyword = prompt(`[${position}] 포지션에 배치할 선수 이름을 검색하세요:`);
+            if (!searchKeyword) return;
+
+            const matchedPlayers = allPlayers.filter(p => p.name && p.name.includes(searchKeyword));
+            if (matchedPlayers.length === 0) {
+                alert('검색된 선수가 없습니다.');
+                return;
+            }
+
+            const selectedPlayer = matchedPlayers[0];
+            squad[position] = selectedPlayer;
+
+            // 화면에 이름 반영
+            document.getElementById(`slot-${position}`).innerText = `${selectedPlayer.name} (${selectedPlayer.ovr || 0})`;
+            updateSquadCalculation();
+        }
+
+        // OVR 계산 및 반영
+        function updateSquadCalculation() {
+            let totalOvr = 0;
+            let count = 0;
+
+            for (let pos in squad) {
+                const player = squad[pos];
+                totalOvr += (player.ovr || 70);
+                count++;
+            }
+
+            const avgOvr = count > 0 ? Math.round(totalOvr / count) : 0;
+            document.getElementById('total-ovr').innerText = avgOvr;
+        }
+    </script>
+</body>
+</html>
         }
         .mode-btn.active {
             background: #4a69bd;
