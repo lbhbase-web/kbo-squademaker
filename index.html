@@ -158,6 +158,41 @@
 
         // 초기 실행
         updateSquadCalculation();
+        // 4. 선수 데이터 저장용 변수
+        let allPlayers = [];
+
+        // 선수 JSON 파일 불러오기 (players_8697.json 및 added_101.json 연동)
+        async function loadPlayerDatas() {
+            try {
+                // players_8697.json 불러오기
+                const res1 = await fetch('players_8697.json');
+                const data1 = await res1.json();
+
+                // added_101.json 불러오기 (파일이 존재할 경우)
+                let data2 = [];
+                try {
+                    const res2 = await fetch('added_101.json');
+                    data2 = await res2.json();
+                } catch (e) {
+                    console.log('added_101.json 파일이 없거나 불러오지 못했습니다.');
+                }
+
+                // 두 데이터 합치기
+                allPlayers = [...(Array.isArray(data1) ? data1 : data1.players || []), ...(Array.isArray(data2) ? data2 : data2.players || [])];
+                
+                console.log(`총 ${allPlayers.length명의 선수 데이터를 성공적으로 불러왔습니다!`);
+                
+                // 데이터 로드 완료 후 필요한 초기화 함수 실행 가능
+                // initPlayerSearchUI();
+
+            } catch (error) {
+                console.error('선수 데이터를 불러오는 중 오류가 발생했습니다:', error);
+            }
+        }
+
+        // 페이지가 열릴 때 데이터 불러오기 실행
+        loadPlayerDatas();
+
     </script>
 </body>
 </html>
