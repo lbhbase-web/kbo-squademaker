@@ -1823,18 +1823,19 @@ function nationalWildcardBasePenaltyMap(p,g=getGrowth(p)){
  if(isNationalWildcard(p,g))for(const k of Object.keys(out))out[k]=-3;
  return out;
 }
+function usesSharedCardLimit(p,g=getGrowth(p)){return Boolean(isFa(p,g)||isNationalWildcard(p,g))}
 function nationalSpecialCount(mode=currentMode,excludeSlot=null){
  const L=ensureLineupState(mode);
  let n=0;
  for(const [slot,id] of Object.entries(L.slots||{})){
    if(slot===excludeSlot||!id)continue;
    const p=players.find(x=>x.id===id);if(!p)continue;
-   if(isNationalSpecial(p,getGrowth(p)))n++;
+   if(usesSharedCardLimit(p))n++;
  }
  return n;
 }
 function canPlaceNationalSpecial(p,slot=null,mode=currentMode){
- if(!isNationalSpecial(p,getGrowth(p)))return true;
+ if(!usesSharedCardLimit(p))return true;
  return nationalSpecialCount(mode,slot)<2;
 }
 function nationalSpecialLimitState(mode=currentMode){
@@ -1858,7 +1859,7 @@ function setNationalVariant(value){
  const p=players.find(x=>x.id===currentGrowId);if(!p||family(p)!=="national")return;
  value=["fa","wildcard"].includes(value)?"wildcard":"normal";
  if(!canSetNationalVariant(p,value)){
-   toast("국가대표 와일드카드는 한 라인업에 합쳐서 최대 2장까지만 사용할 수 있어.");
+   toast("FA 임팩트·FA 시그니처·국가대표 와일드카드는 합쳐서 한 라인업에 최대 2장까지 사용할 수 있어.");
    renderGrow();
    return;
  }
@@ -2114,7 +2115,7 @@ function renderLineupEffects(){
    <div class="synergy-col-title">시너지</div><div class="synergy-col-title">역시너지</div>
    ${rows}
  </div>
- <div class="synergy-total">국가대표 와일드카드 <b>${nationalSpecialLimitState().count}/2장</b> · 역시너지 총합 <b>${a.totalPenalty}</b></div>`;
+ <div class="synergy-total">FA 임팩트·FA 시그니처·국가대표 와일드카드 합계 <b>${nationalSpecialLimitState().count}/2장</b> · 역시너지 총합 <b>${a.totalPenalty}</b></div>`;
 }
 
 
@@ -3016,7 +3017,7 @@ function placePlayerInSlot(id,slot){
  });
  if(duplicate){toast(`${p.name} 선수는 이미 현재 라인업에 있어.`);return;}
  if(!canPlaceNationalSpecial(p,slot,currentMode)){
-   toast("국가대표 와일드카드는 한 라인업에 합쳐서 최대 2장까지만 사용할 수 있어.");
+   toast("FA 임팩트·FA 시그니처·국가대표 와일드카드는 합쳐서 한 라인업에 최대 2장까지 사용할 수 있어.");
    return;
  }
 
@@ -3134,7 +3135,7 @@ function addPlayer(id){
  const L=lineup();
  if(Object.values(L.slots).includes(id)){toast("이미 현재 라인업에 있는 카드야.");return;}
  if(lineupHasSamePlayerName(p)){toast(`${p.name} 선수는 이미 현재 라인업에 있어.`);return;}
- if(!canPlaceNationalSpecial(p,null,currentMode)){toast("국가대표 와일드카드는 한 라인업에 합쳐서 최대 2장까지만 사용할 수 있어.");return;}
+ if(!canPlaceNationalSpecial(p,null,currentMode)){toast("FA 임팩트·FA 시그니처·국가대표 와일드카드는 합쳐서 한 라인업에 최대 2장까지 사용할 수 있어.");return;}
  const candidates=compatibleSlotsFor(p);
  if(!candidates.length){toast("이 카드의 포지션에 맞는 슬롯이 없어.");return;}
 
@@ -3383,7 +3384,19 @@ function closeFa(){$("faModal").classList.remove("open")}
 function setFaTeam(team){
  const p=players.find(x=>x.id===currentFaId);if(!p||!TEAMS.includes(team)||!canChangeTeam(p))return;
  const g=getGrowth(p);
- const wasFa=isFa(p,g);g.faTeam=team===p.team?null:team;
+ const proposed={...g,faTeam:team===p.team?null:team};
+ if(usesSharedCardLimit(p,proposed)){
+   for(const mode of Object.keys(MODES)){
+     const L=ensureLineupState(mode);
+     for(const [slot,id] of Object.entries(L.slots||{})){
+       if(id===p.id&&nationalSpecialCount(mode,slot)>=2){
+         toast("FA 임팩트·FA 시그니처·국가대표 와일드카드는 합쳐서 한 라인업에 최대 2장까지 사용할 수 있어.");
+         return;
+       }
+     }
+   }
+ }
+ const wasFa=isFa(p,g);g.faTeam=proposed.faTeam;
  const nowFa=isFa(p,g),[base,max]=specialBounds(p,g.faTeam);
  if(wasFa!==nowFa)g.special=base;else g.special=Math.min(max,Math.max(base,g.special));
  closeFa();renderGrow();renderAll();
