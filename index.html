@@ -1125,6 +1125,7 @@ body{background:#fff!important;color:#17191c!important}
    <select id="preferredTeam"></select>
    <button class="btn primary" onclick="saveAll()">전체 저장</button>
    <button class="btn" onclick="openExport()">라인업 내보내기</button>
+   <button class="btn" onclick="document.getElementById('lineupImportFile').click()">라인업 가져오기</button><input id="lineupImportFile" type="file" accept=".json,application/json" hidden onchange="importLineupFile(this)">
   </div>
  </div>
 
@@ -3410,7 +3411,7 @@ function closeExport(){$("exportModal").classList.remove("open")}
 function lineupPayload(mode){
  const L=ensureLineupState(mode),deck=lineupSetdeckInfo(mode),effects=selectedSetdeckEffects(mode);
  return {
-  mode,modeName:MODES[mode],preferredTeam,
+  mode,modeName:MODES[mode],preferredTeam,customCards:players.filter(p=>p.custom&&Object.values(L.slots).includes(p.id)),detailPosition:L.detailPosition||{},
   setdeckScore:deck.total,setdeckEffectScore:deck.effectScore,setdeckUnknownPlayers:deck.unknown,
   setdeckChoices:L.setdeckChoices,setdeckParams:L.setdeckParams,selectedSetdeckEffects:effects,lineupRuleStatus:lineupRuleStatus(mode),antiSynergy:antiSynergyStatus(mode),positionTraining:L.positionTraining,positionTrainingChoices:L.positionTrainingChoices,
   slots:L.slots,battingOrder:L.order,bullpenRoles:L.bullpenRoles||{},
@@ -3452,6 +3453,57 @@ function currentText(){
  return lines.join("\n");
 }
 function download(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function importLineupData(raw){
+ const obj=v=>v&&typeof v==='object'&&!Array.isArray(v);
+ const clean=v=>JSON.parse(JSON.stringify(v),(k,x)=>['__proto__','constructor','prototype'].includes(k)?undefined:x);
+ if(!obj(raw))throw Error('라인업 JSON 파일을 선택해 줘.');
+ const data=clean(raw),pack=data.lineups;
+ const payload=pack?(pack[currentMode]||pack.ranking||Object.values(pack)[0]):data;
+ if(!obj(payload)||!obj(payload.slots)||!Array.isArray(payload.players))throw Error('지원하는 라인업 내보내기 JSON 형식이 아니야. TXT는 복원할 수 없어.');
+ const importedCustom=(payload.customCards||data.customCards||[]).map(validateCustomCard);
+ const available=new Map(players.map(p=>[p.id,p]));
+ for(const p of importedCustom){if(available.has(p.id)&&!available.get(p.id).custom)throw Error('선수 ID가 충돌해.');available.set(p.id,p);}
+ const next={slots:{},order:{},setdeckChoices:{},setdeckParams:{},positionTraining:{},positionTrainingChoices:{},bullpenRoles:{},detailPosition:{}};
+ const nextGrowth=clean(growth),names=new Set();let limited=0;
+ for(const [slot,id] of Object.entries(payload.slots)){
+   if(!ALL_SLOTS.includes(slot))throw Error('알 수 없는 포지션: '+slot);
+   if(!id){next.slots[slot]=null;continue;}
+   const p=available.get(id);if(!p)throw Error('선수 데이터가 없어: '+(payload.players.find(x=>x.id===id)?.name||id)+'. 커스텀 선수라면 선수 백업을 먼저 가져와 줘.');
+   if(!slotAcceptsPlayer(slot,p))throw Error(p.name+'의 포지션을 확인해 줘.');
+   if(names.has(p.name.trim()))throw Error('같은 선수가 중복 배치돼 있어: '+p.name);names.add(p.name.trim());
+   const row=payload.players.find(x=>x.id===id);
+   const g=clean(row?.growth||data.growth?.[id]||{});
+   if(!obj(g))throw Error('육성 데이터 형식이 올바르지 않아.');
+   if(g.trainingAlloc&&!Array.isArray(g.trainingAlloc))throw Error('훈련 배분 데이터가 올바르지 않아.');
+   if(usesSharedCardLimit(p,g))limited++;
+   nextGrowth[id]=g;next.slots[slot]=id;
+ }
+ if(limited>2)throw Error('FA 임팩트·FA 시그니처·국가대표 와일드카드 합계가 2장을 초과해.');
+ for(const key of ['setdeckChoices','setdeckParams','positionTraining','positionTrainingChoices','bullpenRoles','detailPosition']){
+   if(payload[key]!=null){if(!obj(payload[key]))throw Error('설정 데이터 형식이 올바르지 않아.');next[key]=clean(payload[key]);}
+ }
+ const order=payload.battingOrder||payload.order||{};
+ for(const [slot,n] of Object.entries(order))if(FIELD.includes(slot)&&Number.isInteger(Number(n))&&Number(n)>=1&&Number(n)<=9)next.order[slot]=Number(n);
+ const team=payload.preferredTeam||data.preferredTeam;
+ if(team&&!TEAMS.includes(team))throw Error('선호 구단을 확인해 줘.');
+ // Validate before replacing the current lineup.
+ if(importedCustom.length){const cards=new Map(players.filter(p=>p.custom).map(p=>[p.id,p]));for(const p of importedCustom)cards.set(p.id,p);commitCustomCards([...cards.values()]);}
+ growth=nextGrowth;lineups=Object.fromEntries(Object.keys(MODES).map(m=>[m,next]));
+ if(Object.hasOwn(MODES,payload.mode))currentMode=payload.mode;
+ if(team)preferredTeam=team;
+ ensureLineupState(currentMode);
+ return names.size;
+}
+async function importLineupFile(input){
+ const file=input.files?.[0];if(!file)return;
+ try{
+   const count=importLineupData(JSON.parse((await file.text()).replace(/^\uFEFF/,'')));
+   $('preferredTeam').value=preferredTeam;refreshCustomSearch();renderTabs();renderAll();closeExport();
+   toast(count+'명 라인업과 육성 설정을 가져왔어.');
+ }catch(e){alert('가져오기 실패: '+e.message);}
+ finally{input.value='';}
+}
+
 function exportCurrentJSON(){download(`v26-${currentMode}-lineup.json`,JSON.stringify(lineupPayload(currentMode),null,2),"application/json")}
 function exportCurrentTXT(){download(`v26-${currentMode}-lineup.txt`,currentText(),"text/plain;charset=utf-8")}
 function exportAllJSON(){download("v26-all-lineups.json",JSON.stringify({version:8.1,preferredTeam,lineups:Object.fromEntries(Object.keys(MODES).map(m=>[m,lineupPayload(m)])),growth},null,2),"application/json")}
