@@ -1076,6 +1076,16 @@ body{background:#fff!important;color:#17191c!important}
 
 
 .skill-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px;margin:8px 0;background:#faf8fc}.skill-row input{width:48px}.skill-row select{max-width:220px}.skill-stage{padding:10px 0}.skill-picks{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.skill-picks select{max-width:145px;color:#8e24aa} @media(max-width:600px){.skill-row select{max-width:180px}.skill-picks select{max-width:100%;flex:1;min-width:90px}}
+
+/* Club logo decorations: transparent background, no frame or shadow. */
+.game-card-team,.lineup-card-shell .lc-team,
+.game-team-logo,.lineup-card-shell .lc-team img,
+.game-team-fallback,.lineup-card-shell .lc-team span,
+[data-team-logo-wrap] .team-fa-badge{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ filter:none!important;border-radius:0!important;
+}
+.game-team-fallback,.lineup-card-shell .lc-team span{color:inherit}
 </style>
 <style>
 #growModal .modal{width:min(760px,96vw)}
@@ -1119,7 +1129,7 @@ body{background:#fff!important;color:#17191c!important}
  <div class="top">
   <div class="brand">
    <div class="logo">V26</div>
-   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.1 · 스킬 130 · 선수사진 없음</span></h1>
+   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.2 · 스킬 130 · 선수사진 없음</span></h1>
    <div class="sub">8,958장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
   </div>
   <div class="toolbar">
