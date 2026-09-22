@@ -1,0 +1,599 @@
+[
+  {
+    "id": "mi_tempo",
+    "name": "완급조절",
+    "tier": "minor",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "상대 중심 타순 조건"
+  },
+  {
+    "id": "mi_crisis",
+    "name": "위기관리",
+    "tier": "minor",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "주자 조건과 상대 능력치 감소"
+  },
+  {
+    "id": "mi_rightbat",
+    "name": "우타킬러",
+    "tier": "minor",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "상대 능력치 감소"
+  },
+  {
+    "id": "mi_leftbat",
+    "name": "좌타킬러",
+    "tier": "minor",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "상대 능력치 감소"
+  },
+  {
+    "id": "mi_hawk",
+    "name": "매의눈",
+    "tier": "minor",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "체크스윙 확률 효과"
+  },
+  {
+    "id": "mi_connect",
+    "name": "타선연결",
+    "tier": "minor",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "직전 타자 출루 조건"
+  },
+  {
+    "id": "mi_rbi",
+    "name": "타점기계",
+    "tier": "minor",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "득점권 주자 조건"
+  },
+  {
+    "id": "mi_rightpitch",
+    "name": "우완킬러",
+    "tier": "minor",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "상대 투수의 투구 방향 조건"
+  },
+  {
+    "id": "mi_leftpitch",
+    "name": "좌완킬러",
+    "tier": "minor",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "상대 투수의 투구 방향 조건"
+  },
+  {
+    "id": "r_confidence",
+    "name": "자신감",
+    "tier": "rookie",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "직전 타자 삼진 조건"
+  },
+  {
+    "id": "r_dirty",
+    "name": "더러운 볼끝",
+    "tier": "rookie",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "아웃 카운트 조건과 상대 능력치 감소"
+  },
+  {
+    "id": "r_intimidate",
+    "name": "기선제압",
+    "tier": "rookie",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "첫 상대 타자 조건과 상대 능력치 감소"
+  },
+  {
+    "id": "r_sweet",
+    "name": "스윗스팟",
+    "tier": "rookie",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "타격 타이밍 조건"
+  },
+  {
+    "id": "r_table",
+    "name": "테이블세터",
+    "tier": "rookie",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "주자 유무 조건"
+  },
+  {
+    "id": "r_winning",
+    "name": "승부근성",
+    "tier": "rookie",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "경기 점수 우세 조건"
+  },
+  {
+    "id": "r_comeback",
+    "name": "역전의 명수",
+    "tier": "rookie",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "경기 점수 열세 조건"
+  },
+  {
+    "id": "r_first",
+    "name": "초구공략",
+    "tier": "rookie",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "초구 조건"
+  },
+  {
+    "id": "r_innings",
+    "name": "이닝이터",
+    "tier": "rookie",
+    "role": "P",
+    "keys": [
+      "stamina"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "r_calm",
+    "name": "평정심",
+    "tier": "rookie",
+    "role": "P",
+    "keys": [
+      "stuff"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "extraKeys": [
+      "control"
+    ],
+    "extraValues": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5
+    ]
+  },
+  {
+    "id": "a_safe",
+    "name": "사고방지",
+    "tier": "amateur",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "실투 확률 효과"
+  },
+  {
+    "id": "a_duel_p",
+    "name": "진검승부",
+    "tier": "amateur",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "풀카운트 조건"
+  },
+  {
+    "id": "a_breaking",
+    "name": "변화구선호",
+    "tier": "amateur",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "선택 구종 조건"
+  },
+  {
+    "id": "a_fast",
+    "name": "속구선호",
+    "tier": "amateur",
+    "role": "P",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "선택 구종 조건"
+  },
+  {
+    "id": "a_bunt",
+    "name": "번트전문",
+    "tier": "amateur",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "번트 타구 확률 효과"
+  },
+  {
+    "id": "a_breakingkiller",
+    "name": "변화구킬러",
+    "tier": "amateur",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "상대 구종 조건"
+  },
+  {
+    "id": "a_duel_b",
+    "name": "진검승부",
+    "tier": "amateur",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "풀카운트 조건"
+  },
+  {
+    "id": "a_fastkiller",
+    "name": "직구킬러",
+    "tier": "amateur",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "상대 구종 조건"
+  },
+  {
+    "id": "a_pull",
+    "name": "당겨치기",
+    "tier": "amateur",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "타격 방향 조건"
+  },
+  {
+    "id": "a_push",
+    "name": "밀어치기",
+    "tier": "amateur",
+    "role": "B",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excludedReason": "타격 방향 조건"
+  }
+]
