@@ -1074,6 +1074,8 @@ body{background:#fff!important;color:#17191c!important}
 #customDialog::backdrop{background:#0009}#customDialog header{display:flex;justify-content:space-between;align-items:center;font-size:20px}#customDialog p{line-height:1.6;color:#536174;font-size:14px}
 .custom-columns{display:grid;grid-template-columns:2fr 1fr;gap:24px}.custom-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.custom-fields label{display:flex;flex-direction:column;gap:5px;color:#26364b}.custom-wide{grid-column:1/-1}#customDialog input,#customDialog select{width:100%;min-width:0;box-sizing:border-box;padding:10px;color:#162235;background:#f8faff;border:1px solid #c5cfde;border-radius:8px;font-size:16px}#customDialog button,.custom-actions>label{cursor:pointer;padding:10px 14px;color:#26364b;background:#f0f3fa;border:1px solid #c5cfde;border-radius:8px;font-size:14px}#customSave{width:100%;background:#7950e8!important;color:white!important;margin-top:12px}#customPreview{white-space:pre-line;line-height:2.1;text-align:center;border-radius:16px;background:linear-gradient(145deg,#26395f,#593a92);color:white;padding:24px 10px;font-size:20px;overflow-wrap:anywhere}.custom-actions{display:flex;gap:8px;flex-wrap:wrap}.custom-actions input{max-width:200px}.custom-list-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #ddd;padding:8px 0}.custom-list-row span{flex:1;overflow-wrap:anywhere}@media(max-width:600px){.custom-columns{grid-template-columns:1fr}#customDialog{padding:16px}.custom-columns aside{order:-1}#customPreview{font-size:16px;line-height:1.5;padding:12px}}
 
+
+.skill-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px;margin:8px 0;background:#faf8fc}.skill-row input{width:48px}.skill-row select{max-width:220px}.skill-stage{padding:10px 0}.skill-picks{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.skill-picks select{max-width:145px;color:#8e24aa} @media(max-width:600px){.skill-row select{max-width:180px}.skill-picks select{max-width:100%;flex:1;min-width:90px}}
 </style>
 <style>
 #growModal .modal{width:min(760px,96vw)}
@@ -1801,6 +1803,7 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
  const modeBonus=lineupModeBonus(p,mode);
  const deckBonus=setdeckBonusMap(p,slot,mode);
  const anti=antiSynergyStatus(mode);
+ const skills=skillBonuses(p,slot,mode);
 
  let totalDelta=0;
  for(const [k] of statMeta(p)){
@@ -1814,7 +1817,7 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
      Number(posBonus[k]||0)+
      Number(modeBonus||0)+
      Number(deckBonus[k]||0)+
-     Number(anti.totalPenalty||0);
+     Number(anti.totalPenalty||0)+Number(skills.total[k]||0);
  }
  // Match reference: floor the total six-stat growth contribution.
  return base+Math.floor(totalDelta/6);
@@ -2288,14 +2291,129 @@ function setdeckBonusMap(p,slot,mode=currentMode){
  return out;
 }
 
-function effectiveStats(p,slot=null,mode=currentMode){
+
+// National skills: values verified from the supplied national-skill video (levels 1–6).
+const NATIONAL_SKILLS=[
+ ['order','타순 공략','P'],['escape','위기 탈출','P'],['line','빈틈없는 타선','B'],['table','국대 테이블세터','B'],['relief','국민 계투','R'],
+ ...['solve','win','golden','fight','eighth','ace'].flatMap((id,i)=>['B','P'].map(role=>[id+'_'+role,['해결사','전승 우승','황금세대','투쟁심','약속의 8회','국대 에이스'][i],role]))
+].map(([id,name,role])=>({id,name,role}));
+const MAJOR_SKILLS=[{"id":"m_touch","name":"짜릿한 손맛","role":"B","tier":"major","keys":["power","contact"],"values":[1,2,2,3,3,4,4,5,5,6]},{"id":"m_speed","name":"구속 제어","role":"P","tier":"major","keys":["break","stuff","control"],"values":[2,3,4,5,6,7,9,11,13,15],"negative":{"velocity":[-2,-3,-4,-5,-7,-8,-9,-10,-11,-12]}},{"id":"m_winning","name":"필승카드","role":"P","tier":"major","keys":["all"],"values":[1,1,2,2,3,4,5,6,7,8]},{"id":"m_precision","name":"정밀타격","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_veteran_P","name":"백전노장","role":"P","tier":"major","keys":["break","control"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_veteran_B","name":"백전노장","role":"B","tier":"major","keys":["contact","patience"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_decisive","name":"결정적 한방","role":"B","tier":"major","keys":["power","contact","patience"],"values":[1,1,2,2,2,3,3,4,4,5]},{"id":"m_thief","name":"대도","role":"B","tier":"major","keys":["contact","eye","patience","baserun"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_focus_P","name":"집중력","role":"P","tier":"major","keys":["break","control"],"values":[2,3,4,5,6,7,8,9,10,11]},{"id":"m_focus_B","name":"집중력","role":"B","tier":"major","keys":["contact","patience"],"values":[2,3,4,5,6,7,8,9,10,11]},{"id":"m_winshot","name":"위닝샷","role":"P","tier":"major","keys":["all"],"values":[1,1,1,1,1,2,2,2,2,2]},{"id":"m_hero_P","name":"난세의 영웅","role":"P","tier":"major","keys":["stuff","velocity","break","control"],"values":[1,1,1,1,1,2,2,3,3,4]},{"id":"m_hero_B","name":"난세의 영웅","role":"B","tier":"major","keys":["power","contact","eye","patience"],"values":[1,1,1,1,1,2,2,3,3,4]},{"id":"m_catcher","name":"포수 리드","role":"C","tier":"major","keys":["contact","patience"],"values":[1,2,3,4,5,6,7,8,9,10],"extra":"catcher"},{"id":"m_contact","name":"컨택트 히터","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0],"extra":"contact"},{"id":"m_best_P","name":"베스트 포지션","role":"P","tier":"major","keys":["stuff","break","velocity","control"],"values":[1,2,2,3,4,5,7,9,11,13],"extraKeys":["stamina","fielding"],"extraValues":[3,3,4,4,5,5,6,6,7,7]},{"id":"m_best_B","name":"베스트 포지션","role":"B","tier":"major","keys":["power","contact","eye","patience"],"values":[1,2,2,3,4,5,7,9,11,13],"extraKeys":["baserun","fielding"],"extraValues":[3,3,4,4,5,5,6,6,7,7]},{"id":"m_weather","name":"전천후","role":"P","tier":"major","keys":["break","stuff"],"values":[2,3,4,5,6,7,8,9,10,11],"extra":"weather"},{"id":"m_five","name":"5툴 플레이어","role":"B","tier":"major","keys":["baserun","fielding"],"values":[2,3,4,5,6,7,9,11,13,15],"percent":{"source":["baserun","fielding"],"target":["power","contact"],"rates":[1,1,2,2,2,3,3,4,4,5]}},{"id":"m_shout_P","name":"승리의 함성","role":"P","tier":"major","keys":["break","control"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_shout_B","name":"승리의 함성","role":"B","tier":"major","keys":["contact","patience"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_onetwo","name":"원투펀치","role":"SP","tier":"major","keys":["stuff","control"],"values":[2,3,4,5,6,8,10,12,14,16]},{"id":"m_workhorse","name":"마당쇠","role":"R","tier":"major","keys":["stuff","break"],"values":[2,2,3,3,4,5,6,7,8,9]},{"id":"m_journey_P","name":"저니맨","role":"P","tier":"major","keys":["stuff","break","stamina"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_journey_B","name":"저니맨","role":"B","tier":"major","keys":["power","contact","patience"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_autumn_P","name":"가을 사나이","role":"P","tier":"major","keys":["break","velocity"],"values":[1,2,3,4,5,6,7,8,9,10],"modeKeys":["stuff","control"],"modeValues":[2,3,4,5,6,7,8,9,10,11],"modes":["ranking","realtime"]},{"id":"m_autumn_B","name":"가을 사나이","role":"B","tier":"major","keys":["contact","baserun"],"values":[1,2,3,4,5,6,7,8,9,10],"modeKeys":["power","eye"],"modeValues":[2,3,4,5,6,7,8,9,10,11],"modes":["ranking","realtime"]},{"id":"m_defense","name":"수비 안정성","role":"B","tier":"major","keys":["fielding","baserun"],"values":[3,4,5,6,7,9,11,13,15,17],"extra":"defense"},{"id":"m_firefighter","name":"소방수","role":"CP","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_switch","name":"스위치 히터","role":"B","tier":"major","keys":["power","contact"],"values":[1,1,2,2,3,3,4,4,5,5],"extra":"switch"},{"id":"m_left","name":"좌타해결사","role":"B","tier":"major","keys":["power","contact"],"values":[3,3,4,4,5,5,6,6,7,7],"extra":"left"},{"id":"m_vanguard","name":"선봉장","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0],"extra":"vanguard"},{"id":"m_nonfa_P","name":"비FA계약","role":"P","tier":"major","keys":["break","stuff"],"values":[2,3,4,5,6,7,8,9,10,11],"modeKeys":["all"],"modeValues":[1,1,1,1,1,2,2,2,2,2],"modes":["league","club"]},{"id":"m_nonfa_B","name":"비FA계약","role":"B","tier":"major","keys":["power","contact"],"values":[2,3,4,5,6,7,8,9,10,11],"modeKeys":["all"],"modeValues":[1,1,1,1,1,2,2,2,2,2],"modes":["league","club"]},{"id":"m_hidden","name":"히든 카드","role":"B","tier":"major","keys":["power","contact","baserun"],"values":[1,1,1,2,2,3,3,4,4,5]},{"id":"m_tenacity","name":"집념","role":"SP","tier":"major","keys":["all"],"values":[1,1,2,2,3,4,5,6,7,8]},{"id":"m_calm","name":"부동심","role":"P","tier":"major","keys":["velocity","break","control"],"values":[2,3,4,5,6,7,8,9,10,11]},{"id":"m_leftdeath","name":"좌승사자","role":"SP","tier":"major","keys":["all"],"values":[1,1,2,2,3,4,5,6,7,8]},{"id":"m_big_P","name":"빅게임 헌터","role":"P","tier":"major","keys":["stuff","control"],"values":[1,2,3,4,5,6,7,8,9,10],"modeKeys":["all"],"modeValues":[3,3,4,4,5,5,6,6,7,7],"modes":["ranking","club"]},{"id":"m_big_B","name":"빅게임 헌터","role":"B","tier":"major","keys":["power","eye"],"values":[1,2,3,4,5,6,7,8,9,10],"modeKeys":["all"],"modeValues":[3,3,4,4,5,5,6,6,7,7],"modes":["ranking","club"]},{"id":"m_fireball","name":"파이어볼","role":"P","tier":"major","keys":["all"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_represent","name":"대표 타자","role":"B","tier":"major","keys":["all"],"values":[2,3,4,5,6,7,8,9,10,11]},{"id":"m_top_B","name":"리그 탑플레이어","role":"B","tier":"major","keys":["all"],"values":[2,3,4,5,6,7,8,9,10,11]},{"id":"m_top_P","name":"리그 탑플레이어","role":"P","tier":"major","keys":["all"],"values":[2,3,4,5,6,7,8,9,10,11]},{"id":"m_over_B","name":"오버페이스","role":"B","tier":"major","keys":["all"],"values":[1,1,2,2,3,3,4,4,5,5]},{"id":"m_over_P","name":"오버페이스","role":"P","tier":"major","keys":["all"],"values":[1,1,2,2,3,3,4,4,5,5]},{"id":"m_work_B","name":"워크에식","role":"B","tier":"major","keys":["all"],"values":[1,1,2,2,3,3,4,4,5,5]},{"id":"m_work_P","name":"워크에식","role":"P","tier":"major","keys":["all"],"values":[1,1,2,2,3,3,4,4,5,5]},{"id":"m_emergency","name":"긴급투입","role":"P","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_early_P","name":"얼리 스타트","role":"P","tier":"major","keys":["velocity","stuff"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_early_B","name":"얼리 스타트","role":"B","tier":"major","keys":["power","eye"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_rank_P","name":"순위경쟁","role":"P","tier":"major","keys":["stuff","control","break"],"values":[1,2,3,4,5,6,7,8,9,10],"modeKeys":["stuff","break","fielding"],"modeValues":[1,1,1,1,1,1,1,1,1,1],"modes":["ranking","realtime"]},{"id":"m_rank_B","name":"순위경쟁","role":"B","tier":"major","keys":["power","contact","patience"],"values":[1,2,3,4,5,6,7,8,9,10],"modeKeys":["power","patience","fielding"],"modeValues":[1,1,1,1,1,1,1,1,1,1],"modes":["ranking","realtime"]},{"id":"m_challenge_B","name":"도전정신","role":"B","tier":"major","keys":["all"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_challenge_P","name":"도전정신","role":"P","tier":"major","keys":["all"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_rising","name":"라이징 스타","role":"SR","tier":"major","keys":["break","velocity"],"values":[2,3,4,5,6,7,8,9,10,11]},{"id":"m_bottom","name":"공포의 하위타선","role":"B","tier":"major","keys":["contact","baserun"],"values":[2,3,4,5,6,7,8,9,10,11]},{"id":"m_gambler_P","name":"승부사","role":"P","tier":"major","keys":["stuff","velocity"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_gambler_B","name":"승부사","role":"B","tier":"major","keys":["power","patience"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_league_P","name":"리그의 강자","role":"P","tier":"major","keys":["stamina","fielding"],"values":[1,2,3,4,5,6,7,8,9,10],"modeKeys":["velocity","stuff","control","stamina"],"modeValues":[4,5,6,7,8,10,12,14,16,18],"modes":["league"]},{"id":"m_league_B","name":"리그의 강자","role":"B","tier":"major","keys":["baserun","fielding"],"values":[1,2,3,4,5,6,7,8,9,10],"modeKeys":["power","eye","patience","baserun"],"modeValues":[4,5,6,7,8,10,12,14,16,18],"modes":["league"]},{"id":"m_onepoint","name":"원포인트 릴리프","role":"R","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_pinch","name":"대타 스페셜","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_first","name":"첫단추","role":"SP","tier":"major","keys":["velocity","stuff"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_leadoff","name":"리드오프","role":"B","tier":"major","keys":["eye","baserun"],"values":[3,4,5,6,7,8,9,10,11,12],"extra":"leadoff"},{"id":"m_iron","name":"철완","role":"P","tier":"major","keys":["velocity"],"values":[1,2,3,4,5,6,7,8,9,10],"extraKeys":["break","stuff","control"],"extraValues":[1,1,1,1,1,1,1,1,1,1],"percent":{"source":["stamina"],"target":["break","stuff","control"],"rates":[5,5,5,5,5,6,6,6,6,6]}},{"id":"m_home_P","name":"홈 어드밴티지","role":"P","tier":"major","keys":["stuff","break","stamina"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_home_B","name":"홈 어드밴티지","role":"B","tier":"major","keys":["power","contact","patience"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_guardian","name":"수호신","role":"P","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_spirit_B","name":"패기","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_spirit_P","name":"패기","role":"P","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_artist","name":"아티스트","role":"P","tier":"major","keys":["control","break"],"values":[4,5,6,7,8,9,10,11,12,13]},{"id":"m_cut","name":"흐름 끊기","role":"P","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_clutchp","name":"클러치피처","role":"P","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_support","name":"타선지원","role":"P","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0],"extra":"support"},{"id":"m_untouch","name":"언터처블","role":"P","tier":"major","keys":["velocity","break"],"values":[4,5,6,7,8,9,10,11,12,13]},{"id":"m_ace","name":"에이스","role":"P","tier":"major","keys":["all"],"values":[1,2,3,4,5,6,7,8,9,10]},{"id":"m_fast","name":"빠른발","role":"B","tier":"major","keys":["baserun"],"values":[3,4,5,6,7,8,9,10,11,12]},{"id":"m_nuclear","name":"핵타선","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0],"extra":"nuclear"},{"id":"m_aim","name":"노림수","role":"B","tier":"major","keys":["contact","patience"],"values":[4,5,6,7,8,9,10,11,12,13]},{"id":"m_clutchb","name":"클러치히터","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_high","name":"하이볼히터","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_upper","name":"어퍼스윙","role":"B","tier":"major","keys":[],"values":[0,0,0,0,0,0,0,0,0,0]},{"id":"m_machine","name":"배팅머신","role":"B","tier":"major","keys":["power","contact","eye"],"values":[2,3,4,5,6,7,8,9,10,11]}];
+function nationalSkillEffects(p,slot,mode=currentMode){
+ const self={},auras=[],notes=[],c=skillContext(p),L=ensureLineupState(mode),order=Number(L.order[slot]||0),pit=skillPitcher(p);
+ const all=statMeta(p).map(x=>x[0]),opp=(pit?BAT_META:PIT_META).map(x=>x[0]),pc=['power','contact'],attack=['power','contact','eye'],four=pit?['stuff','velocity','break','control']:['power','contact','eye','patience'];
+ const add=(m,keys,v)=>keys.forEach(k=>m[k]=(m[k]||0)+v);
+ for(const x of playerSkills(p)){if(!x.id||x.id.startsWith("m_"))continue;const n=x.level,j=n-1,id=x.id.split('_')[0],v=n>=6;
+  if(id==='order'){add(self,['break','stuff'],n+2);}
+  if(id==='escape'){add(self,['break','stuff'],n+1);}
+  if(id==='line'){add(self,pc,n+1);auras.push({kind:'previous',keys:attack,value:v?3:1});notes.push('앞 타자의 파워·정확·선구 증가');}
+  if(id==='table'){add(self,pc,n+1);auras.push({kind:'next',keys:pc,value:v?2:1});notes.push('다음 타자의 파워·정확 증가');}
+  if(id==='relief')add(self,all,[1,1,1,2,2,2][j]);
+  if(id==='solve')add(self,all,[1,1,2,2,3,3][j]);
+  if(id==='win')add(self,all,[1,2,2,3,3,4][j]);
+  if(id==='golden')add(self,all,n+1);
+  if(id==='fight'){add(self,all,n);}
+  if(id==='eighth'){add(self,all,n);}
+  if(id==='ace'){add(self,all,n);auras.push({kind:pit?'pitchers':'batters',keys:pit?['stuff','break']:pc,value:v?2:1});notes.push('라인업 전체 강화 · 같은 효과는 가장 높은 값 1회 적용');}
+ }
+ return {self,auras,notes};
+}
+
+const SKILL_COLORS={national:'#c62828',major:'#8e24aa',minor:'#1565c0',amateur:'#238636',rookie:'#6b7280'};
+function skillPitcher(p){return ['SP','RP','CP'].includes(p.pos)}
+function skillRoleAllowed(d,pos){return d.role==='B'?!['SP','RP','CP'].includes(pos):d.role==='P'?['SP','RP','CP'].includes(pos):d.role==='R'?['RP','CP'].includes(pos):d.role==='SR'?['SP','RP'].includes(pos):pos===d.role}
+function skillDefinition(id){return MAJOR_SKILLS.find(d=>d.id===id)||NATIONAL_SKILLS.find(d=>d.id===id)}
+function skillCap(p,i){return family(p)==='gold'?6:(i===0?6:5)}
+function allowedSkills(p){return [...(family(p)==='national'?NATIONAL_SKILLS:[]),...MAJOR_SKILLS].filter(d=>skillRoleAllowed(d,p.pos))}
+function playerSkills(p){
+ const g=getGrowth(p),allowed=allowedSkills(p),seen=new Set();
+ g.skills=Array.from({length:3},(_,i)=>{const x=g.skills?.[i],d=allowed.find(d=>d.id===x?.id);if(!d||seen.has(d.id))return {id:'',level:skillCap(p,i)};seen.add(d.id);return {id:d.id,level:Math.max(1,Math.min(d.tier==='major'?skillCap(p,i):(i===0?6:5),Math.floor(Number(x.level)||1)))}});
+ return g.skills;
+}
+function skillContext(p){return getGrowth(p).skillContext||{}}
+function positionSkillPool(slot){const pos=/^SP/.test(slot)?'SP':/^RP/.test(slot)?'RP':slot==='CP'?'CP':slot;return MAJOR_SKILLS.filter(d=>skillRoleAllowed(d,pos))}
+function positionSkillRows(slot,milestone,mode=currentMode){
+ const L=ensureLineupState(mode),pool=positionSkillPool(slot),seen=new Set(),raw=L.positionSkills?.[slot]?.[milestone];
+ return Array.from({length:3},(_,i)=>{const id=raw?.[i];if(typeof id!=='string'||seen.has(id)||!pool.some(d=>d.id===id))return '';seen.add(id);return id});
+}
+function effectiveSkillLevel(p,i,slot,mode=currentMode){
+ const x=playerSkills(p)[i];if(!x?.id)return 0;
+ if(!x.id.startsWith('m_'))return Math.min(i===0?6:5,x.level);
+ const L=ensureLineupState(mode);let n=x.level;
+ if(slot&&L.slots[slot]===p.id)for(const m of [10,20])if(Number(L.positionTraining[slot]??20)>=m&&positionSkillRows(slot,m,mode).includes(x.id))n++;
+ return Math.min(10,n);
+}
+function setPositionSkill(m,i,id){
+ const p=players.find(x=>x.id===currentGrowId),L=lineup(),slot=Object.keys(L.slots).find(k=>L.slots[k]===p?.id);if(!slot||![10,20].includes(m))return;
+ const row=positionSkillRows(slot,m);if(id&&(!positionSkillPool(slot).some(d=>d.id===id)||row.some((x,j)=>j!==i&&x===id)))return;
+ if(!L.positionSkills)L.positionSkills={};if(!L.positionSkills[slot])L.positionSkills[slot]={};row[i]=id;L.positionSkills[slot][m]=row;renderAll();renderGrow();
+}
+function randomPositionSkills(m){
+ const p=players.find(x=>x.id===currentGrowId),L=lineup(),slot=Object.keys(L.slots).find(k=>L.slots[k]===p?.id);if(!slot||![10,20].includes(m))return;
+ const ids=positionSkillPool(slot).map(d=>d.id);for(let i=ids.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ids[i],ids[j]]=[ids[j],ids[i]];}
+ if(!L.positionSkills)L.positionSkills={};if(!L.positionSkills[slot])L.positionSkills[slot]={};L.positionSkills[slot][m]=ids.slice(0,3);renderAll();renderGrow();
+}
+function activeSkillPitcher(mode=currentMode){const L=ensureLineupState(mode);const slots=Object.keys(L.slots).filter(sl=>skillPitcher(players.find(p=>p.id===L.slots[sl])||{}));return slots.includes(L.skillPitcher)?L.skillPitcher:slots.includes('SP1')?'SP1':slots[0]||''}
+function setSkillPitcher(slot){lineup().skillPitcher=slot;renderAll();renderGrow()}
+function skillKeys(p,keys){return keys?.includes('all')?statMeta(p).map(x=>x[0]):keys||[]}
+function majorSkillEffects(p,slot,mode=currentMode){
+ const self={},auras=[],percent=[],notes=[],L=ensureLineupState(mode),order=Number(L.order[slot]||0);
+ const add=(keys,v)=>skillKeys(p,keys).forEach(k=>self[k]=(self[k]||0)+v);
+ playerSkills(p).forEach((x,i)=>{const d=MAJOR_SKILLS.find(d=>d.id===x.id);if(!d)return;const n=effectiveSkillLevel(p,i,slot,mode),j=n-1;
+  add(d.keys,d.values[j]);if(d.extraKeys)add(d.extraKeys,d.extraValues[j]);
+  for(const [k,arr] of Object.entries(d.negative||{}))add([k],arr[j]);
+  if(d.modes?.includes(mode)){add(d.modeKeys,d.modeValues[j]);notes.push(d.name+': '+MODES[mode]+' 추가 효과 적용');}
+  if(d.percent)percent.push({...d.percent,rate:d.percent.rates[j],name:d.name});
+  if(d.extra==='weather'){const role=/^SP/.test(slot)?'SP':/^RP/.test(slot)?'RP':slot==='CP'?'CP':p.pos;add([role==='SP'?'stamina':role==='RP'?'control':'velocity'],n+2);}
+  if(d.extra==='contact'&&[1,2].includes(order))add(['contact','eye','baserun'],[2,3,3,4,4,5,5,6,6,7][j]);
+  if(d.extra==='vanguard'&&[1,2].includes(order))add(['power','contact','baserun'],[1,1,2,2,3,3,4,4,5,5][j]);
+  if(d.extra==='defense'&&[1,2,6,7,8,9].includes(order))add(['contact','eye','patience'],[2,3,4,5,6,8,10,12,14,16][j]);
+  if(d.extra==='leadoff'&&[1,2].includes(order))add(['contact','patience'],[1,1,2,2,3,3,4,4,5,5][j]);
+  if(d.extra==='nuclear'&&[3,4,5].includes(order))add(['power','contact'],n);
+  if(d.extra==='switch'&&/양/.test(getGrowth(p).battingHand||p.bats||p.hand||''))add(['power','contact','eye','patience'],[2,3,3,4,4,5,5,6,6,7][j]);
+  if(d.extra==='left'&&/좌|양/.test(getGrowth(p).battingHand||p.bats||p.hand||''))add(['baserun'],[3,3,3,4,5,6,7,8,9,10][j]);
+  if(d.extra==='catcher'&&slot==='C')for(const [k,v] of Object.entries({velocity:n>=7?2:1,break:n>=2?(n>=8?2:1):0,control:n>=4?(n>=9?2:1):0,stuff:n>=6?(n>=10?2:1):0}))if(v)auras.push({kind:'pitchers',keys:[k],value:v,group:'catcher'});
+  if(d.extra==='support'&&slot&&slot===activeSkillPitcher(mode))auras.push({kind:'batters',keys:['power','baserun'],value:n,group:'support'});
+  if(!d.keys.length&&!d.extra)notes.push(d.name+': 경기 중 조건·상대 감소 효과 제외');
+ });
+ return {self,auras,percent,notes};
+}
+function skillEffects(p,slot,mode=currentMode){const a=nationalSkillEffects(p,slot,mode),b=majorSkillEffects(p,slot,mode);for(const [k,v] of Object.entries(b.self))a.self[k]=(a.self[k]||0)+v;return {self:a.self,auras:[...a.auras,...b.auras],percent:b.percent,notes:[...a.notes,...b.notes]}}
+function skillBonuses(p,slot,mode=currentMode){
+ const own=skillEffects(p,slot,mode),team={},L=ensureLineupState(mode),targetOrder=Number(L.order[slot]||0),maxAura={};
+ if(slot&&L.slots[slot]===p.id)for(const [sourceSlot,id] of Object.entries(L.slots)){
+  const source=players.find(x=>x.id===id);if(!source)continue;
+  for(const a of skillEffects(source,sourceSlot,mode).auras){
+   const sourceOrder=Number(L.order[sourceSlot]||0);
+   const match=a.kind==='batters'?!skillPitcher(p):a.kind==='pitchers'?skillPitcher(p):sourceOrder&&targetOrder&&targetOrder===(a.kind==='previous'?(sourceOrder===1?9:sourceOrder-1):(sourceOrder===9?1:sourceOrder+1));if(!match)continue;
+   for(const k of a.keys){if(['batters','pitchers'].includes(a.kind)){const key=(a.group||'national-ace')+':'+k;maxAura[key]=Math.max(maxAura[key]||0,a.value);}else team[k]=(team[k]||0)+a.value;}
+  }
+ }
+ for(const [key,v] of Object.entries(maxAura)){const k=key.split(':')[1];team[k]=(team[k]||0)+v;}
+ const total={};for(const [k] of statMeta(p))total[k]=(own.self[k]||0)+(team[k]||0);
+ if(own.percent.length){const baseline=effectiveStats(p,slot,mode,false).stats,flat={...total};for(const rule of own.percent){const source=rule.source.reduce((a,k)=>a+Number(baseline[k]||0)+Number(flat[k]||0),0),v=Math.round(source*rule.rate/100);for(const k of rule.target){total[k]=(total[k]||0)+v;own.self[k]=(own.self[k]||0)+v;}own.notes.push(`${rule.name}: ${source} × ${rule.rate}% → +${v} (반올림)`);}}
+ return {...own,team,total};
+}
+function setBattingHand(value){const p=players.find(p=>p.id===currentGrowId);if(p&&['','우','좌','양'].includes(value)){getGrowth(p).battingHand=value;renderAll();renderGrow();}}
+function changeSkill(i,key,value){const p=players.find(x=>x.id===currentGrowId);if(!p)return;const rows=playerSkills(p);if(key==='id')rows[i]={id:value,level:skillCap(p,i)};else rows[i].level=Number(value);playerSkills(p);renderAll();renderGrow()}
+function skillControls(p,slot){
+ const rows=playerSkills(p),catalog=allowedSkills(p),b=skillBonuses(p,slot),L=lineup();
+ const labels=Object.fromEntries([...BAT_META,...PIT_META]),format=m=>Object.entries(m).filter(([,v])=>v).map(([k,v])=>`${labels[k]} ${v>0?'+':''}${v}`).join(' · ')||'없음';
+ const tier=d=>d?.tier||'national',color=d=>SKILL_COLORS[tier(d)];
+ const controls=rows.map((x,i)=>{const d=skillDefinition(x.id),n=effectiveSkillLevel(p,i,slot);return `<div class="skill-row" style="border-left:4px solid ${d?color(d):'#aaa'}"><label>${i+1}번 스킬 <select aria-label="${i+1}번 스킬" style="color:${d?color(d):'inherit'}" onchange="changeSkill(${i},'id',this.value)"><option value="">선택 안 함</option>${['national','major'].map(t=>`<optgroup label="${t==='national'?'국가대표':'메이저'}">${catalog.filter(d=>tier(d)===t).map(d=>`<option style="color:${color(d)}" value="${d.id}" ${x.id===d.id?'selected':''} ${rows.some((r,j)=>j!==i&&r.id===d.id)?'disabled':''}>${d.name}</option>`).join('')}</optgroup>`).join('')}</select></label><label>기본 Lv <input aria-label="${i+1}번 기본 레벨" type="number" min="1" max="${skillCap(p,i)}" value="${x.level}" onchange="changeSkill(${i},'level',this.value)"></label><b style="color:${d?color(d):'inherit'}">최종 Lv ${n||'—'}${n>x.level?' (특훈 +'+(n-x.level)+')':''}</b></div>`}).join('');
+ const position=slot?`<h4>포지션 특훈 스킬</h4>${[10,20].map(m=>{const row=positionSkillRows(slot,m),enabled=Number(L.positionTraining[slot]??20)>=m;return `<div class="skill-stage"><b>${m}레벨 ${enabled?'적용 중':'미달성 · 효과 미적용'}</b> <button onclick="randomPositionSkills(${m})">3개 랜덤</button><div class="skill-picks">${row.map((id,i)=>`<select aria-label="특훈 ${m}레벨 ${i+1}번" onchange="setPositionSkill(${m},${i},this.value)"><option value="">직접 선택</option>${positionSkillPool(slot).map(d=>`<option value="${d.id}" ${id===d.id?'selected':''} ${row.some((v,j)=>j!==i&&v===d.id)?'disabled':''}>${d.name}</option>`).join('')}</select>`).join('')}</div></div>`}).join('')}<small>각 단계의 3개 스킬이 보유 스킬과 일치하면 +1. 두 단계에 일치하면 +2. 국가대표 스킬은 제외. 랜덤은 등록된 메이저 스킬 내 균등 선택입니다.</small>`:'라인업에 배치하면 포지션 특훈 스킬을 설정할 수 있어.';
+ const pitchSlots=Object.keys(L.slots).filter(sl=>skillPitcher(players.find(p=>p.id===L.slots[sl])||{}));
+ const support=Object.values(L.slots).some(id=>{const p=players.find(p=>p.id===id);return p&&playerSkills(p).some(x=>x.id==='m_support')})?`<p><label>타선지원 효과 기준 투수 <select onchange="setSkillPitcher(this.value)">${pitchSlots.map(sl=>`<option value="${sl}" ${activeSkillPitcher()===sl?'selected':''}>${sl} · ${esc(players.find(p=>p.id===L.slots[sl]).name)}</option>`).join('')}</select></label></p>`:'';
+ return `<section><h3>스킬</h3><p><span style="color:#c62828">● 국가대표</span> · <span style="color:#8e24aa">● 메이저</span></p><small>국가대표 스킬은 최대 6·5·5, 특훈 증가 없음. 기본 증가·타순·포지션·모드 효과를 계산합니다. 상대 감소 및 8회·주자 등 경기 중 조건은 제외합니다.</small>${controls}${!skillPitcher(p)?`<p><label>타격 방향 <select onchange="setBattingHand(this.value)">${[['','미지정'],['우','우타'],['좌','좌타'],['양','양타']].map(([v,t])=>`<option value="${v}" ${(getGrowth(p).battingHand||p.bats||p.hand||'')===v?'selected':''}>${t}</option>`).join('')}</select></label> <small>좌타·양타 조건 스킬 계산에 사용</small></p>`:''}${position}${support}<p>본인 스킬: ${format(b.self)}<br>동료 효과: ${format(b.team)}<br><b>스킬 합계: ${format(b.total)}</b></p><small>${b.notes.map(esc).join('<br>')}</small></section>`;
+}
+function effectiveStats(p,slot=null,mode=currentMode,includeSkills=true){
  const g=getGrowth(p),wildcardBase=nationalWildcardBasePenaltyMap(p,g),specialMap=specialBonusMap(p,g),train=trainingBonuses(p,g),enhancement=enhancementBonusMap(p,g),awakening=awakeningBonusMap(p,g),posBonus=positionTrainingBonuses(p,slot,mode),modeBonus=lineupModeBonus(p,mode),deckBonus=setdeckBonusMap(p,slot,mode),anti=antiSynergyStatus(mode);
+ const skills=includeSkills?skillBonuses(p,slot,mode):{total:{}};
  const out={};
  for(const [k] of statMeta(p)){
   const v=p.stats?.[k];
-  out[k]=Number.isFinite(Number(v))?Number(v)+Number(wildcardBase[k]||0)+Number(specialMap[k]||0)+Number(train[k]||0)+Number(enhancement[k]||0)+Number(awakening[k]||0)+Number(posBonus[k]||0)+modeBonus+Number(deckBonus[k]||0)+Number(anti.totalPenalty||0):null;
+  out[k]=Number.isFinite(Number(v))?Number(v)+Number(wildcardBase[k]||0)+Number(specialMap[k]||0)+Number(train[k]||0)+Number(enhancement[k]||0)+Number(awakening[k]||0)+Number(posBonus[k]||0)+modeBonus+Number(deckBonus[k]||0)+Number(anti.totalPenalty||0)+Number(skills.total[k]||0):null;
  }
- return {stats:out,wildcardBasePenalty:wildcardBase,specialBonus:specialMap,trainingBonus:train,enhancementBonus:enhancement,awakeningBonus:awakening,positionBonus:posBonus,modeBonus,setdeckBonus:deckBonus,antiSynergyPenalty:anti.totalPenalty,antiSynergy:anti};
+ return {stats:out,skillBonus:skills.total,skillEffects:skills,wildcardBasePenalty:wildcardBase,specialBonus:specialMap,trainingBonus:train,enhancementBonus:enhancement,awakeningBonus:awakening,positionBonus:posBonus,modeBonus,setdeckBonus:deckBonus,antiSynergyPenalty:anti.totalPenalty,antiSynergy:anti};
 }
 
 function ensureTrainingData(p,g=getGrowth(p)){
@@ -2829,6 +2947,7 @@ function fullGrowSlot(slot,event){
  if(event)event.stopPropagation();
  const id=lineup().slots[slot],p=players.find(x=>x.id===id);if(!p)return;
  const g=getGrowth(p);
+ playerSkills(p).forEach((x,i)=>x.level=skillCap(p,i));
  g.training=maxTraining(p);
  g.enhance=10;
  g.awakening=maxAwakening(p);
@@ -3366,6 +3485,7 @@ function renderGrow(){
  <section><h3>훈련</h3><div class="reference-controls">${level('training',g.training,maxTraining(p))}<span>훈련 총합: ${sum(es.trainingBonus)}/${3*g.training}</span><span>${g.trainingMode==='manual'?'수동 배분':'자동 배분'}</span></div><div class="reference-allocation">${detailRows(p,es.trainingBonus,'training')}</div></section>
  <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div>${false?`<label>증가 능력치 <select aria-label="특훈 증가 능력치" onchange="setSpecialStat(this.value)">${statMeta(p).map(([k,l])=>`<option value="${k}" ${g.specialStat===k?'selected':''}>${l}</option>`).join('')}</select></label>`:''}</section>
  <section><h3>포지션 특훈</h3><div class="reference-controls">${slot?level('position',lineup().positionTraining[slot]??20,20):'라인업에 배치하면 적용돼.'}<span>적용 총합: ${sum(es.positionBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.positionBonus||{},'position')}</div></section>
+ ${skillControls(p,slot)}
  <details class="reference-extra"><summary>강화·각성</summary>${quickEnhanceHTML(p,g)}${quickAwakeningHTML(p,g)}</details>
  
  <details class="reference-advanced"><summary>세부 배분·FA·추가 설정</summary>${advanced}</details></div>`;
@@ -3414,14 +3534,14 @@ function lineupPayload(mode){
   mode,modeName:MODES[mode],preferredTeam,customCards:players.filter(p=>p.custom&&Object.values(L.slots).includes(p.id)),detailPosition:L.detailPosition||{},
   setdeckScore:deck.total,setdeckEffectScore:deck.effectScore,setdeckUnknownPlayers:deck.unknown,
   setdeckChoices:L.setdeckChoices,setdeckParams:L.setdeckParams,selectedSetdeckEffects:effects,lineupRuleStatus:lineupRuleStatus(mode),antiSynergy:antiSynergyStatus(mode),positionTraining:L.positionTraining,positionTrainingChoices:L.positionTrainingChoices,
-  slots:L.slots,battingOrder:L.order,bullpenRoles:L.bullpenRoles||{},
+  slots:L.slots,battingOrder:L.order,bullpenRoles:L.bullpenRoles||{},positionSkills:L.positionSkills||{},skillPitcher:L.skillPitcher||"",
   players:Object.entries(L.slots).filter(([,id])=>id).map(([slot,id])=>{
    const p=players.find(x=>x.id===id),g=getGrowth(p),es=effectiveStats(p,slot,mode);
    return {
     slot,id:p.id,name:p.name,year:isYearlessImpact(p)?null:p.year,receivesAllYearEffects:isYearlessImpact(p),
     originalTeam:p.team,effectiveTeam:effectiveTeam(p,g),teamForEffects:teamForEffects(p,g),isFA:isFa(p,g),type:p.type,series:p.series,pos:p.pos,
     baseOvr:p.ovr,ovr:effectiveCardOvr(p,g,slot,mode),nationalVariant:nationalVariant(p,g),stars:cardStars(p,g),setdeckScore:effectiveSetdeckScore(p),
-    growth:g,effectiveStats:es.stats,wildcardBasePenalty:es.wildcardBasePenalty,specialBonus:es.specialBonus,trainingBonus:es.trainingBonus,enhancementBonus:es.enhancementBonus,awakeningBonus:es.awakeningBonus,
+    growth:g,effectiveStats:es.stats,skillBonus:es.skillBonus,skillEffects:es.skillEffects,wildcardBasePenalty:es.wildcardBasePenalty,specialBonus:es.specialBonus,trainingBonus:es.trainingBonus,enhancementBonus:es.enhancementBonus,awakeningBonus:es.awakeningBonus,
     positionTrainingBonus:es.positionBonus,lineupModeBonus:es.modeBonus,setdeckBonus:es.setdeckBonus,antiSynergyPenalty:es.antiSynergyPenalty,trainingMode:g.trainingMode,trainingAlloc:g.trainingAlloc
    };
   })
@@ -3479,9 +3599,10 @@ function importLineupData(raw){
    nextGrowth[id]=g;next.slots[slot]=id;
  }
  if(limited>2)throw Error('FA 임팩트·FA 시그니처·국가대표 와일드카드 합계가 2장을 초과해.');
- for(const key of ['setdeckChoices','setdeckParams','positionTraining','positionTrainingChoices','bullpenRoles','detailPosition']){
+ for(const key of ['setdeckChoices','setdeckParams','positionTraining','positionTrainingChoices','bullpenRoles','detailPosition','positionSkills']){
    if(payload[key]!=null){if(!obj(payload[key]))throw Error('설정 데이터 형식이 올바르지 않아.');next[key]=clean(payload[key]);}
  }
+ if(typeof payload.skillPitcher==='string'&&ALL_SLOTS.includes(payload.skillPitcher))next.skillPitcher=payload.skillPitcher;
  const order=payload.battingOrder||payload.order||{};
  for(const [slot,n] of Object.entries(order))if(FIELD.includes(slot)&&Number.isInteger(Number(n))&&Number(n)>=1&&Number(n)<=9)next.order[slot]=Number(n);
  const team=payload.preferredTeam||data.preferredTeam;

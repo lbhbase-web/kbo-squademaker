@@ -1,0 +1,2120 @@
+[
+  {
+    "id": "m_touch",
+    "name": "짜릿한 손맛",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact"
+    ],
+    "values": [
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5,
+      6
+    ]
+  },
+  {
+    "id": "m_speed",
+    "name": "구속 제어",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "break",
+      "stuff",
+      "control"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      9,
+      11,
+      13,
+      15
+    ],
+    "negative": {
+      "velocity": [
+        -2,
+        -3,
+        -4,
+        -5,
+        -7,
+        -8,
+        -9,
+        -10,
+        -11,
+        -12
+      ]
+    }
+  },
+  {
+    "id": "m_winning",
+    "name": "필승카드",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  {
+    "id": "m_precision",
+    "name": "정밀타격",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_veteran_P",
+    "name": "백전노장",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "break",
+      "control"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_veteran_B",
+    "name": "백전노장",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "contact",
+      "patience"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_decisive",
+    "name": "결정적 한방",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact",
+      "patience"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "m_thief",
+    "name": "대도",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "contact",
+      "eye",
+      "patience",
+      "baserun"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_focus_P",
+    "name": "집중력",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "break",
+      "control"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  {
+    "id": "m_focus_B",
+    "name": "집중력",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "contact",
+      "patience"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  {
+    "id": "m_winshot",
+    "name": "위닝샷",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  {
+    "id": "m_hero_P",
+    "name": "난세의 영웅",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "velocity",
+      "break",
+      "control"
+    ],
+    "values": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "m_hero_B",
+    "name": "난세의 영웅",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact",
+      "eye",
+      "patience"
+    ],
+    "values": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4
+    ]
+  },
+  {
+    "id": "m_catcher",
+    "name": "포수 리드",
+    "role": "C",
+    "tier": "major",
+    "keys": [
+      "contact",
+      "patience"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "extra": "catcher"
+  },
+  {
+    "id": "m_contact",
+    "name": "컨택트 히터",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "extra": "contact"
+  },
+  {
+    "id": "m_best_P",
+    "name": "베스트 포지션",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "break",
+      "velocity",
+      "control"
+    ],
+    "values": [
+      1,
+      2,
+      2,
+      3,
+      4,
+      5,
+      7,
+      9,
+      11,
+      13
+    ],
+    "extraKeys": [
+      "stamina",
+      "fielding"
+    ],
+    "extraValues": [
+      3,
+      3,
+      4,
+      4,
+      5,
+      5,
+      6,
+      6,
+      7,
+      7
+    ]
+  },
+  {
+    "id": "m_best_B",
+    "name": "베스트 포지션",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact",
+      "eye",
+      "patience"
+    ],
+    "values": [
+      1,
+      2,
+      2,
+      3,
+      4,
+      5,
+      7,
+      9,
+      11,
+      13
+    ],
+    "extraKeys": [
+      "baserun",
+      "fielding"
+    ],
+    "extraValues": [
+      3,
+      3,
+      4,
+      4,
+      5,
+      5,
+      6,
+      6,
+      7,
+      7
+    ]
+  },
+  {
+    "id": "m_weather",
+    "name": "전천후",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "break",
+      "stuff"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "extra": "weather"
+  },
+  {
+    "id": "m_five",
+    "name": "5툴 플레이어",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "baserun",
+      "fielding"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      9,
+      11,
+      13,
+      15
+    ],
+    "percent": {
+      "source": [
+        "baserun",
+        "fielding"
+      ],
+      "target": [
+        "power",
+        "contact"
+      ],
+      "rates": [
+        1,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "id": "m_shout_P",
+    "name": "승리의 함성",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "break",
+      "control"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_shout_B",
+    "name": "승리의 함성",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "contact",
+      "patience"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_onetwo",
+    "name": "원투펀치",
+    "role": "SP",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "control"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16
+    ]
+  },
+  {
+    "id": "m_workhorse",
+    "name": "마당쇠",
+    "role": "R",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "break"
+    ],
+    "values": [
+      2,
+      2,
+      3,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "id": "m_journey_P",
+    "name": "저니맨",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "break",
+      "stamina"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_journey_B",
+    "name": "저니맨",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact",
+      "patience"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_autumn_P",
+    "name": "가을 사나이",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "break",
+      "velocity"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "modeKeys": [
+      "stuff",
+      "control"
+    ],
+    "modeValues": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "modes": [
+      "ranking",
+      "realtime"
+    ]
+  },
+  {
+    "id": "m_autumn_B",
+    "name": "가을 사나이",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "contact",
+      "baserun"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "modeKeys": [
+      "power",
+      "eye"
+    ],
+    "modeValues": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "modes": [
+      "ranking",
+      "realtime"
+    ]
+  },
+  {
+    "id": "m_defense",
+    "name": "수비 안정성",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "fielding",
+      "baserun"
+    ],
+    "values": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17
+    ],
+    "extra": "defense"
+  },
+  {
+    "id": "m_firefighter",
+    "name": "소방수",
+    "role": "CP",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_switch",
+    "name": "스위치 히터",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5
+    ],
+    "extra": "switch"
+  },
+  {
+    "id": "m_left",
+    "name": "좌타해결사",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact"
+    ],
+    "values": [
+      3,
+      3,
+      4,
+      4,
+      5,
+      5,
+      6,
+      6,
+      7,
+      7
+    ],
+    "extra": "left"
+  },
+  {
+    "id": "m_vanguard",
+    "name": "선봉장",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "extra": "vanguard"
+  },
+  {
+    "id": "m_nonfa_P",
+    "name": "비FA계약",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "break",
+      "stuff"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "modeKeys": [
+      "all"
+    ],
+    "modeValues": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "modes": [
+      "league",
+      "club"
+    ]
+  },
+  {
+    "id": "m_nonfa_B",
+    "name": "비FA계약",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "modeKeys": [
+      "all"
+    ],
+    "modeValues": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "modes": [
+      "league",
+      "club"
+    ]
+  },
+  {
+    "id": "m_hidden",
+    "name": "히든 카드",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact",
+      "baserun"
+    ],
+    "values": [
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "m_tenacity",
+    "name": "집념",
+    "role": "SP",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  {
+    "id": "m_calm",
+    "name": "부동심",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "velocity",
+      "break",
+      "control"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  {
+    "id": "m_leftdeath",
+    "name": "좌승사자",
+    "role": "SP",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  {
+    "id": "m_big_P",
+    "name": "빅게임 헌터",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "control"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "modeKeys": [
+      "all"
+    ],
+    "modeValues": [
+      3,
+      3,
+      4,
+      4,
+      5,
+      5,
+      6,
+      6,
+      7,
+      7
+    ],
+    "modes": [
+      "ranking",
+      "club"
+    ]
+  },
+  {
+    "id": "m_big_B",
+    "name": "빅게임 헌터",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "eye"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "modeKeys": [
+      "all"
+    ],
+    "modeValues": [
+      3,
+      3,
+      4,
+      4,
+      5,
+      5,
+      6,
+      6,
+      7,
+      7
+    ],
+    "modes": [
+      "ranking",
+      "club"
+    ]
+  },
+  {
+    "id": "m_fireball",
+    "name": "파이어볼",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_represent",
+    "name": "대표 타자",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  {
+    "id": "m_top_B",
+    "name": "리그 탑플레이어",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  {
+    "id": "m_top_P",
+    "name": "리그 탑플레이어",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  {
+    "id": "m_over_B",
+    "name": "오버페이스",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5
+    ]
+  },
+  {
+    "id": "m_over_P",
+    "name": "오버페이스",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5
+    ]
+  },
+  {
+    "id": "m_work_B",
+    "name": "워크에식",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5
+    ]
+  },
+  {
+    "id": "m_work_P",
+    "name": "워크에식",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5
+    ]
+  },
+  {
+    "id": "m_emergency",
+    "name": "긴급투입",
+    "role": "P",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_early_P",
+    "name": "얼리 스타트",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "velocity",
+      "stuff"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_early_B",
+    "name": "얼리 스타트",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "eye"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_rank_P",
+    "name": "순위경쟁",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "control",
+      "break"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "modeKeys": [
+      "stuff",
+      "break",
+      "fielding"
+    ],
+    "modeValues": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "modes": [
+      "ranking",
+      "realtime"
+    ]
+  },
+  {
+    "id": "m_rank_B",
+    "name": "순위경쟁",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact",
+      "patience"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "modeKeys": [
+      "power",
+      "patience",
+      "fielding"
+    ],
+    "modeValues": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "modes": [
+      "ranking",
+      "realtime"
+    ]
+  },
+  {
+    "id": "m_challenge_B",
+    "name": "도전정신",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_challenge_P",
+    "name": "도전정신",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_rising",
+    "name": "라이징 스타",
+    "role": "SR",
+    "tier": "major",
+    "keys": [
+      "break",
+      "velocity"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  {
+    "id": "m_bottom",
+    "name": "공포의 하위타선",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "contact",
+      "baserun"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  {
+    "id": "m_gambler_P",
+    "name": "승부사",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "velocity"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_gambler_B",
+    "name": "승부사",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "patience"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_league_P",
+    "name": "리그의 강자",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "stamina",
+      "fielding"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "modeKeys": [
+      "velocity",
+      "stuff",
+      "control",
+      "stamina"
+    ],
+    "modeValues": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18
+    ],
+    "modes": [
+      "league"
+    ]
+  },
+  {
+    "id": "m_league_B",
+    "name": "리그의 강자",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "baserun",
+      "fielding"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "modeKeys": [
+      "power",
+      "eye",
+      "patience",
+      "baserun"
+    ],
+    "modeValues": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18
+    ],
+    "modes": [
+      "league"
+    ]
+  },
+  {
+    "id": "m_onepoint",
+    "name": "원포인트 릴리프",
+    "role": "R",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_pinch",
+    "name": "대타 스페셜",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_first",
+    "name": "첫단추",
+    "role": "SP",
+    "tier": "major",
+    "keys": [
+      "velocity",
+      "stuff"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_leadoff",
+    "name": "리드오프",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "eye",
+      "baserun"
+    ],
+    "values": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "extra": "leadoff"
+  },
+  {
+    "id": "m_iron",
+    "name": "철완",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "velocity"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "extraKeys": [
+      "break",
+      "stuff",
+      "control"
+    ],
+    "extraValues": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "percent": {
+      "source": [
+        "stamina"
+      ],
+      "target": [
+        "break",
+        "stuff",
+        "control"
+      ],
+      "rates": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6
+      ]
+    }
+  },
+  {
+    "id": "m_home_P",
+    "name": "홈 어드밴티지",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "stuff",
+      "break",
+      "stamina"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_home_B",
+    "name": "홈 어드밴티지",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact",
+      "patience"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_guardian",
+    "name": "수호신",
+    "role": "P",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_spirit_B",
+    "name": "패기",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_spirit_P",
+    "name": "패기",
+    "role": "P",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_artist",
+    "name": "아티스트",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "control",
+      "break"
+    ],
+    "values": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  {
+    "id": "m_cut",
+    "name": "흐름 끊기",
+    "role": "P",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_clutchp",
+    "name": "클러치피처",
+    "role": "P",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_support",
+    "name": "타선지원",
+    "role": "P",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "extra": "support"
+  },
+  {
+    "id": "m_untouch",
+    "name": "언터처블",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "velocity",
+      "break"
+    ],
+    "values": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  {
+    "id": "m_ace",
+    "name": "에이스",
+    "role": "P",
+    "tier": "major",
+    "keys": [
+      "all"
+    ],
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  {
+    "id": "m_fast",
+    "name": "빠른발",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "baserun"
+    ],
+    "values": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  {
+    "id": "m_nuclear",
+    "name": "핵타선",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "extra": "nuclear"
+  },
+  {
+    "id": "m_aim",
+    "name": "노림수",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "contact",
+      "patience"
+    ],
+    "values": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  {
+    "id": "m_clutchb",
+    "name": "클러치히터",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_high",
+    "name": "하이볼히터",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_upper",
+    "name": "어퍼스윙",
+    "role": "B",
+    "tier": "major",
+    "keys": [],
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": "m_machine",
+    "name": "배팅머신",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "contact",
+      "eye"
+    ],
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  }
+]
