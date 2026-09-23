@@ -1200,6 +1200,7 @@ body{background:#fff!important;color:#17191c!important}
     <button onclick="openExport()">스쿼드 내보내기</button>
     <button onclick="saveAll();toast('현재 설정을 저장했어.')">전체 저장</button>
     <button onclick="toggleRefPanel('advancedSetdeckPanel')">세트덱·특훈</button>
+    <button onclick="toggleRefPanel('refBullpenPanel')">투수 전술 설정</button>
     <button onclick="toggleRefPanel('refPatchPanel')">패치 노트</button>
    </div>
 
@@ -1234,6 +1235,14 @@ body{background:#fff!important;color:#17191c!important}
        <div class="notice">모든 포지션 기본값은 20/20이야. 20레벨 최종 수치는 위 값 그대로 반영돼. 중간 레벨의 기본 36은 20레벨에 비례해 분배하고, 보너스 능력치는 정확히 2번만 획득해: 5레벨은 타자 파워 +3·투수 변화 +3, 15레벨은 타자 정확 +3·투수 구위 +3. 획득한 보너스는 이후 레벨에서도 유지돼. 10레벨과 20레벨 스킬 효과는 아직 계산에 넣지 않았어.</div>
       </div>
      </div>
+    </div>
+   </section>
+
+   <section id="refBullpenPanel" class="panel ref-collapsible">
+    <div class="ph"><strong>투수 전술 설정</strong><button class="mini" onclick="toggleRefPanel('refBullpenPanel')">닫기</button></div>
+    <div class="pb">
+     <p style="margin-top:0">아래에서 중간계투 역할(승리조 / 추격조 / 롱릴리프)과 교체 전술을 게임처럼 따로 설정할 수 있어.</p>
+     <div id="bullpenControls" class="bullpen-controls"></div>
     </div>
    </section>
 
@@ -3118,19 +3127,37 @@ function toggleRefPanel(id){
  if(el.classList.contains("open"))setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),20);
 }
 function fillReferenceDummy(){
- const L=lineup(),used=new Set();
- L.slots={};L.order={};
+ const L=lineup();
+ const used=new Set(
+  Object.values(L.slots||{})
+   .map(id=>players.find(p=>p.id===id))
+   .filter(Boolean)
+   .map(p=>String(p.name||"").trim())
+   .filter(Boolean)
+ );
+ let added=0;
  const choose=slot=>{
+  if(L.slots?.[slot])return;
   const list=players.filter(p=>slotAcceptsPlayer(slot,p)&&!used.has(String(p.name).trim()));
   list.sort((a,b)=>{
    const ta=a.team===preferredTeam?1:0,tb=b.team===preferredTeam?1:0;
    if(tb!==ta)return tb-ta;
    return searchStatScore(b)-searchStatScore(a)||(Number(b.ovr)||0)-(Number(a.ovr)||0);
   });
-  const p=list[0];if(p){L.slots[slot]=p.id;used.add(String(p.name).trim())}
+  const p=list[0];
+  if(p){
+   L.slots[slot]=p.id;
+   used.add(String(p.name).trim());
+   added++;
+  }
  };
- FIELD.forEach(choose);BENCH.forEach(choose);PITCH.forEach(choose);
- autoOrder();saveAll();renderAll();toast("더미 라인업을 채웠어.");
+ FIELD.forEach(choose);
+ BENCH.forEach(choose);
+ PITCH.forEach(choose);
+ autoOrder();
+ saveAll();
+ renderAll();
+ toast(added?`빈 자리 ${added}칸에만 더미 데이터를 채웠어.`:"채울 빈 자리가 없어.");
 }
 
 function lineupCompactCardHTML(p,slot,label){
@@ -3345,8 +3372,8 @@ function bullpenTacticDescription(group){
  return "기본 교체 전술을 사용합니다. 추가 능력치 효과는 없습니다.";
 }
 function renderBullpenRoles(){
- let controls=$("bullpenControls");
- if(!controls){controls=document.createElement("div");controls.id="bullpenControls";controls.className="bullpen-controls";$("pitchers").before(controls)}
+ const controls=$("bullpenControls");
+ if(!controls)return;
  const counts=bullpenRoleCounts(),s=bullpenStrategies();
  const slots=Array.from({length:6},(_,i)=>{const slot=`RP${i+1}`;return `<label>${slot}<select aria-label="${slot} 불펜 역할" onchange="setBullpenRole('${slot}',this.value)">${["승리조","추격조","롱릴리프"].map(r=>`<option ${bullpenRole(slot)===r?"selected":""}>${r}</option>`).join("")}</select></label>`}).join("");
  const winBtns=[["split","분업"],["aggressive","적극적"],["basic","기본"]].map(([v,t])=>`<button class="${s.win===v?'active':''}" onclick="setBullpenStrategy('win','${v}')">${t}</button>`).join("");
