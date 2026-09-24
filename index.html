@@ -212,12 +212,12 @@ select,input{background:#0a1421;border:1px solid var(--line);color:var(--text);b
 .picker-card .ovrbox b{font-size:20px}
 .picker-card .choose{align-self:center}
 .card-kind{display:inline-block;border-radius:999px;padding:2px 6px;font-size:8px;font-weight:900;margin:2px 3px 0 0}
-.kind-gold{background:#5a4714;color:#ffe79c}
-.kind-national{background:#233a65;color:#bfe0ff}
-.kind-signature{background:#4a1c50;color:#f1c9ff}
+.kind-gold{background:#b98708;color:#fff3a0}
+.kind-national{background:linear-gradient(135deg,#e33b4a 0 42%,#2577d8 43% 100%);color:#fff}
+.kind-signature{background:#c83b93;color:#ffe3f5}
 .kind-live{background:#164c2c;color:#baf4cb}
 .kind-allstar{background:#5a2d18;color:#ffd0a8}
-.kind-impact{background:#3c1c42;color:#efcaff}
+.kind-impact{background:#879f0f;color:#fff6a6}
 .picker-empty{grid-column:1/-1;text-align:center;padding:28px;color:var(--muted)}
 .slot-hint{font-size:8px;color:#79c6ff;margin-top:5px}
 @media(max-width:760px){
@@ -417,10 +417,10 @@ body.view-mobile small{word-break:keep-all}
 
 /* ===== PLAYER CARD VISUALS ===== */
 .picker-card,.slot.filled,.mslot{position:relative;overflow:hidden}
-.card-bg-impact{background:linear-gradient(145deg,#d9f4df,#aee6bb 58%,#c8efd1)!important;border-color:#72c88a!important;color:#17351f!important}
-.card-bg-signature{background:linear-gradient(145deg,#f8d9e8,#efb7d2 58%,#f5cddd)!important;border-color:#dc88b4!important;color:#4a1e35!important}
-.card-bg-national{background:linear-gradient(145deg,#dbeeff,#afd5f7 58%,#c7e3fb)!important;border-color:#79b4e8!important;color:#163656!important}
-.card-bg-gold{background:linear-gradient(145deg,#fff0a8,#f4cf55 58%,#ffe48a)!important;border-color:#d8ad22!important;color:#4a3908!important}
+.card-bg-impact{background:linear-gradient(145deg,#b8c51b 0%,#87aa0c 55%,#5f8608 100%)!important;border-color:#667f08!important;color:#fff!important}
+.card-bg-signature{background:linear-gradient(145deg,#ff8ad3 0%,#ef4eae 55%,#d72f8e 100%)!important;border-color:#b91d76!important;color:#fff!important}
+.card-bg-national{background:linear-gradient(150deg,#ef4857 0%,#e53b4d 32%,#2e83df 33%,#1f67c9 100%)!important;border-color:#1d5fae!important;color:#fff!important}
+.card-bg-gold{background:linear-gradient(145deg,#ffe56b 0%,#d9ab16 55%,#f4c934 100%)!important;border-color:#ad8107!important;color:#2f2400!important}
 .card-bg-allstar{background:linear-gradient(145deg,#5a2d18,#8a4725 58%,#3a1e11)!important;border-color:#da8b4d!important}
 .card-bg-live-5{background:linear-gradient(145deg,#0d4f8c,#2378c5 58%,#083661)!important;border-color:#6bbcff!important}
 .card-bg-live-4{background:linear-gradient(145deg,#6b5720,#9a7f2d 58%,#4d3e17)!important;border-color:#c8aa58!important}
@@ -495,10 +495,13 @@ body.view-mobile small{word-break:keep-all}
  content:"";position:absolute;inset:0;z-index:-1;
  background:linear-gradient(135deg,rgba(255,255,255,.14),transparent 32%,rgba(0,0,0,.16) 70%,rgba(255,255,255,.08));
 }
-.game-player-card.card-bg-impact{background:linear-gradient(150deg,#d8f3df,#9eddb0 47%,#c6edcf)!important;border-color:#69bd80!important}
-.game-player-card.card-bg-signature{background:linear-gradient(150deg,#f8d8e7,#ecabc9 48%,#f3c6da)!important;border-color:#d97fad!important}
-.game-player-card.card-bg-national{background:linear-gradient(150deg,#d9edff,#9bc9f1 48%,#c2dff8)!important;border-color:#6eace0!important}
-.game-player-card.card-bg-gold{background:linear-gradient(150deg,#fff1a7,#f0c63f 50%,#ffe17a)!important;border-color:#d3a817!important}
+.game-player-card.card-bg-impact{background:linear-gradient(150deg,#b8c51b 0%,#87aa0c 48%,#5f8608 100%)!important;border-color:#667f08!important}
+.game-player-card.card-bg-impact::before{background:linear-gradient(135deg,rgba(255,238,80,.28),transparent 30%,rgba(26,55,0,.26) 72%,rgba(185,221,24,.18))!important}
+.lineup-card-shell.card-bg-impact::before{background:linear-gradient(135deg,rgba(255,238,80,.18),transparent 42%,rgba(28,58,0,.20))!important}
+
+.game-player-card.card-bg-signature{background:linear-gradient(150deg,#ff8bd4 0%,#ef4cae 48%,#d72f8f 100%)!important;border-color:#b91d76!important}
+.game-player-card.card-bg-national{background:linear-gradient(150deg,#ef4a57 0%,#e23a4b 34%,#2e84e0 35%,#1f68c9 100%)!important;border-color:#1d5fae!important}
+.game-player-card.card-bg-gold{background:linear-gradient(150deg,#ffe66c 0%,#d7a915 50%,#f3c934 100%)!important;border-color:#ad8107!important}
 .game-player-card.card-bg-allstar{background:linear-gradient(150deg,#9a3f1f,#db6834 48%,#6f2e19)!important}
 .game-player-card.card-bg-live-5{background:linear-gradient(150deg,#0d4f8c,#2378c5 48%,#083661)!important;border-color:#6bbcff!important}
 .game-player-card.card-bg-live-4{background:linear-gradient(150deg,#6b5720,#9a7f2d 48%,#4d3e17)!important;border-color:#c8aa58!important}
@@ -620,10 +623,10 @@ body.view-mobile small{word-break:keep-all}
  position:relative;border-radius:10px;overflow:hidden;min-height:105px;
  border:1px solid rgba(255,255,255,.2);cursor:pointer;
 }
-.lineup-card-shell.card-bg-impact{background:linear-gradient(145deg,#d8f3df,#9eddb0)!important;border-color:#69bd80!important}
-.lineup-card-shell.card-bg-signature{background:linear-gradient(145deg,#f8d8e7,#ecabc9)!important;border-color:#d97fad!important}
-.lineup-card-shell.card-bg-national{background:linear-gradient(145deg,#d9edff,#9bc9f1)!important;border-color:#6eace0!important}
-.lineup-card-shell.card-bg-gold{background:linear-gradient(145deg,#fff1a7,#f0c63f)!important;border-color:#d3a817!important}
+.lineup-card-shell.card-bg-impact{background:linear-gradient(145deg,#b8c51b 0%,#87aa0c 58%,#5f8608 100%)!important;border-color:#667f08!important}
+.lineup-card-shell.card-bg-signature{background:linear-gradient(145deg,#ff8bd4,#e941a5 58%,#ce2b86)!important;border-color:#b91d76!important}
+.lineup-card-shell.card-bg-national{background:linear-gradient(150deg,#ef4a57 0%,#e23a4b 34%,#2e84e0 35%,#1f68c9 100%)!important;border-color:#1d5fae!important}
+.lineup-card-shell.card-bg-gold{background:linear-gradient(145deg,#ffe66c,#d7a915 58%,#f3c934)!important;border-color:#ad8107!important}
 .lineup-card-shell.card-bg-allstar{background:linear-gradient(145deg,#81371f,#b7502b)!important}
 .lineup-card-shell.card-bg-live-5{background:linear-gradient(145deg,#0d4f8c,#2378c5)!important;border-color:#6bbcff!important}
 .lineup-card-shell.card-bg-live-4{background:linear-gradient(145deg,#6b5720,#9a7f2d)!important;border-color:#c8aa58!important}
@@ -729,7 +732,7 @@ select,input{background:#fff!important;border:1px solid var(--line)!important;co
 .kind-live{background:#dff7e7!important;color:#187341!important}
 .kind-season{background:#ececec!important;color:#272b31!important;border:1px solid #c9ccd1!important}
 .kind-allstar{background:#ffe4cb!important;color:#8d4b19!important}
-.kind-impact{background:#ecd8ff!important;color:#5f3891!important}
+.kind-impact{background:#a9bb18!important;color:#263000!important;border:1px solid #788d09!important}
 .lineup-tabs,.stats,.mini-grid,.grow-grid,.team-grid,.detail-stats,.picker-list{color:var(--text)!important}
 .top{background:transparent!important}
 .brand .logo{box-shadow:0 4px 14px rgba(92,108,255,.2)}
@@ -1161,7 +1164,7 @@ body{background:#fff!important;color:#17191c!important}
 #customDialog{width:min(850px,94vw);max-height:90dvh;box-sizing:border-box;overflow:auto;border:1px solid #d8deea;border-radius:16px;padding:22px;color:#182333;background:white;font-size:14px}
 #customDialog::backdrop{background:#0009}#customDialog header{display:flex;justify-content:space-between;align-items:center;font-size:20px}#customDialog p{line-height:1.6;color:#536174;font-size:14px}
 .custom-columns{display:grid;grid-template-columns:2fr 1fr;gap:24px}.custom-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.custom-fields label{display:flex;flex-direction:column;gap:5px;color:#26364b}.custom-wide{grid-column:1/-1}#customDialog input,#customDialog select{width:100%;min-width:0;box-sizing:border-box;padding:10px;color:#162235;background:#f8faff;border:1px solid #c5cfde;border-radius:8px;font-size:16px}#customDialog button,.custom-actions>label{cursor:pointer;padding:10px 14px;color:#26364b;background:#f0f3fa;border:1px solid #c5cfde;border-radius:8px;font-size:14px}#customSave{width:100%;background:#7950e8!important;color:white!important;margin-top:12px}#customPreview{white-space:pre-line;line-height:2.1;text-align:center;border-radius:16px;background:linear-gradient(145deg,#26395f,#593a92);color:white;padding:24px 10px;font-size:20px;overflow-wrap:anywhere}
-#customPreview.preview-impact{background:linear-gradient(145deg,#d9f4df,#aee6bb 58%,#c8efd1);color:#17351f;border:1px solid #72c88a}
+#customPreview.preview-impact{background:linear-gradient(145deg,#b8c51b 0%,#87aa0c 55%,#5f8608 100%);color:#fff;border:1px solid #667f08;text-shadow:0 1px 2px #263000}
 #customPreview.preview-signature{background:linear-gradient(145deg,#f8d9e8,#efb7d2 58%,#f5cddd);color:#4a1e35;border:1px solid #dc88b4}
 #customPreview.preview-national{background:linear-gradient(145deg,#dbeeff,#afd5f7 58%,#c7e3fb);color:#163656;border:1px solid #79b4e8}
 #customPreview.preview-gold{background:linear-gradient(145deg,#fff0a8,#f4cf55 58%,#ffe48a);color:#4a3908;border:1px solid #d8ad22}
@@ -3035,7 +3038,7 @@ function renderPlayers(){
     <div class="pname">${esc(p.name)} ${displayYear(p)?`<span style="color:#7890ab;font-weight:600">${displayYear(p)}</span>`:`<span class="tag yearless">연도 없음</span>`}</div>
     <div class="meta">${esc(eff)}${fa?` (FA · 원소속 ${esc(p.team)})`:""} · ${esc(p.pos)} · ${esc(playerHandLabel(p))} · ${esc(p.type)}${p.type==="임팩트"?` · ${esc(p.series)}`:""}</div>
     <div class="tags">
-     <span class="tag">세트덱 ${effectiveSetdeckScore(p)??"—"}</span>${p.type==="임팩트"?`<span class="tag" style="background:#3b1d4f;color:#f2c9ff">${esc(p.series)}</span>`:""}
+     <span class="tag">세트덱 ${effectiveSetdeckScore(p)??"—"}</span>${p.type==="임팩트"?`<span class="tag" style="background:#819f0c;color:#fff6a6">${esc(p.series)}</span>`:""}
      <span class="tag db-source">사이트 DB</span>
      <span class="tag">훈련 ${g.training}/${maxTraining(p)}</span>
      <span class="tag">+${g.enhance}강</span>
