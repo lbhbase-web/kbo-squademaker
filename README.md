@@ -46,3 +46,11 @@ ZIP을 풀고 이 폴더의 파일들을 저장소 루트에 그대로 업로드
 - 상단 버튼 줄에 `투수 전술 설정` 버튼을 추가했습니다. 버튼을 누르면 타순 설정/패치 노트처럼 접히는 패널이 열리고, 여기서 승리조·추격조·롱릴리프와 교체 전술을 설정할 수 있습니다.
 
 - 더미 데이터 채우기는 기존에 배치한 선수를 초기화하지 않고, 비어 있는 자리만 자동으로 채우도록 수정했습니다.
+
+
+## 포털 검색 노출(SEO) 준비
+- `index.html`에 검색용 title/description/robots/canonical/Open Graph/구조화 데이터 메타 태그 추가
+- `robots.txt` 추가
+- `sitemap.xml` 추가
+- `SEO-SETUP.txt`에 Google·네이버·Daum 등록 순서 정리
+- `sitemap.xml`의 `https://lbhbase-web.github.io/kbo-squademaker/`만 실제 GitHub Pages 주소로 바꿔서 사용하세요.
