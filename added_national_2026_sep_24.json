@@ -21,7 +21,8 @@
     },
     "launchAngle": 10,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "우"
   },
   {
     "id": "user-video-20260923-national-sep-02",
@@ -45,7 +46,8 @@
     },
     "launchAngle": 7,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "우"
   },
   {
     "id": "user-video-20260923-national-sep-03",
@@ -69,7 +71,8 @@
     },
     "launchAngle": 8,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260923-national-sep-04",
@@ -93,7 +96,8 @@
     },
     "launchAngle": 6,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260923-national-sep-05",
@@ -117,7 +121,8 @@
     },
     "launchAngle": 11,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "우"
   },
   {
     "id": "user-video-20260923-national-sep-06",
@@ -141,7 +146,8 @@
     },
     "launchAngle": 12,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "양"
   },
   {
     "id": "user-video-20260923-national-sep-07",
@@ -165,7 +171,8 @@
     },
     "launchAngle": 10,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "우"
   },
   {
     "id": "user-video-20260923-national-sep-08",
@@ -189,7 +196,8 @@
     },
     "launchAngle": 14,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "우"
   },
   {
     "id": "user-video-20260923-national-sep-09",
@@ -213,7 +221,8 @@
     },
     "launchAngle": 7,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "우"
   },
   {
     "id": "user-video-20260923-national-sep-10",
@@ -237,7 +246,8 @@
     },
     "launchAngle": 8,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260923-national-sep-11",
@@ -261,7 +271,8 @@
     },
     "launchAngle": 7,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260923-national-sep-12",
@@ -285,7 +296,8 @@
     },
     "launchAngle": 4,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260923-national-sep-13",
@@ -309,7 +321,8 @@
     },
     "launchAngle": 11,
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "bats": "우"
   },
   {
     "id": "user-video-20260923-national-sep-14",
@@ -332,7 +345,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "우"
   },
   {
     "id": "user-video-20260923-national-sep-15",
@@ -355,7 +369,8 @@
       "fielding": 76
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "우"
   },
   {
     "id": "user-video-20260923-national-sep-16",
@@ -378,7 +393,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260923-national-sep-17",
@@ -401,7 +417,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "우"
   },
   {
     "id": "user-video-20260923-national-sep-18",
@@ -424,7 +441,8 @@
       "fielding": 76
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260923-national-sep-19",
@@ -447,7 +465,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "우"
   },
   {
     "id": "user-video-20260923-national-sep-20",
@@ -470,7 +489,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "우"
   },
   {
     "id": "user-video-20260923-national-sep-21",
@@ -493,7 +513,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "우"
   },
   {
     "id": "user-video-20260923-national-sep-22",
@@ -516,7 +537,8 @@
       "fielding": 74
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "우"
   },
   {
     "id": "user-video-20260923-national-sep-23",
@@ -539,7 +561,8 @@
       "fielding": 73
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260923-national-sep-24",
@@ -562,6 +585,7 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)"
+    "dataSource": "사용자 제공 1000001158.mp4 · 국가대표 (2026년 9월)",
+    "throws": "우"
   }
 ]

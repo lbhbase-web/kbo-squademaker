@@ -20,7 +20,8 @@
       "fielding": 88
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 1.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 1.50초; 별 개수 확인",
+    "bats": "양"
   },
   {
     "id": "user-video-20260920-live-v1-002",
@@ -43,7 +44,8 @@
       "fielding": 74
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 2.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 2.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-003",
@@ -66,7 +68,8 @@
       "fielding": 78
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 3.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 3.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-004",
@@ -89,7 +92,8 @@
       "fielding": 79
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 4.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 4.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-005",
@@ -135,7 +139,8 @@
       "fielding": 79
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 6.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 6.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-007",
@@ -158,7 +163,8 @@
       "fielding": 79
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 7.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 7.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-008",
@@ -181,7 +187,8 @@
       "fielding": 63
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 8.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 8.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-009",
@@ -204,7 +211,8 @@
       "fielding": 76
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 9.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 9.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-010",
@@ -227,7 +235,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 10.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 10.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-011",
@@ -250,7 +259,8 @@
       "fielding": 83
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 11.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 11.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-012",
@@ -273,7 +283,8 @@
       "fielding": 79
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 12.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 12.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-013",
@@ -296,7 +307,8 @@
       "fielding": 78
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 13.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 13.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-014",
@@ -319,7 +331,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 14.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 14.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-015",
@@ -342,7 +355,8 @@
       "fielding": 66
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 15.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 15.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-016",
@@ -365,7 +379,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 16.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 16.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-017",
@@ -388,7 +403,8 @@
       "fielding": 59
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 17.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 17.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-018",
@@ -411,7 +427,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 18.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 18.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-019",
@@ -434,7 +451,8 @@
       "fielding": 81
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 19.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 19.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-020",
@@ -457,7 +475,8 @@
       "fielding": 65
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 20.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 20.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-021",
@@ -480,7 +499,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 21.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 21.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-022",
@@ -503,7 +523,8 @@
       "fielding": 48
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 22.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 22.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-023",
@@ -526,7 +547,8 @@
       "fielding": 38
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 23.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 23.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-024",
@@ -549,7 +571,8 @@
       "fielding": 42
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 24.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 24.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-025",
@@ -572,7 +595,8 @@
       "fielding": 78
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 25.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 25.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-026",
@@ -595,7 +619,8 @@
       "fielding": 79
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 26.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 26.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-027",
@@ -618,7 +643,8 @@
       "fielding": 73
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 27.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 27.50초; 별 개수 확인",
+    "bats": "양"
   },
   {
     "id": "user-video-20260920-live-v1-028",
@@ -641,7 +667,8 @@
       "fielding": 78
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 28.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 28.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-029",
@@ -664,7 +691,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 29.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 29.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-030",
@@ -687,7 +715,8 @@
       "fielding": 80
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 30.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 30.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-031",
@@ -710,7 +739,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 31.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 31.50초; 별 개수 확인",
+    "bats": "양"
   },
   {
     "id": "user-video-20260920-live-v1-032",
@@ -733,7 +763,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 32.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 32.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-033",
@@ -756,7 +787,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 33.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 33.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-034",
@@ -779,7 +811,8 @@
       "fielding": 73
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 34.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 34.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-035",
@@ -802,7 +835,8 @@
       "fielding": 74
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 35.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 35.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-036",
@@ -825,7 +859,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 36.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 36.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-037",
@@ -848,7 +883,8 @@
       "fielding": 80
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 37.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 37.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-038",
@@ -871,7 +907,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 38.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 38.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-039",
@@ -894,7 +931,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 39.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 39.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-040",
@@ -940,7 +978,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 41.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 41.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-042",
@@ -963,7 +1002,8 @@
       "fielding": 79
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 42.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 42.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-043",
@@ -986,7 +1026,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 43.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 43.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-044",
@@ -1009,7 +1050,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 44.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 44.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-045",
@@ -1032,7 +1074,8 @@
       "fielding": 81
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 45.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 45.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-046",
@@ -1055,7 +1098,9 @@
       "fielding": 64
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 46.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 46.50초; 별 개수 확인",
+    "bats": "좌",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-047",
@@ -1078,7 +1123,8 @@
       "fielding": 65
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 47.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 47.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-048",
@@ -1101,7 +1147,8 @@
       "fielding": 73
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 48.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 48.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-049",
@@ -1124,7 +1171,8 @@
       "fielding": 61
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 49.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 49.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-050",
@@ -1147,7 +1195,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 50.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 50.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-051",
@@ -1170,7 +1219,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 51.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 51.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-052",
@@ -1193,7 +1243,8 @@
       "fielding": 54
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 52.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 52.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-053",
@@ -1216,7 +1267,8 @@
       "fielding": 56
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 53.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 53.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-054",
@@ -1239,7 +1291,8 @@
       "fielding": 58
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 54.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 54.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-055",
@@ -1262,7 +1315,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 55.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 55.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-056",
@@ -1285,7 +1339,8 @@
       "fielding": 49
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 56.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 56.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-057",
@@ -1308,7 +1363,8 @@
       "fielding": 60
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 57.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 57.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-058",
@@ -1331,7 +1387,8 @@
       "fielding": 51
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 58.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 58.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-059",
@@ -1354,7 +1411,8 @@
       "fielding": 57
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 59.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 59.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-060",
@@ -1377,7 +1435,8 @@
       "fielding": 51
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 60.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 60.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-061",
@@ -1400,7 +1459,8 @@
       "fielding": 52
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 61.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 61.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-062",
@@ -1423,7 +1483,8 @@
       "fielding": 60
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 62.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 62.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-063",
@@ -1446,7 +1507,8 @@
       "fielding": 50
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 63.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 63.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-064",
@@ -1469,7 +1531,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 64.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 64.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-065",
@@ -1492,7 +1555,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 65.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 65.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-066",
@@ -1515,7 +1579,8 @@
       "fielding": 78
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 66.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 66.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-067",
@@ -1538,7 +1603,8 @@
       "fielding": 76
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 67.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 67.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-068",
@@ -1630,7 +1696,8 @@
       "fielding": 76
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 71.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 71.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-072",
@@ -1653,7 +1720,8 @@
       "fielding": 78
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 72.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 72.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-073",
@@ -1699,7 +1767,8 @@
       "fielding": 80
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 74.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 74.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-075",
@@ -1722,7 +1791,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 75.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 75.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-076",
@@ -1768,7 +1838,8 @@
       "fielding": 74
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 77.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 77.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-078",
@@ -1791,7 +1862,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 78.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 78.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-079",
@@ -1814,7 +1886,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 79.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 79.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-080",
@@ -1837,7 +1910,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 80.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 80.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-081",
@@ -1883,7 +1957,8 @@
       "fielding": 75
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 82.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 82.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-083",
@@ -1929,7 +2004,8 @@
       "fielding": 65
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 84.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 84.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-085",
@@ -1952,7 +2028,8 @@
       "fielding": 77
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 85.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 85.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-086",
@@ -1975,7 +2052,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 86.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 86.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-087",
@@ -1998,7 +2076,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 87.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 87.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-088",
@@ -2044,7 +2123,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 89.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 89.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-090",
@@ -2067,7 +2147,8 @@
       "fielding": 75
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 90.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 90.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-091",
@@ -2090,7 +2171,8 @@
       "fielding": 74
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 91.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 91.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-092",
@@ -2113,7 +2195,9 @@
       "fielding": 67
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 92.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 92.50초; 별 개수 확인",
+    "bats": "우",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-093",
@@ -2136,7 +2220,8 @@
       "fielding": 83
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 93.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 93.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-094",
@@ -2159,7 +2244,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 94.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 94.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-095",
@@ -2182,7 +2268,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 95.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 95.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-096",
@@ -2205,7 +2292,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 96.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 96.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-097",
@@ -2251,7 +2339,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 98.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 98.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-099",
@@ -2274,7 +2363,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 99.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 99.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-100",
@@ -2320,7 +2410,8 @@
       "fielding": 76
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 101.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 101.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-102",
@@ -2343,7 +2434,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 102.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 102.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-103",
@@ -2366,7 +2458,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 103.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 103.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-104",
@@ -2389,7 +2482,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 104.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 104.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-105",
@@ -2412,7 +2506,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 105.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 105.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-106",
@@ -2481,7 +2576,8 @@
       "fielding": 75
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 108.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 108.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-109",
@@ -2504,7 +2600,8 @@
       "fielding": 86
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 109.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 109.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-110",
@@ -2527,7 +2624,8 @@
       "fielding": 78
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 110.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 110.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-111",
@@ -2550,7 +2648,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 111.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 111.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-112",
@@ -2573,7 +2672,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 112.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 112.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-113",
@@ -2619,7 +2719,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 114.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 114.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-115",
@@ -2665,7 +2766,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 116.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 116.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-117",
@@ -2688,7 +2790,8 @@
       "fielding": 73
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 117.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 117.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-118",
@@ -2711,7 +2814,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 118.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 118.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-119",
@@ -2734,7 +2838,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 119.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 119.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-120",
@@ -2757,7 +2862,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 120.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 120.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-121",
@@ -2780,7 +2886,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 121.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 121.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-122",
@@ -2803,7 +2910,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 122.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 122.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-123",
@@ -2826,7 +2934,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 123.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 123.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-124",
@@ -2849,7 +2958,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 124.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 124.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-125",
@@ -2872,7 +2982,8 @@
       "fielding": 73
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 125.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 125.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-126",
@@ -2895,7 +3006,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 126.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 126.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-127",
@@ -2941,7 +3053,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 128.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 128.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-129",
@@ -2964,7 +3077,8 @@
       "fielding": 74
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 129.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 129.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-130",
@@ -2987,7 +3101,8 @@
       "fielding": 56
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 130.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 130.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-131",
@@ -3010,7 +3125,8 @@
       "fielding": 62
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 131.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 131.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-132",
@@ -3056,7 +3172,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 133.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 133.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-134",
@@ -3079,7 +3196,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 134.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 134.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-135",
@@ -3125,7 +3243,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 136.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 136.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-137",
@@ -3148,7 +3267,8 @@
       "fielding": 66
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 137.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 137.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-138",
@@ -3171,7 +3291,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 138.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 138.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-139",
@@ -3194,7 +3315,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 139.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 139.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-140",
@@ -3217,7 +3339,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 140.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 140.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-141",
@@ -3263,7 +3386,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 142.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 142.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-143",
@@ -3309,7 +3433,8 @@
       "fielding": 60
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 144.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 144.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-145",
@@ -3332,7 +3457,8 @@
       "fielding": 63
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 145.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 145.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-146",
@@ -3355,7 +3481,8 @@
       "fielding": 59
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 146.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 146.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-147",
@@ -3378,7 +3505,8 @@
       "fielding": 62
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 147.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 147.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-148",
@@ -3401,7 +3529,8 @@
       "fielding": 64
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 148.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 148.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-149",
@@ -3424,7 +3553,9 @@
       "fielding": 41
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 149.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 149.50초; 별 개수 확인",
+    "bats": "좌",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-150",
@@ -3447,7 +3578,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 150.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 150.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-151",
@@ -3470,7 +3602,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 151.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 151.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-152",
@@ -3516,7 +3649,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 153.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 153.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-154",
@@ -3539,7 +3673,8 @@
       "fielding": 60
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 154.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 154.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-155",
@@ -3562,7 +3697,8 @@
       "fielding": 66
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 155.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 155.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-156",
@@ -3608,7 +3744,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 157.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 157.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-158",
@@ -3631,7 +3768,8 @@
       "fielding": 70
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 158.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 158.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-159",
@@ -3654,7 +3792,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 159.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 159.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-160",
@@ -3677,7 +3816,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 160.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 160.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-161",
@@ -3700,7 +3840,8 @@
       "fielding": 74
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 161.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 161.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-162",
@@ -3723,7 +3864,8 @@
       "fielding": 54
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 162.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 162.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-163",
@@ -3746,7 +3888,8 @@
       "fielding": 62
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 163.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 163.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-164",
@@ -3769,7 +3912,8 @@
       "fielding": 55
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 164.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 164.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-165",
@@ -3792,7 +3936,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 165.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 165.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-166",
@@ -3815,7 +3960,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 166.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 166.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-167",
@@ -3838,7 +3984,8 @@
       "fielding": 58
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 167.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 167.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-168",
@@ -3861,7 +4008,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 168.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 168.50초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-169",
@@ -3907,7 +4055,8 @@
       "fielding": 53
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 170.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 170.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-171",
@@ -3930,7 +4079,8 @@
       "fielding": 58
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 171.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 171.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-172",
@@ -3976,7 +4126,8 @@
       "fielding": 61
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 173.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 173.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-174",
@@ -3999,7 +4150,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 174.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 174.50초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-175",
@@ -4022,7 +4174,8 @@
       "fielding": 56
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 175.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 175.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-176",
@@ -4045,7 +4198,8 @@
       "fielding": 49
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 176.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 176.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-177",
@@ -4068,7 +4222,8 @@
       "fielding": 61
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 177.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 177.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-178",
@@ -4091,7 +4246,8 @@
       "fielding": 51
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 178.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 178.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-179",
@@ -4114,7 +4270,8 @@
       "fielding": 45
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 179.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 179.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-180",
@@ -4137,7 +4294,8 @@
       "fielding": 52
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 180.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 180.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-181",
@@ -4160,7 +4318,8 @@
       "fielding": 54
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 181.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 181.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-182",
@@ -4183,7 +4342,8 @@
       "fielding": 43
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 182.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 182.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-183",
@@ -4206,7 +4366,8 @@
       "fielding": 42
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 183.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 183.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-184",
@@ -4229,7 +4390,8 @@
       "fielding": 51
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 184.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 184.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-185",
@@ -4252,7 +4414,8 @@
       "fielding": 49
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 185.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 185.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-186",
@@ -4275,7 +4438,8 @@
       "fielding": 43
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 186.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 186.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-187",
@@ -4298,7 +4462,8 @@
       "fielding": 37
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 187.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 187.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-188",
@@ -4321,7 +4486,8 @@
       "fielding": 37
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 188.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 188.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-189",
@@ -4367,7 +4533,8 @@
       "fielding": 39
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 190.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 190.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-191",
@@ -4390,7 +4557,8 @@
       "fielding": 51
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 191.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 191.50초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-192",
@@ -4413,7 +4581,8 @@
       "fielding": 40
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 192.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 192.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-193",
@@ -4436,7 +4605,8 @@
       "fielding": 41
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 193.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 193.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-194",
@@ -4459,7 +4629,8 @@
       "fielding": 85
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 194.50초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 194.50초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-195",
@@ -4482,7 +4653,8 @@
       "fielding": 88
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 11.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 11.12초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-196",
@@ -4505,7 +4677,8 @@
       "fielding": 80
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 20.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 20.12초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-197",
@@ -4528,7 +4701,8 @@
       "fielding": 79
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 26.88초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 26.88초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-198",
@@ -4551,7 +4725,8 @@
       "fielding": 74
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 33.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 33.12초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-199",
@@ -4574,7 +4749,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 35.88초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 35.88초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-200",
@@ -4597,7 +4773,8 @@
       "fielding": 83
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 38.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 38.12초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-201",
@@ -4620,7 +4797,8 @@
       "fielding": 79
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 42.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 42.12초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-202",
@@ -4643,7 +4821,8 @@
       "fielding": 68
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 48.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 48.12초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-203",
@@ -4666,7 +4845,8 @@
       "fielding": 59
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 52.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 52.12초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-204",
@@ -4689,7 +4869,8 @@
       "fielding": 67
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 56.88초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 56.88초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-205",
@@ -4712,7 +4893,8 @@
       "fielding": 38
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 61.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 61.12초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-206",
@@ -4781,7 +4963,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 75.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 75.12초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-209",
@@ -4804,7 +4987,8 @@
       "fielding": 76
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 80.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 80.12초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-210",
@@ -4827,7 +5011,8 @@
       "fielding": 83
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 84.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 84.12초; 별 개수 확인",
+    "bats": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-211",
@@ -4850,7 +5035,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 88.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 88.12초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-212",
@@ -4873,7 +5059,8 @@
       "fielding": 72
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 96.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 96.12초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-213",
@@ -4896,7 +5083,8 @@
       "fielding": 76
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 106.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 106.12초; 별 개수 확인",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-live-v1-214",
@@ -4919,7 +5107,8 @@
       "fielding": 71
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 117.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 117.12초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-215",
@@ -4942,7 +5131,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 133.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 133.12초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-216",
@@ -4965,7 +5155,8 @@
       "fielding": 75
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 147.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 147.12초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-217",
@@ -4988,7 +5179,8 @@
       "fielding": 69
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 159.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 159.12초; 별 개수 확인",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-live-v1-218",
@@ -5011,7 +5203,8 @@
       "fielding": 50
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 167.88초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 167.88초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-219",
@@ -5057,7 +5250,8 @@
       "fielding": 56
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 179.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 179.12초; 별 개수 확인",
+    "bats": "우"
   },
   {
     "id": "user-video-20260920-live-v1-221",
@@ -5080,6 +5274,7 @@
       "fielding": 49
     },
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000367.mp4 약 192.12초; 별 개수 확인"
+    "dataSource": "사용자 제공 1000000367.mp4 약 192.12초; 별 개수 확인",
+    "bats": "우"
   }
 ]

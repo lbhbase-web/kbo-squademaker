@@ -21,7 +21,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 0.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 0.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-02",
@@ -45,7 +46,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 1.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 1.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-03",
@@ -69,7 +71,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 2.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 2.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-04",
@@ -93,7 +96,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 3.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 3.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-05",
@@ -117,7 +121,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 4.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 4.5초",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-firefighter-06",
@@ -141,7 +146,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 6.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 6.0초",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-firefighter-07",
@@ -165,7 +171,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 7.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 7.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-08",
@@ -189,7 +196,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 8.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 8.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-09",
@@ -237,7 +245,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 10.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 10.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-11",
@@ -261,7 +270,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 11.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 11.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-12",
@@ -285,7 +295,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 12.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 12.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-13",
@@ -309,7 +320,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 13.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 13.5초",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-firefighter-14",
@@ -333,7 +345,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 15.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 15.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-15",
@@ -357,7 +370,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 16.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 16.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-16",
@@ -381,7 +395,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 17.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 17.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-17",
@@ -405,7 +420,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 18.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 18.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-18",
@@ -429,7 +445,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 19.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 19.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-19",
@@ -453,7 +470,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 20.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 20.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-20",
@@ -477,7 +495,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 21.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 21.5초",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-firefighter-21",
@@ -501,7 +520,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 22.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 22.5초",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-firefighter-22",
@@ -525,7 +545,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 24.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 24.0초",
+    "throws": "좌"
   },
   {
     "id": "user-video-20260920-firefighter-23",
@@ -549,7 +570,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 25.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 25.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-24",
@@ -573,7 +595,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 26.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 26.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-25",
@@ -621,7 +644,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 27.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 27.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-27",
@@ -645,7 +669,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 29.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 29.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-28",
@@ -669,7 +694,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 29.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 29.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-29",
@@ -693,7 +719,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 31.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 31.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-30",
@@ -717,7 +744,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 32.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 32.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-31",
@@ -741,7 +769,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 33.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 33.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-32",
@@ -765,7 +794,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 34.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 34.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-33",
@@ -789,7 +819,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 35.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 35.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-34",
@@ -813,7 +844,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 36.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 36.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-35",
@@ -861,7 +893,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 38.0초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 38.0초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-37",
@@ -885,7 +918,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 38.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 38.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-38",
@@ -909,7 +943,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 39.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 39.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-39",
@@ -933,7 +968,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 40.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 40.5초",
+    "throws": "우"
   },
   {
     "id": "user-video-20260920-firefighter-40",
@@ -957,6 +993,8 @@
     "stars": 4,
     "role": "pitcher",
     "sourceLevel": "user-video-verified",
-    "dataSource": "사용자 제공 1000000368.mp4 약 41.5초"
+    "dataSource": "사용자 제공 1000000368.mp4 약 41.5초",
+    "bats": "우",
+    "throws": "우"
   }
 ]
