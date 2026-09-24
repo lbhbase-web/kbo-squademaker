@@ -1167,7 +1167,40 @@ body{background:#fff!important;color:#17191c!important}
 @media(max-width:480px){.diamond{height:410px!important;min-height:410px!important}.diamond::before{height:360px!important;top:26px!important}.diamond .slot{width:56px!important;height:82px!important}.diamond .slot[data-slot="LF"],.diamond .slot[data-slot="RF"]{top:55px!important}.diamond .slot[data-slot="SS"],.diamond .slot[data-slot="2B"]{top:148px!important}.diamond .slot[data-slot="3B"],.diamond .slot[data-slot="1B"]{top:222px!important}.diamond .slot[data-slot="C"],.diamond .slot[data-slot="DH"]{top:310px!important}.ref-empty-plus{width:38px!important;height:38px!important;font-size:27px!important}#bench .mslot{height:82px!important}#bench{gap:4px!important}}
 
 .condition-skill-item{padding:8px 9px;margin:6px 0;background:#fff;border-radius:8px;font-size:10px;line-height:1.55}.condition-skill-item b{font-size:11px}.condition-skill-panel{color:#253044}.condition-skill-panel> b{font-size:12px}
-</style><style>#growModal.open{display:flex!important;z-index:10000!important}#growModal .modal-box{position:relative;z-index:1}.lineup-card-shell[role="button"]{cursor:pointer;touch-action:manipulation}.lineup-card-shell[role="button"]:focus-visible{outline:3px solid #8954eb;outline-offset:3px}</style></head>
+</style><style>#growModal.open{display:flex!important;z-index:10000!important}#growModal .modal-box{position:relative;z-index:1}.lineup-card-shell[role="button"]{cursor:pointer;touch-action:manipulation}.lineup-card-shell[role="button"]:focus-visible{outline:3px solid #8954eb;outline-offset:3px}</style>
+<style id="player-photo-user-style">
+/* Smaller club logos on the compact lineup cards. */
+.lineup-card-shell .lc-team{width:18px!important;height:18px!important;right:6px!important;top:22px!important;display:grid!important;place-items:center!important}
+.lineup-card-shell .lc-team img{max-width:18px!important;max-height:18px!important;width:18px!important;height:18px!important;object-fit:contain!important}
+.lineup-card-shell .lc-team span{width:18px!important;height:18px!important;font-size:5px!important}
+.lineup-card-shell .lc-team .team-fa-badge{font-size:7px!important;min-width:12px!important;right:-2px!important;bottom:-4px!important}
+
+.player-photo-settings{display:grid;gap:12px}
+.photo-settings-note{padding:10px 12px;border:1px solid #d7deea;background:#f7f9fd;border-radius:10px;color:#4d5b70;font-size:12px;line-height:1.55}
+.photo-search-label{display:grid;gap:6px;font-weight:800;color:#26364b}
+.photo-search-label input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #c8d1df;border-radius:9px;background:#fff;color:#172235;font-size:14px}
+.photo-player-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:260px;overflow:auto;padding:2px}
+.photo-player-result{display:flex;align-items:center;justify-content:space-between;gap:9px;text-align:left;padding:9px 10px;border:1px solid #d7deea;border-radius:9px;background:#fff;color:#1d2a3d;cursor:pointer}
+.photo-player-result:hover,.photo-player-result.selected{border-color:#6c63ff;background:#f3f1ff}
+.photo-player-result strong{display:block;font-size:13px}.photo-player-result small{display:block;color:#68778c;font-size:10px;margin-top:2px}
+.photo-player-result .photo-result-tag{flex:0 0 auto;font-size:9px;padding:3px 5px;border-radius:999px;background:#eef1f7;color:#4e5c70}
+.photo-empty{grid-column:1/-1;padding:15px;text-align:center;color:#718096;border:1px dashed #d3d9e3;border-radius:9px}
+.photo-selected-box{border:1px solid #d3dae6;border-radius:12px;background:#fbfcff;padding:12px}
+.photo-selected-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.photo-selected-head small{display:block;color:#738197;font-size:10px}.photo-selected-head strong{display:block;margin-top:2px;font-size:14px;color:#172235}
+.photo-saved-scope{font-size:10px;color:#5c6a7c;background:#edf1f7;padding:4px 7px;border-radius:999px}
+.photo-editor-grid{display:grid;grid-template-columns:130px 1fr;gap:14px;align-items:start}
+.photo-preview-box{width:130px;height:165px;border:1px solid #cfd7e3;border-radius:10px;background:linear-gradient(145deg,#4a5d73,#253649);overflow:hidden;display:grid;place-items:center;color:#fff;font-size:11px;text-align:center}
+.photo-preview-box img{width:100%;height:100%;object-fit:cover;object-position:center top;display:none}
+.photo-editor-controls{display:grid;gap:9px}.photo-editor-controls>label{display:grid;gap:5px;font-weight:700;color:#304057;font-size:12px}
+.photo-editor-controls input[type=file]{width:100%;box-sizing:border-box;padding:8px;border:1px solid #c8d1df;border-radius:8px;background:#fff;color:#233249}
+.photo-editor-controls .photo-scope-option{display:flex;align-items:center;gap:7px;font-weight:600}
+.photo-setting-actions{display:flex;gap:7px;flex-wrap:wrap}.photo-setting-actions button{padding:8px 12px;border:1px solid #bcc6d5;border-radius:8px;background:#fff;color:#243349;font-weight:800;cursor:pointer}
+.photo-setting-actions button:first-child{background:#5d55e8;border-color:#5d55e8;color:#fff}.photo-setting-actions button.danger{color:#c9475c}
+.photo-help{color:#6a788d;line-height:1.45}
+@media(max-width:650px){.photo-player-results{grid-template-columns:1fr}.photo-editor-grid{grid-template-columns:100px 1fr}.photo-preview-box{width:100px;height:130px}}
+</style>
+</head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="field-remove-black" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2126 .7152 .0722 0 0"/><feComponentTransfer><feFuncA type="linear" slope="20" intercept="-0.5"/></feComponentTransfer><feComposite in="SourceGraphic" operator="in"/></filter></defs></svg>
 <div class="wrap">
@@ -1231,8 +1264,46 @@ body{background:#fff!important;color:#17191c!important}
     <button onclick="saveAll();toast('현재 설정을 저장했어.')">전체 저장</button>
     <button onclick="toggleRefPanel('advancedSetdeckPanel')">세트덱·특훈</button>
     <button onclick="toggleRefPanel('refBullpenPanel')">투수 전술 설정</button>
+    <button onclick="openPlayerPhotoSettings()">선수 사진 추가 설정</button>
     <button onclick="toggleRefPanel('refPatchPanel')">패치 노트</button>
    </div>
+
+   <section id="refPlayerPhotoPanel" class="panel ref-collapsible">
+    <div class="ph">
+     <div><strong>선수 사진 추가 설정</strong><div class="sub">선수를 검색한 뒤 기기에서 사진을 선택하면 선수 카드에 표시돼.</div></div>
+     <button class="mini" onclick="toggleRefPanel('refPlayerPhotoPanel')">닫기</button>
+    </div>
+    <div class="pb player-photo-settings">
+     <div class="photo-settings-note">사진은 현재 사용 중인 브라우저/기기에만 저장돼. 다른 사람의 기기에는 자동으로 공유되지 않아.</div>
+     <label class="photo-search-label">선수 검색
+      <input id="photoPlayerQ" type="search" placeholder="선수 이름 · 구단 · 카드 종류 검색" oninput="renderPhotoPlayerMatches()">
+     </label>
+     <div id="photoPlayerMatches" class="photo-player-results"><div class="photo-empty">선수 이름을 검색해 줘.</div></div>
+     <div id="photoSelectedBox" class="photo-selected-box">
+      <div class="photo-selected-head">
+       <div><small>선택한 선수</small><strong id="photoSelectedInfo">아직 선택하지 않았어.</strong></div>
+       <span id="photoSavedScope" class="photo-saved-scope"></span>
+      </div>
+      <div class="photo-editor-grid">
+       <div class="photo-preview-box">
+        <img id="photoPreviewImage" alt="선수 사진 미리보기">
+        <span id="photoPreviewFallback">사진 미리보기</span>
+       </div>
+       <div class="photo-editor-controls">
+        <label>사진 파일
+         <input id="photoFileInput" type="file" accept="image/png,image/jpeg,image/webp" onchange="previewSelectedPlayerPhoto(this)">
+        </label>
+        <div class="photo-settings-note">사진을 저장하면 <b>같은 내부 선수명 + 같은 구단</b>의 모든 카드에 자동으로 한 번에 적용돼. 동명이인은 B/S/C/D 같은 내부 구분자를 그대로 사용해서 서로 섞이지 않아.</div>
+        <div class="photo-setting-actions">
+         <button type="button" onclick="saveSelectedPlayerPhoto()">같은 이름·구단 전체에 사진 저장</button>
+         <button type="button" class="danger" onclick="deleteSelectedPlayerPhoto()">같은 이름·구단 사진 삭제</button>
+        </div>
+        <small class="photo-help">JPG · PNG · WEBP, 최대 8MB. 카드 종류·연도·포지션이 달라도 내부 선수명과 구단이 같으면 같은 사진을 사용해. 예: 김재현S와 김재현C는 서로 다른 선수로 처리돼.</small>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
 
    <section id="advancedSetdeckPanel" class="panel ref-collapsible">
     <div class="ph">
@@ -2979,6 +3050,110 @@ function pickerRequiredPos(slot){
  return "";
 }
 
+const CUSTOM_PLAYER_PHOTO_URLS=new Map();
+const PLAYER_PHOTO_DB_NAME="v26-user-player-photos";
+const PLAYER_PHOTO_DB_VERSION=1;
+const PLAYER_PHOTO_STORE="photos";
+let selectedPhotoPlayerId=null;
+let photoPreviewObjectUrl="";
+
+function photoGroupKey(p){return `group:${String(p?.name||"").trim()}|${String(p?.team||"").trim()}`}
+function photoCardKey(p){return `card:${String(p?.id||"")}`}
+function customPlayerPhotoUrl(p){return CUSTOM_PLAYER_PHOTO_URLS.get(photoGroupKey(p))||CUSTOM_PLAYER_PHOTO_URLS.get(photoCardKey(p))||""}
+function revokeCustomPhotoUrl(key){const old=CUSTOM_PLAYER_PHOTO_URLS.get(key);if(old&&old.startsWith("blob:"))URL.revokeObjectURL(old);CUSTOM_PLAYER_PHOTO_URLS.delete(key)}
+function setCustomPhotoObjectUrl(key,blob){revokeCustomPhotoUrl(key);CUSTOM_PLAYER_PHOTO_URLS.set(key,URL.createObjectURL(blob))}
+function openPlayerPhotoDb(){
+ return new Promise((resolve,reject)=>{
+  if(!window.indexedDB)return reject(new Error("이 브라우저에서는 사진 저장 기능을 사용할 수 없어."));
+  const req=indexedDB.open(PLAYER_PHOTO_DB_NAME,PLAYER_PHOTO_DB_VERSION);
+  req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(PLAYER_PHOTO_STORE))db.createObjectStore(PLAYER_PHOTO_STORE,{keyPath:"key"})};
+  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||new Error("사진 저장소를 열지 못했어."));
+ });
+}
+async function loadCustomPlayerPhotos(){
+ try{
+  const db=await openPlayerPhotoDb();
+  const rows=await new Promise((resolve,reject)=>{const tx=db.transaction(PLAYER_PHOTO_STORE,"readonly"),req=tx.objectStore(PLAYER_PHOTO_STORE).getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error)});
+  rows.forEach(r=>{if(r?.key&&r?.blob)setCustomPhotoObjectUrl(r.key,r.blob)});
+  db.close();
+ }catch(e){console.warn("custom player photo load failed",e)}
+}
+async function savePlayerPhotoRecord(key,blob,p){
+ const db=await openPlayerPhotoDb();
+ await new Promise((resolve,reject)=>{const tx=db.transaction(PLAYER_PHOTO_STORE,"readwrite");tx.objectStore(PLAYER_PHOTO_STORE).put({key,blob,name:p?.name||"",team:p?.team||"",playerId:p?.id||"",updatedAt:Date.now()});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error)});
+ db.close();setCustomPhotoObjectUrl(key,blob);
+}
+async function deletePlayerPhotoRecord(key){
+ const db=await openPlayerPhotoDb();
+ await new Promise((resolve,reject)=>{const tx=db.transaction(PLAYER_PHOTO_STORE,"readwrite");tx.objectStore(PLAYER_PHOTO_STORE).delete(key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error)});
+ db.close();revokeCustomPhotoUrl(key);
+}
+function selectedPhotoPlayer(){return players.find(p=>String(p.id)===String(selectedPhotoPlayerId))||null}
+function selectedPhotoStorageKey(){const p=selectedPhotoPlayer();return p?photoGroupKey(p):""}
+function openPlayerPhotoSettings(){
+ const panel=$("refPlayerPhotoPanel");if(!panel)return;
+ if(!panel.classList.contains("open"))panel.classList.add("open");
+ renderPhotoPlayerMatches();renderSelectedPhotoState();
+ setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"start"}),20);
+}
+function renderPhotoPlayerMatches(){
+ const box=$("photoPlayerMatches");if(!box)return;
+ const q=String($("photoPlayerQ")?.value||"").trim().toLowerCase();
+ if(!q){box.innerHTML='<div class="photo-empty">선수 이름을 검색해 줘.</div>';return}
+ const list=players.filter(p=>`${p.name||""} ${p.team||""} ${p.year||""} ${p.type||""} ${p.series||""}`.toLowerCase().includes(q)).slice(0,60);
+ if(!list.length){box.innerHTML='<div class="photo-empty">검색 결과가 없어.</div>';return}
+ box.innerHTML=list.map(p=>`<button type="button" class="photo-player-result ${String(selectedPhotoPlayerId)===String(p.id)?"selected":""}" onclick="selectPhotoPlayer('${String(p.id).replace(/'/g,"\\'")}')"><span><strong>${esc(p.name||"선수")}</strong><small>${esc(p.team||"-")} · ${esc(p.pos||"-")} · ${esc(p.type||"")}${p.year?` · ${esc(String(p.year))}`:""}</small></span><span class="photo-result-tag">${customPlayerPhotoUrl(p)?"사진 있음":"사진 없음"}</span></button>`).join("");
+}
+function selectPhotoPlayer(id){selectedPhotoPlayerId=id;const input=$("photoFileInput");if(input)input.value="";clearPhotoPreviewObjectUrl();renderPhotoPlayerMatches();renderSelectedPhotoState()}
+function clearPhotoPreviewObjectUrl(){if(photoPreviewObjectUrl){URL.revokeObjectURL(photoPreviewObjectUrl);photoPreviewObjectUrl=""}}
+function showPhotoPreview(url){
+ const img=$("photoPreviewImage"),fallback=$("photoPreviewFallback");if(!img||!fallback)return;
+ if(url){img.src=url;img.style.display="block";fallback.style.display="none"}else{img.removeAttribute("src");img.style.display="none";fallback.style.display="block"}
+}
+function renderSelectedPhotoState(){
+ const p=selectedPhotoPlayer(),info=$("photoSelectedInfo"),scope=$("photoSavedScope");
+ if(!info)return;
+ if(!p){info.textContent="아직 선택하지 않았어.";if(scope)scope.textContent="";showPhotoPreview("");return}
+ info.textContent=`${p.name} · ${p.team||"-"} · ${p.pos||"-"} · ${p.type||""}${p.year?` · ${p.year}`:""}`;
+ const exact=CUSTOM_PLAYER_PHOTO_URLS.has(photoCardKey(p)),group=CUSTOM_PLAYER_PHOTO_URLS.has(photoGroupKey(p));
+ if(scope)scope.textContent=group?"같은 이름·구단 전체 적용 중":exact?"이전 버전 카드 사진 있음":"저장된 사진 없음";
+ const pending=photoPreviewObjectUrl||customPlayerPhotoUrl(p);showPhotoPreview(pending);
+}
+function previewSelectedPlayerPhoto(input){
+ clearPhotoPreviewObjectUrl();const file=input?.files?.[0];if(!file){renderSelectedPhotoState();return}
+ if(!/^image\/(png|jpeg|webp)$/i.test(file.type)){alert("JPG, PNG, WEBP 사진만 선택해 줘.");input.value="";return}
+ if(file.size>8*1024*1024){alert("사진은 8MB 이하로 선택해 줘.");input.value="";return}
+ photoPreviewObjectUrl=URL.createObjectURL(file);renderSelectedPhotoState();
+}
+async function saveSelectedPlayerPhoto(){
+ const p=selectedPhotoPlayer();if(!p)return alert("먼저 사진을 넣을 선수를 선택해 줘.");
+ const file=$("photoFileInput")?.files?.[0];if(!file)return alert("저장할 사진 파일을 선택해 줘.");
+ if(!/^image\/(png|jpeg|webp)$/i.test(file.type)||file.size>8*1024*1024)return alert("JPG, PNG, WEBP 형식의 8MB 이하 사진을 선택해 줘.");
+ const key=photoGroupKey(p);
+ try{
+  await savePlayerPhotoRecord(key,file,p);
+  // 예전 버전에서 카드별로 저장된 사진이 있으면 제거해서 그룹 사진이 항상 동일하게 적용되도록 함.
+  const samePlayers=players.filter(x=>String(x?.name||"").trim()===String(p?.name||"").trim()&&String(x?.team||"").trim()===String(p?.team||"").trim());
+  for(const x of samePlayers){const cardKey=photoCardKey(x);if(CUSTOM_PLAYER_PHOTO_URLS.has(cardKey))await deletePlayerPhotoRecord(cardKey)}
+  clearPhotoPreviewObjectUrl();$("photoFileInput").value="";renderAll();if(currentPickerSlot)renderPlayerPicker();renderPhotoPlayerMatches();renderSelectedPhotoState();
+  toast(`${p.name} · ${p.team||"-"}의 모든 카드에 사진을 적용했어.`);
+ }catch(e){console.error(e);alert("사진을 저장하지 못했어. 브라우저 저장 공간을 확인해 줘.")}
+}
+async function deleteSelectedPlayerPhoto(){
+ const p=selectedPhotoPlayer();if(!p)return alert("먼저 선수를 선택해 줘.");
+ const key=photoGroupKey(p);
+ const samePlayers=players.filter(x=>String(x?.name||"").trim()===String(p?.name||"").trim()&&String(x?.team||"").trim()===String(p?.team||"").trim());
+ const legacyKeys=samePlayers.map(photoCardKey).filter(k=>CUSTOM_PLAYER_PHOTO_URLS.has(k));
+ if(!CUSTOM_PLAYER_PHOTO_URLS.has(key)&&!legacyKeys.length)return alert("같은 이름·구단에 저장된 사진이 없어.");
+ if(!confirm(`${p.name} · ${p.team||"-"}의 모든 카드 사진을 삭제할까?`))return;
+ try{
+  if(CUSTOM_PLAYER_PHOTO_URLS.has(key))await deletePlayerPhotoRecord(key);
+  for(const cardKey of legacyKeys)await deletePlayerPhotoRecord(cardKey);
+  renderAll();if(currentPickerSlot)renderPlayerPicker();renderPhotoPlayerMatches();renderSelectedPhotoState();toast("같은 이름·구단의 모든 카드 사진을 삭제했어.");
+ }catch(e){console.error(e);alert("사진을 삭제하지 못했어.")}
+}
+async function initPlayerPhotoFeature(){await loadCustomPlayerPhotos();renderAll();if(currentPickerSlot)renderPlayerPicker();renderSelectedPhotoState()}
+
 const PLAYER_PHOTO_URLS={};
 const PLAYER_PHOTO_CACHE={};
 const PLAYER_PHOTO_PENDING=new Map();
@@ -3010,7 +3185,9 @@ function photoSearchUrl(p){
  const q=`${p.name} ${p.team||""} 야구선수`.trim();
  return `https://search.naver.com/search.naver?where=image&query=${encodeURIComponent(q)}`;
 }
-function playerPhotoHTML(p,cls="player-photo"){return `<div class="picker-photo-wrap"><span class="photo-fallback">${esc(p.name||"선수")}</span></div>`;
+function playerPhotoHTML(p,cls="player-photo"){
+ const url=customPlayerPhotoUrl(p);
+ return `<div class="picker-photo-wrap">${url?`<img class="${cls} loaded" src="${esc(url)}" alt="${esc(p.name||"선수")} 사진">`:`<span class="photo-fallback">${esc(p.name||"선수")}</span>`}</div>`;
 }
 async function fetchWikipediaPlayerPhoto(name,team=""){
  return PLAYER_PHOTO_URLS[`${String(name||"").trim()}-${String(team||"").trim()}`]||null;
@@ -3083,7 +3260,9 @@ function teamLogoHTML(team,compact=false,fa=false){
  </div>`;
 }
 function hydrateTeamLogos(root=document){ /* fixed logo URLs: no async lookup needed */ }
-function gamePhotoHTML(p,compact=false){return `<div class="${compact?"lc-photo":"game-card-photo"}"><span class="photo-fallback">${esc(p.name||"선수")}</span></div>`;
+function gamePhotoHTML(p,compact=false){
+ const url=customPlayerPhotoUrl(p);
+ return `<div class="${compact?"lc-photo":"game-card-photo"}">${url?`<img class="loaded" src="${esc(url)}" alt="${esc(p.name||"선수")} 사진">`:`<span class="photo-fallback">${esc(p.name||"선수")}</span>`}</div>`;
 }
 function gamePlayerCardHTML(p,{disabled=false,current=false,slot=""}={}){
  const g=getGrowth(p),growth=gameGrowthText(p,g),series=gameCardSeriesText(p,g);
@@ -4006,6 +4185,7 @@ function initCustomCards(){
 initCustomCards();
 initViewMode();
 init();
+initPlayerPhotoFeature();
 </script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
