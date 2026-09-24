@@ -120535,7 +120535,8 @@
       "fielding": 68
     },
     "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 KBO 전체 선수카드 임팩트종류포함.xlsx"
+    "dataSource": "사용자 제공 KBO 전체 선수카드 임팩트종류포함.xlsx",
+    "stars": 5
   },
   {
     "id": "site-05383",
@@ -128484,7 +128485,7 @@
   },
   {
     "id": "site-05736",
-    "name": "조움천",
+    "name": "조웅천",
     "year": null,
     "team": "SSG",
     "type": "임팩트",
