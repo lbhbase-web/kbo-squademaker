@@ -1299,34 +1299,35 @@ body{background:#fff!important;color:#17191c!important}
 </style>
 
 <style id="ghost-sample-text-style-v1">
-/* Match the user's sample: clean white player names with a light dark outline/shadow. */
-.game-player-card .game-card-name{
-  color:#fff!important;
-  font-size:15px!important;
-  font-weight:1000!important;
-  letter-spacing:-0.2px!important;
-  line-height:1.02!important;
-  text-shadow:0 1px 0 rgba(0,0,0,.95),0 0 2px rgba(0,0,0,.95)!important;
-}
-.game-player-card .game-card-name .game-card-year{
-  color:#fff!important;
-  text-shadow:0 1px 0 rgba(0,0,0,.95),0 0 2px rgba(0,0,0,.95)!important;
-}
-.lineup-card-shell .lc-name{
-  color:#fff!important;
-  font-size:9px!important;
-  font-weight:1000!important;
-  letter-spacing:-0.15px!important;
-  line-height:1.02!important;
-  text-shadow:0 1px 0 rgba(0,0,0,.98),0 0 1px rgba(0,0,0,.98)!important;
-}
+/* Match the user's screenshot: crisp white text with a light black shadow/outline and a bottom black gradient. */
+.game-player-card .game-card-name,
+.game-player-card .game-card-name .game-card-year,
+.lineup-card-shell .lc-name,
 .lineup-card-shell .lc-name .game-card-year{
   color:#fff!important;
-  text-shadow:0 1px 0 rgba(0,0,0,.98),0 0 1px rgba(0,0,0,.98)!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.97),0 0 2px rgba(0,0,0,.97)!important;
 }
-/* Keep the bottom series strip readable while leaving the player-name area clean. */
-.game-player-card .game-card-bottom{background:linear-gradient(transparent 0%,rgba(0,0,0,.30) 26%,rgba(0,0,0,.68) 64%,rgba(0,0,0,.88) 100%)!important;padding:20px 4px 6px!important;}
-.lineup-card-shell .lc-bottom{background:linear-gradient(transparent 0%,rgba(0,0,0,.28) 28%,rgba(0,0,0,.66) 64%,rgba(0,0,0,.88) 100%)!important;padding:8px 2px 2px!important;}
+.game-player-card .game-card-ovr,
+.game-player-card .game-card-plus,
+.game-player-card .game-card-pos,
+.game-player-card .game-card-series,
+.game-player-card .game-card-subtype,
+.lineup-card-shell .lc-ovr,
+.lineup-card-shell .lc-pos,
+.lineup-card-shell .lc-series{
+  color:#fff!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.97),0 0 2px rgba(0,0,0,.97)!important;
+}
+.game-player-card .game-card-name{font-size:16px!important;letter-spacing:-.2px!important;line-height:1.04!important;font-weight:1000!important;}
+.lineup-card-shell .lc-name{font-size:11px!important;line-height:1.06!important;font-weight:1000!important;letter-spacing:-.15px!important;}
+.game-player-card .game-card-bottom{
+  background:linear-gradient(transparent 0%,rgba(0,0,0,.28) 24%,rgba(0,0,0,.66) 62%,rgba(0,0,0,.90) 100%)!important;
+  padding:20px 4px 6px!important;
+}
+.lineup-card-shell .lc-bottom{
+  background:linear-gradient(transparent 0%,rgba(0,0,0,.26) 24%,rgba(0,0,0,.62) 60%,rgba(0,0,0,.88) 100%)!important;
+  padding:8px 2px 2px!important;
+}
 </style>
 </head>
 <body>
