@@ -1188,16 +1188,31 @@ body{background:#fff!important;color:#17191c!important}
 }
 .game-team-fallback,.lineup-card-shell .lc-team span{color:inherit}
 
-/* ===== Player-name visibility fix: white text on every card ===== */
+/* ===== Player-name visibility fix v2: remove black name strip ===== */
 .game-player-card .game-card-name,
 .game-player-card .game-card-name .game-card-year{
  color:#fff!important;
- text-shadow:-1px -1px 0 #111,1px -1px 0 #111,-1px 1px 0 #111,1px 1px 0 #111,0 2px 4px #000!important;
+ text-shadow:-2px -2px 0 #111,2px -2px 0 #111,-2px 2px 0 #111,2px 2px 0 #111,0 2px 4px #000!important;
 }
 .lineup-card-shell .lc-name,
 .lineup-card-shell .lc-name .game-card-year{
  color:#fff!important;
- text-shadow:0 1px 2px #000,0 0 4px #000!important;
+ text-shadow:-1px -1px 0 #111,1px -1px 0 #111,-1px 1px 0 #111,1px 1px 0 #111,0 2px 4px #000!important;
+}
+/* The old dark strip hid the player name on lineup cards. Keep the card color visible. */
+.game-player-card .game-card-bottom,
+.lineup-card-shell .lc-bottom,
+.game-player-card.card-bg-live-3 .game-card-bottom,
+.game-player-card.card-bg-season .game-card-bottom,
+.lineup-card-shell.card-bg-live-3 .lc-bottom,
+.lineup-card-shell.card-bg-season .lc-bottom{
+ background:transparent!important;
+}
+.game-player-card .game-card-bottom{padding-bottom:5px!important;}
+.lineup-card-shell .lc-bottom{padding-bottom:3px!important;}
+.game-player-card .game-card-series,
+.lineup-card-shell .lc-series{
+ text-shadow:-1px -1px 0 #111,1px -1px 0 #111,-1px 1px 0 #111,1px 1px 0 #111,0 2px 3px #000!important;
 }
 </style>
 <style>
