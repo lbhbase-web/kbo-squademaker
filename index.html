@@ -1305,7 +1305,7 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-name,
 .lineup-card-shell .lc-name .game-card-year{
   color:#fff!important;
-  text-shadow:none!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.97),0 0 2px rgba(0,0,0,.97)!important;
 }
 .game-player-card .game-card-ovr,
 .game-player-card .game-card-plus,
@@ -1316,7 +1316,7 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-pos,
 .lineup-card-shell .lc-series{
   color:#fff!important;
-  text-shadow:none!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.97),0 0 2px rgba(0,0,0,.97)!important;
 }
 .game-player-card .game-card-name{font-size:16px!important;letter-spacing:-.2px!important;line-height:1.04!important;font-weight:1000!important;}
 .lineup-card-shell .lc-name{font-size:11px!important;line-height:1.06!important;font-weight:1000!important;letter-spacing:-.15px!important;}
@@ -1327,6 +1327,17 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-bottom{
   background:linear-gradient(transparent 0%,rgba(0,0,0,.26) 24%,rgba(0,0,0,.62) 60%,rgba(0,0,0,.88) 100%)!important;
   padding:8px 2px 2px!important;
+}
+</style>
+
+<style id="ghost-name-no-shadow-v1">
+/* Player names: clean white text, no black shadow/outline. */
+.game-player-card .game-card-name,
+.game-player-card .game-card-name .game-card-year,
+.lineup-card-shell .lc-name,
+.lineup-card-shell .lc-name .game-card-year{
+  color:#fff!important;
+  text-shadow:none!important;
 }
 </style>
 </head>
