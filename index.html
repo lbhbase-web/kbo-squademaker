@@ -1297,6 +1297,37 @@ body{background:#fff!important;color:#17191c!important}
 .game-player-card .game-card-bottom{background:transparent!important;padding:21px 4px 5px!important;}
 .game-player-card.card-bg-allstar::before,.lineup-card-shell.card-bg-allstar::before{background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 32%,rgba(5,20,48,.18) 72%,rgba(116,186,255,.16))!important;}
 </style>
+
+<style id="ghost-sample-text-style-v1">
+/* Match the user's sample: clean white player names with a light dark outline/shadow. */
+.game-player-card .game-card-name{
+  color:#fff!important;
+  font-size:15px!important;
+  font-weight:1000!important;
+  letter-spacing:-0.2px!important;
+  line-height:1.02!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.95),0 0 2px rgba(0,0,0,.95)!important;
+}
+.game-player-card .game-card-name .game-card-year{
+  color:#fff!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.95),0 0 2px rgba(0,0,0,.95)!important;
+}
+.lineup-card-shell .lc-name{
+  color:#fff!important;
+  font-size:9px!important;
+  font-weight:1000!important;
+  letter-spacing:-0.15px!important;
+  line-height:1.02!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.98),0 0 1px rgba(0,0,0,.98)!important;
+}
+.lineup-card-shell .lc-name .game-card-year{
+  color:#fff!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.98),0 0 1px rgba(0,0,0,.98)!important;
+}
+/* Keep the bottom series strip readable while leaving the player-name area clean. */
+.game-player-card .game-card-bottom{background:transparent!important;padding:20px 4px 6px!important;}
+.lineup-card-shell .lc-bottom{background:transparent!important;padding:8px 2px 2px!important;}
+</style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="field-remove-black" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2126 .7152 .0722 0 0"/><feComponentTransfer><feFuncA type="linear" slope="20" intercept="-0.5"/></feComponentTransfer><feComposite in="SourceGraphic" operator="in"/></filter></defs></svg>
