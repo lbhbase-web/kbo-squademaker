@@ -1187,6 +1187,18 @@ body{background:#fff!important;color:#17191c!important}
  filter:none!important;border-radius:0!important;
 }
 .game-team-fallback,.lineup-card-shell .lc-team span{color:inherit}
+
+/* ===== Player-name visibility fix: white text on every card ===== */
+.game-player-card .game-card-name,
+.game-player-card .game-card-name .game-card-year{
+ color:#fff!important;
+ text-shadow:-1px -1px 0 #111,1px -1px 0 #111,-1px 1px 0 #111,1px 1px 0 #111,0 2px 4px #000!important;
+}
+.lineup-card-shell .lc-name,
+.lineup-card-shell .lc-name .game-card-year{
+ color:#fff!important;
+ text-shadow:0 1px 2px #000,0 0 4px #000!important;
+}
 </style>
 <style>
 #growModal .modal{width:min(760px,96vw)}
