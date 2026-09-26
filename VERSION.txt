@@ -1,1 +1,1 @@
-KBO SquadMaker integrated version: 10.7
+11.0

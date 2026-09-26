@@ -1361,6 +1361,12 @@ body{background:#fff!important;color:#17191c!important}
 #playerPhotoModal{z-index:13000!important}
 #playerPhotoModal.open{display:flex!important;z-index:13000!important}
 #playerPhotoModal .player-photo-modal-box{position:relative;z-index:13001!important}
+/* v11.0: FA 선택 팝업은 선수 상세 내용보다 항상 앞 */
+#growModal .reference-header{position:relative!important;z-index:200!important;overflow:visible!important}
+#growModal .reference-info{position:relative!important;z-index:210!important;overflow:visible!important}
+#growModal .reference-actions{position:relative!important;z-index:220!important;overflow:visible!important}
+#growModal .fa-inline-menu{z-index:15000!important;overflow:visible!important;pointer-events:auto!important}
+#growModal .reference-detail{overflow:visible!important}
 </style><style>#growModal.open{display:flex!important;z-index:10000!important}#growModal .modal-box{position:relative;z-index:1}.lineup-card-shell[role="button"]{cursor:pointer;touch-action:manipulation}.lineup-card-shell[role="button"]:focus-visible{outline:3px solid #8954eb;outline-offset:3px}</style>
 <style id="player-photo-user-style">
 /* Smaller club logos on the compact lineup cards. */
@@ -1559,7 +1565,7 @@ body{background:#fff!important;color:#17191c!important}
  <div class="top">
   <div class="brand">
    <div class="logo">V26</div>
-   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.9 · 스킬 130 · 선수사진 없음</span></h1>
+   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v11.0 · 스킬 130 · 선수사진 없음</span></h1>
    <div class="sub">8,982장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
   </div>
   <div class="toolbar">

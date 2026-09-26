@@ -39,7 +39,7 @@
   "sitemap": "sitemap.xml",
   "player_card_count": 8982,
   "year_picker": "grid-popup",
-  "version": "10.9",
+  "version": "11.0",
   "batting_order_skills": "show 3 player skills with effective levels below cards",
   "photo_upload_ui": "player-detail face-on modal",
   "middle_export_button": "removed; top-right lineup export retained"
