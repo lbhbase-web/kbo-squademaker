@@ -36,5 +36,9 @@
   "bootstrap_file": "bootstrap.js",
   "baseball_field_format": "PNG",
   "site_url": "https://lbhbase-web.github.io/kbo-squademaker/",
-  "sitemap": "sitemap.xml"
+  "sitemap": "sitemap.xml",
+  "player_card_count": 8982,
+  "year_picker": "grid-popup",
+  "version": "10.3",
+  "batting_order_skills": "show 3 player skills with effective levels below cards"
 }

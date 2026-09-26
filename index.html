@@ -1215,6 +1215,55 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-series{
  text-shadow:-1px -1px 0 #111,1px -1px 0 #111,-1px 1px 0 #111,1px 1px 0 #111,0 2px 3px #000!important;
 }
+
+
+
+/* Grid pickers for preferred team and lineup mode */
+.choice-native-select{display:none!important}
+.choice-grid-trigger{min-height:38px;border:1px solid var(--line);border-radius:9px;background:#0a1421;color:var(--text);padding:8px 10px;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:800;white-space:nowrap}
+.choice-grid-trigger:hover{border-color:#6b77d8}
+.toolbar .choice-grid-trigger{min-width:126px}
+.lineup-mode-trigger{width:min(220px,100%)}
+.choice-grid-backdrop{position:fixed;inset:0;z-index:121;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.28)}
+.choice-grid-backdrop.open{display:flex}
+.choice-grid-panel{width:min(390px,calc(100vw - 28px));background:#fff;color:#3f4652;border:1px solid #d8dce4;border-radius:6px;box-shadow:0 14px 38px rgba(0,0,0,.28);padding:10px 12px 12px}
+.choice-grid-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eceef2;padding:1px 2px 8px;margin-bottom:9px}
+.choice-grid-head strong{font-size:13px;color:#303641}
+.choice-grid-close{border:0;background:transparent;color:#777;font-size:22px;line-height:1;padding:0 4px}
+.choice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.choice-grid.mode-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.choice-cell{border:1px solid #e0e3e8;background:#f7f8fa;color:#555d69;border-radius:6px;min-height:42px;padding:7px 5px;font-size:12px;font-weight:750;line-height:1.2}
+.choice-cell:hover,.choice-cell:focus-visible{background:#f0edff;color:#6049d8;border-color:#cfc7ff;outline:none}
+.choice-cell.selected{background:#6f58e8;color:#fff;border-color:#6f58e8;font-weight:900}
+.ref-mode-head{align-items:center}
+.ref-mode-head .lineup-tabs{display:flex;justify-content:flex-end;flex:1}
+@media(max-width:760px){
+ .toolbar .choice-grid-trigger{width:100%;min-width:0}
+ body.view-mobile #preferredTeamPickerBtn{grid-column:1/-1;width:100%;min-height:42px}
+ .ref-mode-head{gap:8px;flex-wrap:wrap}
+ .ref-mode-head .lineup-tabs{width:100%;justify-content:stretch}
+ .lineup-mode-trigger{width:100%}
+}
+@media(max-width:520px){.choice-grid-panel{width:min(340px,calc(100vw - 18px))}.choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.choice-grid.mode-grid{grid-template-columns:1fr}.choice-cell{min-height:44px}}
+
+/* Screenshot-style year grid picker */
+.year-native-select{display:none!important}
+.year-grid-trigger{width:100%;min-height:38px;border:1px solid var(--line);border-radius:9px;background:#0a1421;color:var(--text);padding:8px 10px;text-align:left;display:flex;align-items:center;justify-content:space-between;font-weight:700}
+.year-grid-trigger:hover{border-color:#6b77d8}
+.year-grid-backdrop{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.28)}
+.year-grid-backdrop.open{display:flex}
+.year-grid-panel{width:min(370px,calc(100vw - 28px));background:#fff;color:#3f4652;border:1px solid #d8dce4;border-radius:6px;box-shadow:0 14px 38px rgba(0,0,0,.28);padding:10px 12px 12px}
+.year-grid-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eceef2;padding:1px 2px 8px;margin-bottom:8px}
+.year-grid-head strong{font-size:13px;color:#303641}
+.year-grid-close{border:0;background:transparent;color:#777;font-size:22px;line-height:1;padding:0 4px}
+.year-grid-quick{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px}
+.year-quick-btn{border:1px solid #e0e3e8;background:#f7f8fa;color:#59616e;border-radius:6px;padding:7px 5px;font-size:11px}
+.year-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:2px}
+.year-cell{border:0;background:transparent;color:#a2a7af;border-radius:4px;min-height:31px;padding:4px 1px;font-size:12px;font-variant-numeric:tabular-nums}
+.year-cell:hover,.year-cell:focus-visible{background:#f0edff;color:#6049d8;outline:none}
+.year-cell.selected,.year-quick-btn.selected{background:#6f58e8;color:#fff;border-color:#6f58e8;font-weight:900}
+.setdeck-param .setdeck-year-trigger{flex:1;min-width:0;font-size:9px;padding:5px 8px;min-height:28px}
+@media(max-width:520px){.year-grid-panel{width:min(330px,calc(100vw - 18px))}.year-grid{grid-template-columns:repeat(6,1fr)}.year-cell{min-height:34px;font-size:12px}}
 </style>
 <style>
 #growModal .modal{width:min(760px,96vw)}
@@ -1395,6 +1444,55 @@ body{background:#fff!important;color:#17191c!important}
  text-shadow:none!important;
 }
 </style>
+
+<style id="batting-order-visual-v1">
+#refBattingOrderPanel.batting-order-modal-panel.open{
+ position:fixed!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;
+ width:min(700px,94vw)!important;max-height:88vh!important;overflow:auto!important;z-index:12000!important;
+ background:#fff!important;border:1px solid #777!important;border-radius:0!important;box-shadow:0 0 0 100vmax rgba(0,0,0,.68),0 16px 50px rgba(0,0,0,.28)!important;color:#222!important;
+}
+#refBattingOrderPanel .batting-order-modal-head{position:sticky;top:0;z-index:5;background:#fff!important;min-height:54px;border-bottom:1px solid #777!important;justify-content:center!important}
+#refBattingOrderPanel .batting-order-modal-head strong{font-size:16px}
+.batting-order-close{position:absolute;right:17px;top:50%;transform:translateY(-50%);border:0;background:transparent;font-size:31px;font-weight:300;line-height:1;color:#444;cursor:pointer}
+#refBattingOrderPanel .pb{padding:20px 26px 18px!important;background:#fff!important}
+.batting-order-help{text-align:center;font-size:11px;color:#666;margin-bottom:16px;min-height:18px}
+.batting-order-help b{color:#6b4ce6}
+.batting-order-stage{display:grid;gap:15px;justify-content:center}
+.batting-five-grid,.batting-four-grid{display:grid;gap:9px;justify-content:center}
+.batting-five-grid{grid-template-columns:repeat(5,86px)}
+.batting-four-grid{grid-template-columns:repeat(4,86px)}
+.batting-group-bar{height:19px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:900;margin-bottom:-3px}
+.batting-group-bar.top{background:#ff3340}.batting-group-bar.cleanup{background:#3f70ef}.batting-group-bar.bottom{background:#16a51e}
+.batting-order-slot{width:86px;display:flex;flex-direction:column;align-items:stretch;gap:4px}
+.batting-order-number{text-align:center;font-size:12px;font-weight:900;color:#333}
+.batting-empty{height:102px;border:1px solid #979ca1;border-radius:5px;background:linear-gradient(145deg,#f7f9fa,#d6d8da);display:grid;place-items:center;cursor:pointer;padding:0}
+.batting-empty span{width:47px;height:47px;border-radius:50%;background:#000;display:grid;place-items:center;font-size:31px;font-weight:300;line-height:1}
+.batting-order-slot.top .batting-empty span{color:#ff3340}.batting-order-slot.cleanup .batting-empty span{color:#3f70ef}.batting-order-slot.bottom .batting-empty span{color:#16a51e}
+.batting-player-card{position:relative;width:86px;min-width:86px;border:0;background:transparent;padding:0;cursor:pointer;color:inherit;text-align:initial;display:flex;flex-direction:column;align-items:stretch;gap:4px}
+.batting-player-card.selected{outline:3px solid #7656e8;outline-offset:4px;border-radius:6px}
+.batting-skill-list{display:flex;flex-direction:column;gap:2px;width:100%;margin-top:2px}
+.batting-skill-chip{display:block;width:100%;box-sizing:border-box;border-left:3px solid var(--skill-color);background:#f4f5f7;border-radius:3px;padding:2px 3px;color:#333;font-size:7px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left}
+.batting-skill-chip b{color:var(--skill-color);font-weight:1000}
+.batting-skill-empty{display:block;width:100%;box-sizing:border-box;margin-top:2px;color:#999;font-size:7px;text-align:center;padding:2px}
+.batting-card-shell{position:relative;display:block;width:86px;height:102px;border-radius:5px;overflow:hidden;background:#d9dde1;border:1px solid rgba(0,0,0,.15)}
+.batting-card-shell .lc-stars{font-size:8px!important;left:4px!important;top:1px!important}.batting-card-shell .lc-team-logo{width:19px!important;height:19px!important;right:3px!important;top:15px!important}
+.batting-card-ovr{position:absolute;left:5px;top:15px;z-index:5;color:#fff;font-weight:1000;font-size:16px;text-shadow:0 1px 2px rgba(0,0,0,.85)}
+.batting-card-pos{position:absolute;right:4px;top:35px;z-index:5;color:#fff;font-size:9px;font-weight:900;text-shadow:0 1px 2px rgba(0,0,0,.9)}
+.batting-card-shell .lc-photo,.batting-card-shell .lc-photo-placeholder{position:absolute!important;inset:18px 4px 22px 4px!important;width:calc(100% - 8px)!important;height:calc(100% - 40px)!important;object-fit:contain!important}
+.batting-card-bottom{position:absolute;left:0;right:0;bottom:0;z-index:8;padding:3px 3px 4px;text-align:center;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff}
+.batting-card-series{display:block;font-size:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.batting-card-name{display:block;font-size:9px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.batting-current-order{position:absolute;right:-5px;top:-6px;z-index:15;background:#5b5b5b;color:#fff;border-radius:999px;padding:2px 5px;font-size:8px;font-weight:900}
+.batting-player-pool-title{text-align:center;margin:22px 0 10px;font-size:11px;font-weight:900;color:#555}
+.batting-player-pool{display:flex;gap:12px;justify-content:center;align-items:flex-start;flex-wrap:wrap;min-height:112px}
+.batting-empty-lineup{font-size:12px;color:#777;padding:22px}
+@media(max-width:620px){
+ #refBattingOrderPanel.batting-order-modal-panel.open{width:96vw!important;max-height:91vh!important}
+ #refBattingOrderPanel .pb{padding:16px 10px!important}
+ .batting-five-grid{grid-template-columns:repeat(5,64px);gap:5px}.batting-four-grid{grid-template-columns:repeat(4,64px);gap:7px}
+ .batting-order-slot,.batting-player-card{width:64px;min-width:64px}.batting-card-shell{width:64px;height:86px}.batting-empty{height:86px}.batting-empty span{width:40px;height:40px;font-size:27px}
+ .batting-card-ovr{font-size:13px}.batting-card-name{font-size:7px}.batting-skill-chip,.batting-skill-empty{font-size:6px}.batting-player-pool{gap:9px}
+}
+</style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="field-remove-black" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2126 .7152 .0722 0 0"/><feComponentTransfer><feFuncA type="linear" slope="20" intercept="-0.5"/></feComponentTransfer><feComposite in="SourceGraphic" operator="in"/></filter></defs></svg>
@@ -1402,8 +1500,8 @@ body{background:#fff!important;color:#17191c!important}
  <div class="top">
   <div class="brand">
    <div class="logo">V26</div>
-   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.2 · 스킬 130 · 선수사진 없음</span></h1>
-   <div class="sub">8,958장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
+   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.3 · 스킬 130 · 선수사진 없음</span></h1>
+   <div class="sub">8,982장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
   </div>
   <div class="toolbar">
    <label style="font-size:10px;color:var(--muted)">선호구단</label>
@@ -1557,9 +1655,9 @@ body{background:#fff!important;color:#17191c!important}
     </section>
    </div>
 
-   <section id="refBattingOrderPanel" class="panel ref-collapsible">
-    <div class="ph"><strong>타순 설정</strong><button class="mini" onclick="toggleRefPanel('refBattingOrderPanel')">닫기</button></div>
-    <div class="pb"><p>선수 옆에서 원하는 타순을 선택하세요. 해당 타순의 선수와 순서가 서로 바뀝니다.</p><div id="battingOrder" class="batting-order"></div></div>
+   <section id="refBattingOrderPanel" class="panel ref-collapsible batting-order-modal-panel">
+    <div class="ph batting-order-modal-head"><strong>타순 설정</strong><button class="batting-order-close" onclick="toggleRefPanel('refBattingOrderPanel')" aria-label="타순 설정 닫기">×</button></div>
+    <div class="pb"><div id="battingOrder" class="batting-order"></div></div>
    </section>
 
    <section id="refPatchPanel" class="panel ref-collapsible">

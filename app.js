@@ -202,7 +202,16 @@ function initViewMode(){
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 
 let currentMode=localStorage.getItem("v26_mode")||"ranking";
-let preferredTeam=localStorage.getItem("v26_pref_team")||"SSG";
+const NO_PREFERRED_TEAM="무소속";
+const PREF_TEAM_MIGRATION_KEY="v26_pref_team_unassigned_v1";
+let preferredTeam=localStorage.getItem("v26_pref_team");
+// 기존 버전은 SSG가 자동 기본값이었으므로 이 버전 최초 실행 때 한 번만 무소속으로 전환한다.
+if(!localStorage.getItem(PREF_TEAM_MIGRATION_KEY)){
+ preferredTeam=NO_PREFERRED_TEAM;
+ localStorage.setItem("v26_pref_team",preferredTeam);
+ localStorage.setItem(PREF_TEAM_MIGRATION_KEY,"1");
+}
+if(!preferredTeam||(!TEAMS.includes(preferredTeam)&&preferredTeam!==NO_PREFERRED_TEAM))preferredTeam=NO_PREFERRED_TEAM;
 let lineups={ranking:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},realtime:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},club:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},league:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},special:{slots:{},order:{},setdeckChoices:{},positionTraining:{}}};
 let growth={};
 let currentGrowId=null,currentFaId=null;
@@ -254,8 +263,10 @@ function allstarGroup(team){
  if(ALLSTAR_GROUPS.nanum.has(team))return "nanum";
  return "";
 }
+function hasPreferredTeam(){return TEAMS.includes(preferredTeam)}
 function effectiveSetdeckScore(p){
  const f=family(p),year=Number(p.year),pastSeason=Number.isFinite(year)&&year>0&&(year<=25||(year>=1900&&year<=2025));
+ if(!hasPreferredTeam())return 0;
  if(!["gold","allstar"].includes(f)&&effectiveTeam(p)!==preferredTeam)return 0;
  if(f==="allstar"){
    const own=p.team===preferredTeam;
@@ -275,8 +286,24 @@ function effectiveSetdeckScore(p){
 
 function isYearlessImpact(p){return family(p)==="impact"}
 function displayYear(p){return isYearlessImpact(p)?"":(p.year??"")}
+function normalizeYearKey(value){
+ if(value===null||value===undefined||value==="")return "";
+ if(String(value)==="없음")return "없음";
+ const raw=String(value).trim();
+ const n=Number(raw);
+ if(Number.isFinite(n)){
+   if(n>=1900&&n<=2099)return String(n%100).padStart(2,"0");
+   if(n>=0&&n<=99)return String(n).padStart(2,"0");
+ }
+ return raw;
+}
+function yearSortNumber(value){
+ const y=Number(normalizeYearKey(value));
+ if(!Number.isFinite(y))return 9999;
+ return y>=82?1900+y:2000+y;
+}
 function receivesYearEffect(p,selectedYear){
- return isYearlessImpact(p) || String(p.year)==String(selectedYear);
+ return isYearlessImpact(p) || normalizeYearKey(p.year)===normalizeYearKey(selectedYear);
 }
 
 function maxTraining(p){
@@ -688,9 +715,9 @@ function isFa(p,g=getGrowth(p)){return canFa(p)&&g.faTeam&&g.faTeam!==p.team}
 function canChangeTeam(p,g=getGrowth(p)){return canFa(p)||isNationalWildcard(p,g)}
 function effectiveTeam(p,g=getGrowth(p)){return canChangeTeam(p,g)&&TEAMS.includes(g.faTeam)?g.faTeam:p.team}
 function teamForEffects(p,g=getGrowth(p)){
- if(family(p)==="gold")return preferredTeam;
+ if(family(p)==="gold")return hasPreferredTeam()?preferredTeam:"";
  if(isNationalWildcard(p,g))return effectiveTeam(p,g);
- if(family(p)==="national"&&isNationalSpecial(p,g))return preferredTeam;
+ if(family(p)==="national"&&isNationalSpecial(p,g))return hasPreferredTeam()?preferredTeam:"";
  return effectiveTeam(p,g);
 }
 function receivesTeamEffect(p,team,g=getGrowth(p)){
@@ -710,6 +737,7 @@ function specialBounds(p,faTeam){
  return [0,0];
 }
 function specialApplies(p,g=getGrowth(p)){
+ if(!hasPreferredTeam())return false;
  const f=family(p),team=teamForEffects(p,g);
  if(f==="gold")return team===preferredTeam;
  if(["national","signature","impact","season"].includes(f))return team===preferredTeam;
@@ -1455,8 +1483,8 @@ function init(){
  fill("team",TEAMS);fill("pos",POS);
  fill("type",[...new Set(players.map(p=>p.type).filter(Boolean))].sort());
  fill("series",[...new Set(players.map(p=>p.series).filter(Boolean))].sort());
- fill("year",["없음",...[...new Set(players.map(p=>p.year).filter(v=>v!==null&&v!==undefined&&v!==""))].sort((a,b)=>Number(b)-Number(a))]);
- fill("preferredTeam",TEAMS,false);
+ fill("year",["없음",...setdeckYearOptions()]);
+ fill("preferredTeam",[NO_PREFERRED_TEAM,...TEAMS],false);
  fill("pickerTeam",TEAMS);
  fill("pickerType",["골든글러브","국가대표","시그니처","시즌","라이브","라이브 올스타","임팩트"]);
  fill("pickerSeries",[...new Set(players.filter(p=>p.type==="임팩트").map(p=>p.series).filter(Boolean))].sort());
@@ -1464,8 +1492,10 @@ function init(){
  ["pickerQ","pickerTeam","pickerType","pickerSeries"].forEach(id=>$(id).addEventListener(id==="pickerQ"?"input":"change",()=>{clearTimeout(pickerSearchTimer);pickerPage=1;if(id==="pickerQ")pickerSearchTimer=setTimeout(renderPlayerPicker,180);else renderPlayerPicker()}));
 
  $("preferredTeam").value=preferredTeam;
- ["q","team","type","series","year","pos","statsFilter"].forEach(id=>$(id).addEventListener(id==="q"?"input":"change",()=>{playerPage=1;renderPlayers()}));
- $("preferredTeam").addEventListener("change",()=>{preferredTeam=$("preferredTeam").value;localStorage.setItem("v26_pref_team",preferredTeam);renderAll()});
+ initChoiceGridPickers();
+ initYearGridPicker();
+ ["q","team","type","series","year","pos","statsFilter"].forEach(id=>$(id).addEventListener(id==="q"?"input":"change",()=>{playerPage=1;renderPlayers();if(id==="year")updateYearFilterButton()}));
+ $("preferredTeam").addEventListener("change",()=>{preferredTeam=$("preferredTeam").value;localStorage.setItem("v26_pref_team",preferredTeam);updateChoiceGridTriggers();renderAll()});
  renderTabs();renderAll();
 }
 function fill(id,arr,keepFirst=true){
@@ -1473,13 +1503,13 @@ function fill(id,arr,keepFirst=true){
  arr.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;s.appendChild(o)});
 }
 function renderTabs(){
- $("lineupTabs").innerHTML=Object.entries(MODES).map(([k,v])=>`<button class="tab ${k===currentMode?"active":""}" onclick="switchMode('${k}')">${v}</button>`).join("");
+ $("lineupTabs").innerHTML=`<button type="button" id="lineupModePickerBtn" class="choice-grid-trigger lineup-mode-trigger" onclick="openChoiceGridPicker('mode')">${esc(MODES[currentMode]||'라인업 선택')} <span>▾</span></button>`;
 }
-function switchMode(m){currentMode=m;localStorage.setItem("v26_mode",m);renderTabs();renderAll()}
+function switchMode(m){currentMode=m;localStorage.setItem("v26_mode",m);renderTabs();updateChoiceGridTriggers();renderAll()}
 
 const PLAYER_PAGE_SIZE=100;
 let playerPage=1;
-function playerYearValue(p){return isYearlessImpact(p)?"없음":String(p.year??"없음")}
+function playerYearValue(p){return isYearlessImpact(p)?"없음":normalizeYearKey(p.year??"없음")}
 function baseStatsHTML(p){
  return `<div class="base-stats">${statMeta(p).map(([k,l])=>`<div class="base-stat"><small>${l}</small><b>${p.stats?.[k]??"—"}</b></div>`).join("")}</div>`;
 }
@@ -1519,7 +1549,7 @@ function renderPlayers(){
      ${maxAwakening(p)?`<span class="tag">${g.awakening}각</span>`:""}
      ${specialBounds(p,g.faTeam)[1]?`<span class="tag">특훈 ${g.special}</span>`:""}
      ${lineupModeBonus(p)>0?`<span class="tag mode-bonus-tag">라인업효과 +${lineupModeBonus(p)}</span>`:""}
-     ${family(p)==="gold"?`<span class="tag" style="background:#3a2e10;color:#ffe59c">팀효과 ${esc(preferredTeam)}</span>`:""}
+     ${family(p)==="gold"?`<span class="tag" style="background:#3a2e10;color:#ffe59c">${hasPreferredTeam()?`팀효과 ${esc(preferredTeam)}`:"팀효과 미적용"}</span>`:""}
     </div>
     ${baseStatsHTML(p)}
    </div>
@@ -1542,6 +1572,149 @@ function lineupSetdeckInfo(mode=currentMode){
  return {total,unknown,counted,effectScore:Math.min(200,total)};
 }
 
+
+
+let choicePickerTarget=null;
+function ensureChoiceGridPicker(){
+ if(document.getElementById("choiceGridBackdrop"))return;
+ const backdrop=document.createElement("div");
+ backdrop.id="choiceGridBackdrop";
+ backdrop.className="choice-grid-backdrop";
+ backdrop.innerHTML=`<div id="choiceGridPanel" class="choice-grid-panel" role="dialog" aria-modal="true" aria-labelledby="choiceGridTitle" onclick="event.stopPropagation()">
+   <div class="choice-grid-head"><strong id="choiceGridTitle">선택</strong><button type="button" class="choice-grid-close" aria-label="닫기" onclick="closeChoiceGridPicker()">×</button></div>
+   <div id="choiceGrid" class="choice-grid"></div>
+  </div>`;
+ backdrop.addEventListener("click",closeChoiceGridPicker);
+ document.body.appendChild(backdrop);
+ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeChoiceGridPicker()});
+}
+function initChoiceGridPickers(){
+ ensureChoiceGridPicker();
+ const select=$("preferredTeam");
+ if(select){
+   select.classList.add("choice-native-select");
+   if(!$("preferredTeamPickerBtn")){
+     const btn=document.createElement("button");
+     btn.type="button";
+     btn.id="preferredTeamPickerBtn";
+     btn.className="choice-grid-trigger preferred-team-trigger";
+     btn.onclick=()=>openChoiceGridPicker("team");
+     select.insertAdjacentElement("afterend",btn);
+   }
+ }
+ updateChoiceGridTriggers();
+}
+function updateChoiceGridTriggers(){
+ const teamBtn=$("preferredTeamPickerBtn");
+ if(teamBtn)teamBtn.innerHTML=`${esc(hasPreferredTeam()?preferredTeam:NO_PREFERRED_TEAM)} <span>▾</span>`;
+ const modeBtn=$("lineupModePickerBtn");
+ if(modeBtn)modeBtn.innerHTML=`${esc(MODES[currentMode]||"라인업 선택")} <span>▾</span>`;
+}
+function openChoiceGridPicker(kind){
+ ensureChoiceGridPicker();
+ choicePickerTarget=kind;
+ const backdrop=$("choiceGridBackdrop"),grid=$("choiceGrid"),title=$("choiceGridTitle");
+ if(!backdrop||!grid||!title)return;
+ let items=[],current="";
+ if(kind==="team"){
+   title.textContent="선호구단 선택";
+   current=preferredTeam;
+   items=[NO_PREFERRED_TEAM,...TEAMS].map(v=>({value:v,label:v}));
+   grid.className="choice-grid";
+ }else{
+   title.textContent="라인업 선택";
+   current=currentMode;
+   items=Object.entries(MODES).map(([value,label])=>({value,label}));
+   grid.className="choice-grid mode-grid";
+ }
+ grid.innerHTML=items.map(item=>`<button type="button" class="choice-cell ${item.value===current?"selected":""}" data-value="${esc(item.value)}" onclick="chooseChoiceFromGrid(this.dataset.value)">${esc(item.label)}</button>`).join("");
+ backdrop.classList.add("open");
+ requestAnimationFrame(()=>grid.querySelector(".choice-cell.selected,.choice-cell")?.focus());
+}
+function chooseChoiceFromGrid(value){
+ if(choicePickerTarget==="team"){
+   const select=$("preferredTeam");
+   if(select){select.value=value;select.dispatchEvent(new Event("change",{bubbles:true}));}
+ }else if(choicePickerTarget==="mode"&&Object.hasOwn(MODES,value)){
+   switchMode(value);
+ }
+ closeChoiceGridPicker();
+}
+function closeChoiceGridPicker(){
+ $("choiceGridBackdrop")?.classList.remove("open");
+ choicePickerTarget=null;
+}
+
+let yearPickerTarget=null;
+function yearPickerElements(){
+ return {backdrop:document.getElementById("yearGridBackdrop"),panel:document.getElementById("yearGridPanel"),title:document.getElementById("yearGridTitle"),grid:document.getElementById("yearGrid")};
+}
+function ensureYearGridPicker(){
+ if(document.getElementById("yearGridBackdrop"))return;
+ const backdrop=document.createElement("div");
+ backdrop.id="yearGridBackdrop";
+ backdrop.className="year-grid-backdrop";
+ backdrop.innerHTML=`<div id="yearGridPanel" class="year-grid-panel" role="dialog" aria-modal="true" aria-labelledby="yearGridTitle" onclick="event.stopPropagation()">
+   <div class="year-grid-head"><strong id="yearGridTitle">연도 선택</strong><button type="button" class="year-grid-close" aria-label="닫기" onclick="closeYearGridPicker()">×</button></div>
+   <div id="yearGridQuick" class="year-grid-quick"></div>
+   <div id="yearGrid" class="year-grid"></div>
+  </div>`;
+ backdrop.addEventListener("click",closeYearGridPicker);
+ document.body.appendChild(backdrop);
+ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeYearGridPicker()});
+}
+function initYearGridPicker(){
+ ensureYearGridPicker();
+ const select=$("year");
+ if(!select)return;
+ select.classList.add("year-native-select");
+ if(!$("yearPickerBtn")){
+   const btn=document.createElement("button");
+   btn.type="button";
+   btn.id="yearPickerBtn";
+   btn.className="year-grid-trigger year-filter-trigger";
+   btn.onclick=()=>openYearGridPicker("filter");
+   select.insertAdjacentElement("afterend",btn);
+ }
+ updateYearFilterButton();
+}
+function updateYearFilterButton(){
+ const select=$("year"),btn=$("yearPickerBtn");
+ if(!select||!btn)return;
+ const v=select.value;
+ btn.innerHTML=v===""?`전체 연도 <span>▾</span>`:v==="없음"?`연도 없음 <span>▾</span>`:`'${esc(normalizeYearKey(v))}년 <span>▾</span>`;
+}
+function openYearGridPicker(mode="filter",score=null){
+ ensureYearGridPicker();
+ yearPickerTarget={mode,score};
+ const els=yearPickerElements();
+ const years=setdeckYearOptions();
+ let current="";
+ if(mode==="setdeck") current=normalizeYearKey(getSetdeckParam(score,"year"));
+ else current=$("year")?.value||"";
+ els.title.textContent=mode==="setdeck"?`${score}점 선택 연도`:"연도 선택";
+ const quick=document.getElementById("yearGridQuick");
+ quick.innerHTML=mode==="filter"?`<button type="button" class="year-quick-btn ${current===""?"selected":""}" onclick="chooseYearFromGrid('')">전체 연도</button><button type="button" class="year-quick-btn ${current==="없음"?"selected":""}" onclick="chooseYearFromGrid('없음')">연도 없음</button>`:"";
+ els.grid.innerHTML=years.map(y=>`<button type="button" class="year-cell ${normalizeYearKey(current)===y?"selected":""}" onclick="chooseYearFromGrid('${y}')">${y}</button>`).join("");
+ els.backdrop.classList.add("open");
+ requestAnimationFrame(()=>els.panel.querySelector(".year-cell.selected,.year-quick-btn.selected,.year-cell")?.focus());
+}
+function chooseYearFromGrid(value){
+ if(!yearPickerTarget)return;
+ if(yearPickerTarget.mode==="setdeck"){
+   setSetdeckParam(yearPickerTarget.score,"year",normalizeYearKey(value));
+ }else{
+   const select=$("year");
+   if(select){select.value=value;select.dispatchEvent(new Event("change",{bubbles:true}));}
+   updateYearFilterButton();
+ }
+ closeYearGridPicker();
+}
+function closeYearGridPicker(){
+ document.getElementById("yearGridBackdrop")?.classList.remove("open");
+ yearPickerTarget=null;
+}
+
 function setdeckParamNeed(score,side){
  const text=SETDECK_EFFECTS[Number(score)]?.[side]||"";
  if(text.includes("선택된 선수"))return "player";
@@ -1550,16 +1723,19 @@ function setdeckParamNeed(score,side){
  return null;
 }
 function setdeckYearOptions(){
- return [...new Set(players.map(p=>p.year).filter(v=>v!==null&&v!==undefined&&v!==""))]
-   .sort((a,b)=>Number(b)-Number(a));
+ return [...new Set(players.map(p=>normalizeYearKey(p.year)).filter(v=>v&&v!=="없음"))]
+   .sort((a,b)=>yearSortNumber(a)-yearSortNumber(b));
 }
 function getSetdeckParam(score,key,mode=currentMode){
  const L=ensureLineupState(mode);
  if(!L.setdeckParams[String(score)])L.setdeckParams[String(score)]={};
  let v=L.setdeckParams[String(score)][key];
  if(v!==undefined&&v!==null&&v!=="")return v;
- if(key==="team")v=preferredTeam;
- else if(key==="year")v=setdeckYearOptions()[0]??"2026";
+ if(key==="team")v=hasPreferredTeam()?preferredTeam:TEAMS[0];
+ else if(key==="year"){
+   const years=setdeckYearOptions();
+   v=years.includes("26")?"26":(years.at(-1)??"26");
+ }
  else if(key==="player")v=Object.values(L.slots).find(Boolean)||"";
  L.setdeckParams[String(score)][key]=v;
  return v;
@@ -1578,8 +1754,8 @@ function renderSetdeckParamControl(score,side){
    return `<div class="setdeck-param"><label>${score}점 선택 팀</label><select onchange="setSetdeckParam(${score},'team',this.value)">${opts}</select></div>`;
  }
  if(need==="year"){
-   const opts=setdeckYearOptions().map(y=>`<option value="${y}" ${String(y)===String(value)?"selected":""}>${y}년</option>`).join("");
-   return `<div class="setdeck-param"><label>${score}점 선택 연도</label><select onchange="setSetdeckParam(${score},'year',this.value)">${opts}</select></div>`;
+   const y=normalizeYearKey(value)||"26";
+   return `<div class="setdeck-param"><label>${score}점 선택 연도</label><button type="button" class="year-grid-trigger setdeck-year-trigger" onclick="openYearGridPicker('setdeck',${score})">'${esc(y)}년 <span>▾</span></button></div>`;
  }
  const entries=Object.entries(L.slots).filter(([,id])=>id).map(([slot,id])=>[slot,players.find(p=>p.id===id)]).filter(([,p])=>p);
  const opts=entries.map(([slot,p])=>`<option value="${p.id}" ${p.id===value?"selected":""}>${slot} · ${esc(p.name)} · ${esc(p.type)}</option>`).join("");
@@ -2111,7 +2287,7 @@ function pickerBaseCardHTML(p,{disabled=false,current=false,slot=""}={}){
       <span>${esc(p.type)}</span>${p.series?`<span>${esc(p.series)}</span>`:""}<span>${esc(p.team)}</span><span>${esc(p.pos)}</span>${cardStars(p)?`<span>${cardStars(p)}성</span>`:""}
     </div>
     <div class="base-picker-stats">${baseStatsInlineHTML(p)}</div>
-    <div class="base-picker-setdeck">적용 세트덱 스코어: ${effectiveSetdeckScore(p)??"—"}${family(p)==="live"&&[25,2025].includes(Number(p.year))?` (25시즌 1/2)`:family(p)==="allstar"?` (${Number(p.year)<=25?"과거 시즌 1/2 · ":""}${p.team===preferredTeam?"자팀":allstarGroup(p.team)===allstarGroup(preferredTeam)?"같은 올스타팀":"반대 올스타팀"})`:""} · <strong>기본 능력치</strong></div>
+    <div class="base-picker-setdeck">적용 세트덱 스코어: ${effectiveSetdeckScore(p)??"—"}${family(p)==="live"&&[25,2025].includes(Number(p.year))?` (25시즌 1/2)`:family(p)==="allstar"?` (${!hasPreferredTeam()?"선호구단 미선택":`${Number(p.year)<=25?"과거 시즌 1/2 · ":""}${p.team===preferredTeam?"자팀":allstarGroup(p.team)===allstarGroup(preferredTeam)?"같은 올스타팀":"반대 올스타팀"}`})`:""} · <strong>기본 능력치</strong></div>
    </div></div>
    ${disabled?`<div class="base-picker-disabled">이미 현재 라인업에 같은 선수가 있어</div>`:""}
   </div>`;
@@ -2324,13 +2500,86 @@ function renderSquad(){
  renderBullpenRoles();
  renderBattingOrder();renderSetdeckPosition();renderLineupEffects();calcSummary();hydratePlayerPhotos($("diamond"));hydratePlayerPhotos($("bench"));hydratePlayerPhotos($("pitchers"));hydrateTeamLogos($("diamond"));hydrateTeamLogos($("bench"));hydrateTeamLogos($("pitchers"));
 }
-function renderBattingOrder(){
- const L=lineup(),rows=[];
- for(let n=1;n<=9;n++){
-  const pos=Object.keys(L.order).find(k=>Number(L.order[k])===n),p=pos?players.find(x=>x.id===L.slots[pos]):null;
-  rows.push(`<div class="order-row"><div><div class="num">${n}</div><div class="group">${orderGroup(n)}</div></div><div>${p?`<b style="font-size:14px">${esc(p.name)}</b><div class="order-pos">${pos} · ${esc(effectiveTeam(p))}</div>`:`<span class="meta">미지정</span>`}</div>${p?`<select aria-label="${esc(p.name)} 타순" style="min-height:44px;min-width:76px;font-size:16px" onchange="setOrder('${pos}',this.value)">${Array.from({length:9},(_,i)=>`<option value="${i+1}" ${i+1===n?'selected':''}>${i+1}번</option>`).join('')}</select>`:'<span class="tag">-</span>'}</div>`);
+let battingPickSlot=null;
+function battingOrderAccent(n){
+ n=Number(n);
+ return n<=2?"top":n<=5?"cleanup":"bottom";
+}
+function battingOrderSkillHTML(p,pos){
+ const rows=playerSkills(p).filter(x=>x?.id);
+ if(!rows.length)return `<span class="batting-skill-empty">스킬 없음</span>`;
+ return `<span class="batting-skill-list">${rows.map((x,i)=>{
+  const d=skillDefinition(x.id),lv=effectiveSkillLevel(p,i,pos,currentMode),tier=d?.tier||'national';
+  return `<span class="batting-skill-chip" style="--skill-color:${SKILL_COLORS[tier]||'#666'}" title="${esc(SKILL_TIER_NAMES[tier]||tier)} · ${esc(d?.name||x.id)} · Lv ${lv}">${esc(d?.name||x.id)} <b>Lv${lv}</b></span>`;
+ }).join('')}</span>`;
+}
+function battingOrderMiniCard(p,pos,n,selectable=false){
+ const g=getGrowth(p),series=gameCardSeriesText(p,g);
+ const selected=battingPickSlot===pos?" selected":"";
+ return `<button type="button" class="batting-player-card${selected}" onclick="${selectable?`selectBattingPlayer('${pos}')`:`clickBattingOrderSlot(${n})`}" aria-label="${esc(p.name)} ${selectable?'타순 배치 선수 선택':`${n}번 타순`}">
+   <span class="batting-card-shell ${cardBackgroundClass(p,g)}">
+    ${gameStarHTML(p,true)}
+    <span class="batting-card-ovr">${effectiveCardOvr(p,g,pos,currentMode)??"—"}</span>
+    ${teamLogoHTML(effectiveTeam(p),true,isFa(p))}
+    <span class="batting-card-pos">${esc(p.pos)}</span>
+    ${gamePhotoHTML(p,true)}
+    <span class="batting-card-bottom">${series?`<span class="batting-card-series">${esc(series)}</span>`:""}<span class="batting-card-name">${gameCardNameHTML(p)}</span></span>
+   </span>
+   ${selectable?`<span class="batting-current-order">${Number(lineup().order[pos]||0)||"-"}번</span>`:""}
+   ${battingOrderSkillHTML(p,pos)}
+  </button>`;
+}
+function selectBattingPlayer(pos){
+ const L=lineup();
+ if(!FIELD.includes(pos)||!L.slots[pos])return;
+ battingPickSlot=battingPickSlot===pos?null:pos;
+ renderBattingOrder();
+}
+function clickBattingOrderSlot(n){
+ n=Number(n);const L=lineup();
+ if(battingPickSlot&&L.slots[battingPickSlot]){
+  const pos=battingPickSlot;
+  battingPickSlot=null;
+  setOrder(pos,n);
+  saveAll();
+  return;
  }
- $("battingOrder").innerHTML=rows.join("");
+ const pos=Object.keys(L.order).find(k=>Number(L.order[k])===n);
+ if(pos&&L.slots[pos]){battingPickSlot=pos;renderBattingOrder();return;}
+ toast('아래 타자 카드를 먼저 선택해 줘.');
+}
+function battingOrderSlotHTML(n){
+ const L=lineup();
+ const pos=Object.keys(L.order).find(k=>Number(L.order[k])===n);
+ const p=pos?players.find(x=>x.id===L.slots[pos]):null;
+ const accent=battingOrderAccent(n);
+ return `<div class="batting-order-slot ${accent}">
+   <div class="batting-order-number">${n}번</div>
+   ${p?battingOrderMiniCard(p,pos,n,false):`<button type="button" class="batting-empty" onclick="clickBattingOrderSlot(${n})" aria-label="${n}번 타순에 선수 배치"><span>+</span></button>`}
+  </div>`;
+}
+function renderBattingOrder(){
+ const L=lineup();
+ const lineupBatters=FIELD.map(pos=>{const p=L.slots[pos]?players.find(x=>x.id===L.slots[pos]):null;return p?{pos,p}:null}).filter(Boolean);
+ const pickerName=battingPickSlot&&L.slots[battingPickSlot]?players.find(x=>x.id===L.slots[battingPickSlot])?.name:null;
+ const top=[1,2,3,4,5].map(battingOrderSlotHTML).join('');
+ const bottom=[6,7,8,9].map(battingOrderSlotHTML).join('');
+ const pool=lineupBatters.length?lineupBatters.map(({pos,p})=>battingOrderMiniCard(p,pos,Number(L.order[pos]||0),true)).join(''):`<div class="batting-empty-lineup">라인업에 타자를 먼저 배치해 줘.</div>`;
+ $("battingOrder").innerHTML=`
+  <div class="batting-order-help">${pickerName?`<b>${esc(pickerName)}</b> 선택됨 · 원하는 타순 칸을 눌러 배치해 줘.`:'아래 타자 카드를 선택한 뒤 원하는 타순 칸을 누르면 기존 선수와 순서가 서로 바뀝니다.'}</div>
+  <div class="batting-order-stage">
+   <div class="batting-five-grid">
+    <div class="batting-group-bar top" style="grid-column:1 / span 2">상위 타선</div>
+    <div class="batting-group-bar cleanup" style="grid-column:3 / span 3">클린업</div>
+    ${top}
+   </div>
+   <div class="batting-four-grid">
+    <div class="batting-group-bar bottom" style="grid-column:1 / -1">하위 타선</div>
+    ${bottom}
+   </div>
+  </div>
+  <div class="batting-player-pool-title">현재 라인업 타자</div>
+  <div class="batting-player-pool">${pool}</div>`;
 }
 
 
@@ -2733,7 +2982,7 @@ function importLineupData(raw){
  const order=payload.battingOrder||payload.order||{};
  for(const [slot,n] of Object.entries(order))if(FIELD.includes(slot)&&Number.isInteger(Number(n))&&Number(n)>=1&&Number(n)<=9)next.order[slot]=Number(n);
  const team=payload.preferredTeam||data.preferredTeam;
- if(team&&!TEAMS.includes(team))throw Error('선호 구단을 확인해 줘.');
+ if(team&&team!==NO_PREFERRED_TEAM&&!TEAMS.includes(team))throw Error('선호 구단을 확인해 줘.');
  // Validate before replacing the current lineup.
  if(importedCustom.length){const cards=new Map(players.filter(p=>p.custom).map(p=>[p.id,p]));for(const p of importedCustom)cards.set(p.id,p);commitCustomCards([...cards.values()]);}
  growth=nextGrowth;for(const p of players)if(growth[p.id])playerSkills(p);lineups=Object.fromEntries(Object.keys(MODES).map(m=>[m,next]));
@@ -2756,7 +3005,7 @@ function exportCurrentJSON(){download(`v26-${currentMode}-lineup.json`,JSON.stri
 function exportCurrentTXT(){download(`v26-${currentMode}-lineup.txt`,currentText(),"text/plain;charset=utf-8")}
 function exportAllJSON(){download("v26-all-lineups.json",JSON.stringify({version:8.1,preferredTeam,lineups:Object.fromEntries(Object.keys(MODES).map(m=>[m,lineupPayload(m)])),growth},null,2),"application/json")}
 async function copyCurrent(){try{await navigator.clipboard.writeText(currentText());toast("현재 라인업을 복사했어.")}catch(e){alert("브라우저에서 클립보드 복사가 막혀 있어. TXT 내보내기를 사용해 줘.")}}
-function renderAll(){ensureLineupState(currentMode);renderSquad();if(currentPickerSlot)renderPlayerPicker()}
+function renderAll(){ensureLineupState(currentMode);updateChoiceGridTriggers();renderSquad();if(currentPickerSlot)renderPlayerPicker()}
 function toast(msg){const d=document.createElement("div");d.textContent=msg;Object.assign(d.style,{position:"fixed",left:"50%",bottom:"20px",transform:"translateX(-50%)",background:"#101d2d",border:"1px solid #3d6488",color:"#eef8ff",padding:"9px 13px",borderRadius:"9px",zIndex:99,fontSize:"11px"});document.body.appendChild(d);setTimeout(()=>d.remove(),1900)}
 const CUSTOM_STORE='v26_custom_cards_v1';
 const CUSTOM_TYPES=['임팩트','시그니처','골든글러브','국가대표','LIVE','라이브 올스타','시즌'];
@@ -2807,7 +3056,7 @@ function openCustomCards(id=null){
  const d=$('customDialog');
  if(!d.open)d.showModal();
  const set=(id,v)=>$(id).value=v;
- set('customName',p?.name||'');set('customType',p?.type||'임팩트');set('customTeam',p?.team||preferredTeam);
+ set('customName',p?.name||'');set('customType',p?.type||'임팩트');set('customTeam',p?.team||(hasPreferredTeam()?preferredTeam:TEAMS[0]));
  set('customPos',p?.pos||(currentPickerSlot?pickerRequiredPos(currentPickerSlot):'CF'));
  if(!POS.includes($('customPos').value))set('customPos','CF');
  const starInput=$('customStars');starInput.replaceChildren(...[1,2,3,4,5].map(n=>new Option(n+'성',n)));delete starInput.dataset.allowed;
