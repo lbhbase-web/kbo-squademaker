@@ -1,0 +1,6 @@
+v10.4 라이트 배경 고정 수정
+- 네이버 웨일/크롬/OS 다크모드와 무관하게 사이트 자체는 라이트 테마로 유지
+- meta color-scheme=only light 추가
+- CSS color-scheme: only light 적용
+- html/body 배경 #ffffff 고정
+- theme-color #ffffff 적용

@@ -1490,6 +1490,7 @@ function init(){
  fill("pickerSeries",[...new Set(players.filter(p=>p.type==="임팩트").map(p=>p.series).filter(Boolean))].sort());
  let pickerSearchTimer;
  ["pickerQ","pickerTeam","pickerType","pickerSeries"].forEach(id=>$(id).addEventListener(id==="pickerQ"?"input":"change",()=>{clearTimeout(pickerSearchTimer);pickerPage=1;if(id==="pickerQ")pickerSearchTimer=setTimeout(renderPlayerPicker,180);else renderPlayerPicker()}));
+ initSimplePickerControls();
 
  $("preferredTeam").value=preferredTeam;
  initChoiceGridPickers();
@@ -1869,6 +1870,8 @@ function miniStats(p,slot){
 }
 
 let currentPickerSlot=null;
+let pickerPosFilter="";
+let pickerSort="stat";
 
 function pickerRequiredPos(slot){
  if(slot==="DH")return "타자 전체";
@@ -2279,22 +2282,70 @@ function playerAllowedForPicker(p,slot){
  if(BENCH.includes(slot))return FIELD.includes(p.pos);
  return slotAcceptsPlayer(slot,p);
 }
+function pickerSortLabelValue(key){
+ return ({ovr:"OVR 순",setdeck:"세트덱 스코어 순",year_asc:"연도 순 - 오름차순",year_desc:"연도 순 - 내림차순",stat:"파워+정확/변화+구위 순"}[key]||"파워+정확/변화+구위 순");
+}
+function updatePickerSortUI(){
+ const label=$("pickerSortLabel"); if(label) label.textContent=pickerSortLabelValue(pickerSort);
+ const menu=$("pickerSortMenu"); if(menu){ menu.querySelectorAll('button').forEach(btn=>btn.classList.remove('active')); const target=[...menu.querySelectorAll('button')].find(b=>b.getAttribute('onclick')===`setPickerSort('${pickerSort}')`); if(target) target.classList.add('active'); }
+}
+function togglePickerSortMenu(){ const menu=$("pickerSortMenu"); if(!menu) return; menu.classList.toggle('open'); }
+function closePickerSortMenu(){ const menu=$("pickerSortMenu"); if(menu) menu.classList.remove('open'); }
+function setPickerSort(key){ pickerSort=key||"stat"; pickerPage=1; updatePickerSortUI(); closePickerSortMenu(); renderPlayerPicker(); }
+
+function pickerDefaultPosFilter(slot){
+ if(BENCH.includes(slot)||slot==="DH") return "";
+ return pickerRequiredPos(slot);
+}
+function initSimplePickerControls(){
+ renderSimplePickerChoices();
+ updatePickerSortUI();
+ document.addEventListener("click",e=>{const menu=$("pickerSortMenu"),btn=$("pickerSortBtn"); if(!menu||!btn) return; if(menu.contains(e.target)||btn.contains(e.target)) return; closePickerSortMenu();});
+}
+function renderSimplePickerChoices(){
+ const teamWrap=$("pickerTeamGrid"),typeWrap=$("pickerTypeGrid"),posWrap=$("pickerPosGrid");
+ if(teamWrap){
+  teamWrap.innerHTML=TEAMS.map(t=>`<button type="button" class="picker-choice-btn ${$("pickerTeam")?.value===t?"active":""}" onclick="togglePickerTeam('${t}')">${t}</button>`).join("");
+ }
+ if(typeWrap){
+  const types=[["시즌","시즌"],["라이브","라이브"],["임팩트","임팩트"],["시그니처","시그니처"],["국가대표","국가대표"],["라이브 올스타","올스타"],["골든글러브","골든글러브"]];
+  typeWrap.innerHTML=types.map(([val,label])=>`<button type="button" class="picker-choice-btn ${$("pickerType")?.value===val?"active":""}" onclick="togglePickerType('${val}')">${label}</button>`).join("");
+ }
+ if(posWrap){
+  const opts=["SP","RP","CP","LF","CF","RF","1B","2B","SS","3B","C","DH"];
+  const def=pickerDefaultPosFilter(currentPickerSlot||"");
+  posWrap.innerHTML=opts.map(pos=>{
+    const locked=!!currentPickerSlot && !BENCH.includes(currentPickerSlot) && currentPickerSlot!=="DH" && def && pos!==def;
+    const active=(pickerPosFilter||def)===pos && (!locked || pos===def);
+    return `<button type="button" ${locked?"disabled":""} class="picker-choice-btn ${active?"active":""}" onclick="togglePickerPos('${pos}')">${pos}</button>`;
+  }).join("");
+ }
+}
+function togglePickerTeam(team){ const el=$("pickerTeam"); if(!el) return; el.value=(el.value===team?"":team); pickerPage=1; renderSimplePickerChoices(); renderPlayerPicker(); }
+function togglePickerType(type){ const el=$("pickerType"); if(!el) return; el.value=(el.value===type?"":type); if(el.value!=="임팩트") $("pickerSeries").value=""; pickerPage=1; renderSimplePickerChoices(); renderPlayerPicker(); }
+function togglePickerPos(pos){ if(!currentPickerSlot) return; const def=pickerDefaultPosFilter(currentPickerSlot); if(currentPickerSlot && !BENCH.includes(currentPickerSlot) && currentPickerSlot!=="DH" && def && pos!==def) return; pickerPosFilter=(pickerPosFilter===pos?"":pos); pickerPage=1; renderSimplePickerChoices(); renderPlayerPicker(); }
+function applyPickerSearch(){ pickerPage=1; renderPlayerPicker(); }
+function resetPlayerPickerFilters(){ if($("pickerQ")) $("pickerQ").value=""; if($("pickerTeam")) $("pickerTeam").value=""; if($("pickerType")) $("pickerType").value=""; if($("pickerSeries")) $("pickerSeries").value=""; pickerPosFilter=pickerDefaultPosFilter(currentPickerSlot||""); pickerPage=1; renderSimplePickerChoices(); renderPlayerPicker(); }
+
 function openPlayerPicker(slot){
  currentPickerSlot=slot;
  pickerPage=1;
  const req=pickerRequiredPos(slot);
- $("pickerTitle").textContent=`${slot} 선수 선택`;
+ pickerPosFilter=pickerDefaultPosFilter(slot);
+ $("pickerTitle").textContent=`선수 검색 - ${slot}`;
  $("pickerSub").textContent=BENCH.includes(slot)
    ? "후보 슬롯 · 타자 전체 포지션에서 선택 가능"
    : `${req} 포지션 선수만 표시`;
  if($("pickerLockedPosition"))$("pickerLockedPosition").textContent=BENCH.includes(slot)?"타자 전체":req;
- // Keep the latest filters when switching positions within this page.
  $("playerPickerModal").style.display="flex";
+ renderSimplePickerChoices();
+ updatePickerSortUI();
  renderPlayerPicker();
 }
 function closePlayerPicker(){
  $("playerPickerModal").style.display="none";
  currentPickerSlot=null;
+ pickerPosFilter="";
  pickerRenderGeneration++;
  $("pickerPlayers").replaceChildren();
  prunePhotoObservers();
@@ -2358,6 +2409,7 @@ function renderPlayerPicker(){
  const team=$("pickerTeam").value;
  const type=$("pickerType").value;
  const series=$("pickerSeries").value;
+ const posFilter=pickerPosFilter;
  const L=lineup();
 
  let list=players.filter(p=>{
@@ -2367,22 +2419,34 @@ function renderPlayerPicker(){
    if(team&&p.team!==team)return false;
    if(type&&p.type!==type&&!(type==="라이브"&&family(p)==="live"))return false;
    if(series&&p.series!==series)return false;
+   if(posFilter){
+     if(posFilter==="DH"){ if(!FIELD.includes(p.pos)) return false; }
+     else if(p.pos!==posFilter) return false;
+   }
    return true;
  });
 
  // Current lineup's same-name players are shown as unavailable.
- list.sort((a,b)=>searchStatScore(b)-searchStatScore(a)||(Number(b.ovr)||0)-(Number(a.ovr)||0));
+ list.sort((a,b)=>{
+   if(pickerSort==="ovr") return (Number(b.ovr)||0)-(Number(a.ovr)||0)||searchStatScore(b)-searchStatScore(a);
+   if(pickerSort==="setdeck") return (Number(effectiveSetdeckScore(b))||-999)-(Number(effectiveSetdeckScore(a))||-999)||(Number(b.ovr)||0)-(Number(a.ovr)||0);
+   if(pickerSort==="year_asc") return (Number(a.year)||0)-(Number(b.year)||0)||(Number(b.ovr)||0)-(Number(a.ovr)||0);
+   if(pickerSort==="year_desc") return (Number(b.year)||0)-(Number(a.year)||0)||(Number(b.ovr)||0)-(Number(a.ovr)||0);
+   return searchStatScore(b)-searchStatScore(a)||(Number(b.ovr)||0)-(Number(a.ovr)||0);
+ });
  const required=pickerRequiredPos(currentPickerSlot);
  const pages=Math.max(1,Math.ceil(list.length/PICKER_PAGE_SIZE));
  if(pickerPage>pages)pickerPage=pages;
  const pageStart=(pickerPage-1)*PICKER_PAGE_SIZE;
  const pageList=list.slice(pageStart,pageStart+PICKER_PAGE_SIZE);
- $("pickerCount").textContent=`${BENCH.includes(currentPickerSlot)?"타자":required} · ${list.length.toLocaleString()}장 검색됨 · ${pickerPage}/${pages} 페이지`;
+ $("pickerCount").textContent=`${BENCH.includes(currentPickerSlot)?"타자":required}${posFilter?` · ${posFilter}`:""} · ${list.length.toLocaleString()}장 검색됨 · ${pickerPage}/${pages} 페이지`;
  const tags=[];
  if(team)tags.push(`<span class="tag">팀: ${esc(team)}</span>`);
- if(type)tags.push(`<span class="tag">카드: ${esc(type)}</span>`);
+ if(type)tags.push(`<span class="tag">카드: ${esc(type==="라이브 올스타"?"올스타":type)}</span>`);
  if(series)tags.push(`<span class="tag">세부: ${esc(series)}</span>`);
+ if(posFilter)tags.push(`<span class="tag">포지션: ${esc(posFilter)}</span>`);
  $("pickerActive").innerHTML=tags.join("");
+ renderSimplePickerChoices();
 
  const selectedNames=new Set(Object.entries(L.slots).filter(([s])=>s!==currentPickerSlot).map(([,id])=>players.find(x=>x.id===id)?.name?.trim()).filter(Boolean));
  ++pickerRenderGeneration;

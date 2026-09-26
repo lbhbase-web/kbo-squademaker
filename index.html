@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="only light">
+<meta name="theme-color" content="#ffffff">
 <title>컴프야V26 스쿼드 메이커 · KBO 라인업·육성·세트덱</title>
 <meta name="description" content="컴프야V26 선수 카드로 KBO 스쿼드와 라인업을 구성하고, 육성·FA·세트덱·포지션 특훈·불펜 전술을 계산해 볼 수 있는 비공식 팬메이드 스쿼드 메이커입니다.">
 <meta name="keywords" content="컴프야V26, 컴투스프로야구V26, 스쿼드 메이커, KBO, 야구, 라인업, 선수카드, 세트덱, 포지션 특훈, 불펜 전술">
@@ -36,6 +38,14 @@
 }
 </script>
 <style>
+/* v10.5: keep the app light even when the browser/OS uses dark mode. */
+:root{color-scheme:only light!important;}
+html,body{background:#ffffff!important;color:#17191c!important;}
+@media (prefers-color-scheme: dark){
+  :root{color-scheme:only light!important;}
+  html,body{background:#ffffff!important;color:#17191c!important;}
+}
+
 :root{
  --bg:#07101a;--panel:#101a29;--panel2:#0c1522;--line:#26364f;
  --text:#f4f7fb;--muted:#91a4bf;--accent:#59d9ff;--accent2:#8c67ff;
@@ -1035,8 +1045,8 @@ body{background:#fff!important;color:#17191c!important}
  padding:3px 8px;font-size:8px;font-weight:700;
 }
 .base-picker-stats{
- display:grid;grid-template-columns:repeat(6,minmax(70px,1fr));
- gap:6px;margin-top:7px;font-size:10px;color:#373b40;
+ display:grid;grid-template-columns:repeat(3,minmax(72px,1fr));
+ column-gap:12px;row-gap:5px;margin-top:7px;font-size:10px;color:#373b40;
 }
 .base-picker-stats span{white-space:nowrap}
 .base-picker-stats b{font-weight:900;color:#333!important}
@@ -1073,7 +1083,7 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell.no-photo .lc-bottom{display:none!important}
 
 @media(max-width:650px){
- .base-picker-stats{grid-template-columns:repeat(3,1fr);font-size:9px}
+ .base-picker-stats{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:7px;row-gap:4px;font-size:9px}
  .base-picker-title{flex-wrap:wrap}
  .awakening-lock-note{margin-left:42px}
  .picker-photo-wrap{width:58px;min-width:58px;height:76px}
@@ -1264,6 +1274,34 @@ body{background:#fff!important;color:#17191c!important}
 .year-cell.selected,.year-quick-btn.selected{background:#6f58e8;color:#fff;border-color:#6f58e8;font-weight:900}
 .setdeck-param .setdeck-year-trigger{flex:1;min-width:0;font-size:9px;padding:5px 8px;min-height:28px}
 @media(max-width:520px){.year-grid-panel{width:min(330px,calc(100vw - 18px))}.year-grid{grid-template-columns:repeat(6,1fr)}.year-cell{min-height:34px;font-size:12px}}
+
+/* ===== Simple picker modal v10.5 ===== */
+.picker-simple-sidebar{padding:18px 18px 16px!important}
+.picker-search-row{display:grid;grid-template-columns:minmax(0,1fr) 36px 36px;gap:6px;align-items:center;margin-bottom:8px}
+.picker-search-row input{min-height:32px;border:2px solid #5c5c5c;border-radius:0;padding:0 10px;font-size:13px;background:#fff!important;color:#222!important}
+.picker-icon-btn{height:36px;border:1px solid #666;background:#555;color:#fff;border-radius:0;font-size:18px;cursor:pointer}
+.picker-icon-btn:hover{filter:brightness(1.05)}
+.picker-sort-line{font-size:12px;color:#555;margin:6px 0 16px}
+.picker-sort-wrap{position:relative;margin:6px 0 16px}
+.picker-sort-btn{background:transparent;border:0;padding:0;font-size:12px;color:#555;cursor:pointer}
+.picker-sort-menu{position:absolute;left:54px;top:14px;min-width:160px;background:#fff;border:1px solid #b8b8b8;border-radius:8px;box-shadow:0 8px 22px rgba(0,0,0,.12);padding:8px 0;display:none;z-index:30}
+.picker-sort-menu.open{display:block}
+.picker-sort-menu button{display:block;width:100%;text-align:left;background:#fff;border:0;padding:7px 14px;font-size:12px;color:#666;cursor:pointer}
+.picker-sort-menu button:hover{background:#f6f2ff;color:#6c43ff}.picker-sort-menu button.active{color:#7a48ff;font-weight:800}
+
+.picker-section-label{font-size:13px;font-weight:700;color:#666;margin:14px 0 8px}
+.picker-choice-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.picker-pos-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+.picker-choice-btn{min-height:28px;border:1px solid #707070;background:#fff;color:#333;font-size:12px;border-radius:0;cursor:pointer;padding:0 6px}
+.picker-choice-btn.active{background:#5b5b5b!important;color:#fff!important;border-color:#5b5b5b!important}
+.picker-choice-btn:disabled{opacity:.45;cursor:not-allowed;background:#f1f1f1!important;color:#888!important}
+.picker-custom-btn{margin-top:18px;background:#666;border:1px solid #666;color:#fff;border-radius:4px;font-size:12px;padding:10px 12px;cursor:pointer}
+.picker-position-tip{margin-top:10px;font-size:12px;color:#666}
+.picker-simple-results{padding:18px 18px 16px!important}
+.picker-count-line{margin-bottom:10px;font-size:12px;color:#666!important}
+.picker-simple-results .picker-list{max-height:430px!important;min-height:430px!important;padding-right:4px}
+@media(max-width:760px){.picker-body{grid-template-columns:1fr!important}.picker-choice-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.picker-pos-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.picker-simple-results .picker-list{min-height:280px!important;max-height:280px!important}}
+
 </style>
 <style>
 #growModal .modal{width:min(760px,96vw)}
@@ -1517,7 +1555,7 @@ body{background:#fff!important;color:#17191c!important}
  <div class="top">
   <div class="brand">
    <div class="logo">V26</div>
-   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.4 · 스킬 130 · 선수사진 없음</span></h1>
+   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.7 · 스킬 130 · 선수사진 없음</span></h1>
    <div class="sub">8,982장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
   </div>
   <div class="toolbar">
@@ -1705,19 +1743,37 @@ body{background:#fff!important;color:#17191c!important}
    <button class="btn" onclick="closePlayerPicker()">닫기</button>
   </div>
   <div class="picker-body">
-   <aside class="picker-sidebar">
-    <div class="picker-filters">
-     <input id="pickerQ" placeholder="선수명, 연도, 임팩트 종류 검색">
-     <select id="pickerTeam"><option value="">전체 구단</option></select>
-     <select id="pickerType"><option value="">전체 선수 종류</option></select>
-     <select id="pickerSeries"><option value="">전체 임팩트 종류</option></select>
+   <aside class="picker-sidebar picker-simple-sidebar">
+    <div class="picker-search-row">
+     <input id="pickerQ" placeholder="선수명, 연도, 임팩트 종류 등을 입력해주세요">
+     <button type="button" class="picker-icon-btn" onclick="applyPickerSearch()">🔍</button>
+     <button type="button" class="picker-icon-btn" onclick="resetPlayerPickerFilters()">↺</button>
     </div>
-    <div class="picker-filter-label">현재 선택 포지션</div>
-    <div class="picker-position-lock">포지션 <b id="pickerLockedPosition">-</b></div>
-    <div id="pickerActive" class="picker-active"></div>
+    <div class="picker-sort-wrap">
+     <button type="button" id="pickerSortBtn" class="picker-sort-btn" onclick="togglePickerSortMenu()">정렬 기준 : <span id="pickerSortLabel">파워+정확/변화+구위 순</span> ▼</button>
+     <div id="pickerSortMenu" class="picker-sort-menu">
+      <button type="button" onclick="setPickerSort('ovr')">OVR 순</button>
+      <button type="button" onclick="setPickerSort('setdeck')">세트덱 스코어 순</button>
+      <button type="button" onclick="setPickerSort('year_asc')">연도 순 - 오름차순</button>
+      <button type="button" onclick="setPickerSort('year_desc')">연도 순 - 내림차순</button>
+      <button type="button" class="active" onclick="setPickerSort('stat')">파워+정확/변화+구위 순</button>
+     </div>
+    </div>
+    <select id="pickerTeam" style="display:none"><option value="">전체 구단</option></select>
+    <select id="pickerType" style="display:none"><option value="">전체 선수 종류</option></select>
+    <select id="pickerSeries" style="display:none"><option value="">전체 임팩트 종류</option></select>
+    <div class="picker-section-label">구단</div>
+    <div id="pickerTeamGrid" class="picker-choice-grid"></div>
+    <div class="picker-section-label">포지션</div>
+    <div id="pickerPosGrid" class="picker-choice-grid picker-pos-grid"></div>
+    <div class="picker-section-label">선수 종류</div>
+    <div id="pickerTypeGrid" class="picker-choice-grid"></div>
+    <button type="button" class="picker-custom-btn" onclick="openCustomCards()">커스텀 선수 생성하기</button>
+    <div class="picker-position-tip">현재 슬롯 : <b id="pickerLockedPosition">-</b></div>
+    <div id="pickerActive" class="picker-active" style="display:none"></div>
    </aside>
-   <section class="picker-results">
-    <button type="button" onclick="openCustomCards()">커스텀 선수 만들기 / 관리</button><div id="pickerCount" class="meta picker-count-line"></div>
+   <section class="picker-results picker-simple-results">
+    <div id="pickerCount" class="meta picker-count-line"></div>
     <div id="pickerPlayers" class="picker-list"></div>
     <div id="pickerPager" class="player-pager"></div>
    </section>
@@ -1776,6 +1832,7 @@ body{background:#fff!important;color:#17191c!important}
 </dialog>
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
+<script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
 <script src="./bootstrap.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
@@ -1787,7 +1844,7 @@ body{background:#fff!important;color:#17191c!important}
 </html>
 
 <style id="light-choice-trigger-fix-v103">
-/* v10.4 select trigger visual fix: keep selected controls light instead of black. */
+/* v10.5 select trigger visual fix: keep selected controls light instead of black. */
 .choice-grid-trigger,
 .year-grid-trigger,
 #preferredTeamPickerBtn,
