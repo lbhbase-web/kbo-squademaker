@@ -1361,7 +1361,7 @@ body{background:#fff!important;color:#17191c!important}
 #playerPhotoModal{z-index:13000!important}
 #playerPhotoModal.open{display:flex!important;z-index:13000!important}
 #playerPhotoModal .player-photo-modal-box{position:relative;z-index:13001!important}
-/* v11.0: FA 선택 팝업은 선수 상세 내용보다 항상 앞 */
+/* v11.1: FA 선택 팝업은 선수 상세 내용보다 항상 앞 */
 #growModal .reference-header{position:relative!important;z-index:200!important;overflow:visible!important}
 #growModal .reference-info{position:relative!important;z-index:210!important;overflow:visible!important}
 #growModal .reference-actions{position:relative!important;z-index:220!important;overflow:visible!important}
@@ -1565,7 +1565,7 @@ body{background:#fff!important;color:#17191c!important}
  <div class="top">
   <div class="brand">
    <div class="logo">V26</div>
-   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v11.0 · 스킬 130 · 선수사진 없음</span></h1>
+   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v11.1 · 스킬 130 · 선수사진 없음</span></h1>
    <div class="sub">8,982장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
   </div>
   <div class="toolbar">
@@ -1832,11 +1832,11 @@ body{background:#fff!important;color:#17191c!important}
  <label id="customThrowHandRow">투구 방향<select id="customPitchingHand" onchange="updateCustomPreview()"><option value="">미지정</option><option value="우">우투</option><option value="좌">좌투</option></select></label>
  <label>성급<select id="customStars"><option value="1">1성</option><option value="2">2성</option><option value="3">3성</option><option value="4">4성</option><option value="5">5성</option></select></label>
  <label>연도 (예: 26)<input id="customYear" type="number" min="0" max="2099" required></label>
- <label>기본 OVR<input id="customOvr" type="number" min="1" max="200" required></label>
+ <label>기본 OVR (6개 능력치 평균 · 소수점 버림)<input id="customOvr" type="number" min="1" max="200" readonly aria-readonly="true"></label>
  <label>기본 세트덱 / 특훈 시작값<input id="customDeck" type="number" min="0" max="100" required></label>
  <label class="custom-wide">임팩트 세부 종류<input id="customSeries" maxlength="40" placeholder="예: 좌타 해결사"></label>
  <div class="custom-wide"><strong>기본 능력치</strong><div id="customStats" class="custom-fields"></div></div>
- </div><aside><div id="customPreview" aria-live="polite"></div><button id="customSave" type="submit">선수 생성</button><p>OVR·능력치·세트덱은 육성 전 수치를 입력해 줘. 카드 종류별 기존 성장 규칙이 적용돼.</p></aside></div>
+ </div><aside><div id="customPreview" aria-live="polite"></div><button id="customSave" type="submit">선수 생성</button><p>기본 OVR은 6개 기본 능력치 평균에서 소수점 이하를 버려 자동 계산돼. 능력치·세트덱은 육성 전 수치를 입력해 줘.</p></aside></div>
  </form>
  <section><h3>내 커스텀 선수</h3><div class="custom-actions"><button onclick="openCustomCards()">새 선수</button><button onclick="exportCustomCards()">백업 내보내기</button><label>백업 불러오기<input type="file" accept=".json,application/json" onchange="importCustomCards(this)"></label></div><div id="customList"></div></section>
 </dialog>

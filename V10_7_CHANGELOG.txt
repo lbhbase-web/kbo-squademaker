@@ -1,4 +1,4 @@
-KBO SquadMaker v11.0
+KBO SquadMaker v11.1
 
 - 선수 검색 정렬 기준 메뉴 유지/정리
   · OVR 순

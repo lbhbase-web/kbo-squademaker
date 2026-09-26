@@ -3117,6 +3117,20 @@ function applyCustomCardRule(){
  $('customDeck').disabled=r.base!==null;if(r.base!==null)$('customDeck').value=r.base;
  $('customYear').disabled=!r.year;
 }
+function customBaseOvrFromStats(stats,pos){
+ const meta=['SP','RP','CP'].includes(pos)?PIT_META:BAT_META;
+ const values=meta.map(([k])=>Number(stats?.[k]));
+ if(values.some(v=>!Number.isFinite(v)))return null;
+ return Math.floor(values.reduce((a,b)=>a+b,0)/values.length);
+}
+function updateCustomOvrFromStats(){
+ const pos=$('customPos')?.value||'CF';
+ const meta=['SP','RP','CP'].includes(pos)?PIT_META:BAT_META;
+ const stats=Object.fromEntries(meta.map(([k])=>[k,$('customStat-'+k)?.value]));
+ const ovr=customBaseOvrFromStats(stats,pos);
+ const input=$('customOvr');if(input&&ovr!==null)input.value=ovr;
+ return ovr;
+}
 function validateCustomCard(raw){
  if(!raw||typeof raw!=='object')throw Error('선수 데이터 형식이 올바르지 않아.');
  const name=String(raw.name||'').trim();
@@ -3124,10 +3138,11 @@ function validateCustomCard(raw){
  if(!TEAMS.includes(raw.team)||!POS.includes(raw.pos)||!CUSTOM_TYPES.includes(raw.type))throw Error('구단·포지션·카드 종류를 확인해 줘.');
  const num=(v,min,max,label)=>{const n=Number(v);if(v===''||!Number.isInteger(n)||n<min||n>max)throw Error(label+' 값을 확인해 줘.');return n;};
  const rule=customCardRule(raw.type);
- const stars=rule.stars.includes(Number(raw.stars))?Number(raw.stars):rule.stars[0],ovr=num(raw.ovr,1,200,'OVR'),setdeck=rule.base??num(raw.setdeck,0,100,'세트덱');
+ const stars=rule.stars.includes(Number(raw.stars))?Number(raw.stars):rule.stars[0],setdeck=rule.base??num(raw.setdeck,0,100,'세트덱');
  const year=raw.type==='임팩트'?null:num(raw.year,0,2099,'연도');
  const keys=['SP','RP','CP'].includes(raw.pos)?PIT_META:BAT_META;
  const stats=Object.fromEntries(keys.map(([k,l])=>[k,num(raw.stats?.[k],1,200,l)]));
+ const ovr=Math.floor(Object.values(stats).reduce((a,b)=>a+b,0)/Object.values(stats).length);
  const series=raw.type==='임팩트'?String(raw.series||'커스텀').trim().slice(0,40):'';
  const pitcher=keys===PIT_META;
  const bats=['','우','좌','양'].includes(raw.bats)?raw.bats:'';
@@ -3164,15 +3179,18 @@ function renderCustomStats(stats){
  const pitcher=['SP','RP','CP'].includes($('customPos').value),meta=pitcher?PIT_META:BAT_META;
  $('customBatHandRow').style.display=pitcher?'none':'';
  $('customThrowHandRow').style.display=pitcher?'':'none';
- $('customStats').innerHTML=meta.map(([k,l])=>`<label>${l}<input id="customStat-${k}" type="number" min="1" max="200" step="1" value="${Number(stats?.[k])||70}" required oninput="updateCustomPreview()"></label>`).join('');
+ $('customStats').innerHTML=meta.map(([k,l])=>`<label>${l}<input id="customStat-${k}" type="number" min="1" max="200" step="1" value="${Number(stats?.[k])||70}" required oninput="updateCustomOvrFromStats();updateCustomPreview()"></label>`).join('');
 }
 function readCustomForm(){
  const meta=['SP','RP','CP'].includes($('customPos').value)?PIT_META:BAT_META;
  const pitcher=['SP','RP','CP'].includes($('customPos').value);
- return {id:customEditingId||undefined,name:$('customName').value,type:$('customType').value,team:$('customTeam').value,pos:$('customPos').value,stars:$('customStars').value,year:$('customYear').value,ovr:$('customOvr').value,setdeck:$('customDeck').value,series:$('customSeries').value,bats:pitcher?'':$('customBattingHand').value,throws:pitcher?$('customPitchingHand').value:'',stats:Object.fromEntries(meta.map(([k])=>[k,$('customStat-'+k).value]))};
+ const stats=Object.fromEntries(meta.map(([k])=>[k,$('customStat-'+k).value]));
+ const ovr=customBaseOvrFromStats(stats,$('customPos').value);
+ return {id:customEditingId||undefined,name:$('customName').value,type:$('customType').value,team:$('customTeam').value,pos:$('customPos').value,stars:$('customStars').value,year:$('customYear').value,ovr:ovr??$('customOvr').value,setdeck:$('customDeck').value,series:$('customSeries').value,bats:pitcher?'':$('customBattingHand').value,throws:pitcher?$('customPitchingHand').value:'',stats};
 }
 function updateCustomPreview(){
  applyCustomCardRule();
+ updateCustomOvrFromStats();
  const r=readCustomForm();$('customYear').disabled=r.type==='임팩트';$('customSeries').disabled=r.type!=='임팩트';
  const preview=$('customPreview');
  [...preview.classList].filter(c=>c.startsWith('preview-')).forEach(c=>preview.classList.remove(c));
