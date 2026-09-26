@@ -1,0 +1,40 @@
+{
+  "original_manifest": [
+    {
+      "path": "README.md",
+      "bytes": 8704
+    },
+    {
+      "path": "README_ALL_IN_ONE.md",
+      "bytes": 1514
+    },
+    {
+      "path": "SITE_BUILDER_PROMPT.txt",
+      "bytes": 1021
+    },
+    {
+      "path": "baseball-field.png",
+      "bytes": 91527
+    },
+    {
+      "path": "index.html",
+      "bytes": 8560708
+    },
+    {
+      "path": "vercel.json",
+      "bytes": 49
+    },
+    {
+      "path": "backup/latest-project-before-all-in-one.zip",
+      "bytes": 4098391
+    }
+  ],
+  "seo_optimized": true,
+  "player_cards": 8982,
+  "player_data_file": "data/players.json",
+  "app_file": "app.js",
+  "bootstrap_file": "bootstrap.js",
+  "baseball_field_format": "PNG",
+  "site_url": "https://lbhbase-web.github.io/kbo-squademaker/",
+  "sitemap": "sitemap.xml"
+}

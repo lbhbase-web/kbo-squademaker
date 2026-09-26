@@ -127,3 +127,8 @@ KBO 공식 프로필 기반 조사 데이터를 사용해 확인 가능한 선�
 - 국가대표: 실제 카드 화면처럼 빨강 + 파랑 투톤 계열
 - 위 색상은 커스텀 미리보기, 선수 선택 카드, 라인업 배치 카드에 동일 적용
 - 성급 별색은 기존 공통 규칙(5성 분홍 / 4성 노랑 / 3성 연한 파랑) 유지
+
+## 2026-09-26 forced text/star fix
+- Player names are rendered as clean white text with no black shadow/outline across card families.
+- Signature 5-star marks are rendered in vivid red-pink (#ff1744) with a thin white outline for visibility.
+- These two visual rules are applied in the card-rendering HTML as well as CSS fallbacks so prior CSS precedence does not block them.
