@@ -1,0 +1,21 @@
+GitHub Pages 404 수정본
+
+문제 원인:
+- 사이트가 ./data/players.json 을 요청했지만 GitHub Pages에서 해당 경로가 404였습니다.
+
+수정 내용:
+1. players.json을 저장소 최상위에도 추가했습니다.
+2. bootstrap.js가 먼저 ./players.json을 읽고, 실패하면 ./data/players.json을 다시 시도합니다.
+3. 기존 data/players.json도 그대로 포함되어 있습니다.
+4. 선수 카드 8,982장 데이터는 그대로 유지됩니다.
+
+업로드 방법:
+- 이 ZIP의 '내용물'을 GitHub 저장소 kbo-squademaker 최상위에 업로드하세요.
+- ZIP 파일 자체만 저장소에 올리면 안 됩니다.
+- 기존 파일은 같은 이름으로 덮어써도 됩니다.
+
+업로드 후 확인할 주소:
+https://lbhbase-web.github.io/kbo-squademaker/players.json
+https://lbhbase-web.github.io/kbo-squademaker/data/players.json
+
+둘 중 하나라도 JSON이 열리면 사이트는 선수 데이터를 읽을 수 있습니다.
