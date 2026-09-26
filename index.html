@@ -1302,6 +1302,23 @@ body{background:#fff!important;color:#17191c!important}
 @media(max-width:480px){.diamond{height:410px!important;min-height:410px!important}.diamond::before{height:360px!important;top:26px!important}.diamond .slot{width:56px!important;height:82px!important}.diamond .slot[data-slot="LF"],.diamond .slot[data-slot="RF"]{top:55px!important}.diamond .slot[data-slot="SS"],.diamond .slot[data-slot="2B"]{top:148px!important}.diamond .slot[data-slot="3B"],.diamond .slot[data-slot="1B"]{top:222px!important}.diamond .slot[data-slot="C"],.diamond .slot[data-slot="DH"]{top:310px!important}.ref-empty-plus{width:38px!important;height:38px!important;font-size:27px!important}#bench .mslot{height:82px!important}#bench{gap:4px!important}}
 
 .condition-skill-item{padding:8px 9px;margin:6px 0;background:#fff;border-radius:8px;font-size:10px;line-height:1.55}.condition-skill-item b{font-size:11px}.condition-skill-panel{color:#253044}.condition-skill-panel> b{font-size:12px}
+
+.player-photo-modal-box{width:min(960px,96vw)!important;max-height:92vh!important;background:#fff!important;color:#111!important;border-radius:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+.player-photo-modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #e3e8f0}
+.player-photo-modal-head h2{margin:0;font-size:22px;color:#333;font-weight:800}
+.player-photo-modal-grid{display:grid;grid-template-columns:1fr 1fr;min-height:420px}
+.photo-drop-panel{padding:18px 18px 22px;border-right:1px solid #e3e8f0;background:#fff}
+.photo-preview-panel{padding:18px 18px 22px;background:#fff;display:grid;grid-template-rows:auto 1fr auto;gap:14px}
+.photo-drop-zone{height:280px;border:2px dashed #8f98a8;border-radius:10px;background:#fff;display:grid;place-items:center;text-align:center;color:#556070;cursor:pointer;padding:18px;transition:.16s ease}
+.photo-drop-zone:hover,.photo-drop-zone.drag{border-color:#7a48ff;background:#f7f3ff;color:#4e3fc8}
+.photo-drop-title{font-size:18px;font-weight:800;color:#4c5563}
+.photo-drop-sub{margin-top:7px;font-size:12px;color:#8891a0}
+.photo-modal-preview{width:100%;max-width:360px;height:300px;margin:0 auto;background:#f7f9fc;border:1px solid #d8dee8;color:#8994a3}
+.photo-modal-preview img{width:100%;height:100%;object-fit:contain;object-position:center center;display:none;background:#fff}
+.photo-modal-note{font-size:12px;line-height:1.6;color:#657287;background:#f8fafc;border:1px solid #e4e9f1;border-radius:10px;padding:12px}
+.player-photo-modal-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-top:1px solid #e3e8f0;background:#fff}
+.player-photo-modal-actions-right{display:flex;gap:10px}
+@media(max-width:760px){.player-photo-modal-grid{grid-template-columns:1fr}.photo-drop-panel{border-right:0;border-bottom:1px solid #e3e8f0}.photo-modal-preview{max-width:none;height:240px}.player-photo-modal-head h2{font-size:18px}.player-photo-modal-actions{flex-direction:column;align-items:stretch}.player-photo-modal-actions-right{display:grid;grid-template-columns:1fr 1fr;width:100%}.player-photo-modal-actions>.btn.danger{width:100%}}
 </style><style>#growModal.open{display:flex!important;z-index:10000!important}#growModal .modal-box{position:relative;z-index:1}.lineup-card-shell[role="button"]{cursor:pointer;touch-action:manipulation}.lineup-card-shell[role="button"]:focus-visible{outline:3px solid #8954eb;outline-offset:3px}</style>
 <style id="player-photo-user-style">
 /* Smaller club logos on the compact lineup cards. */
@@ -1500,7 +1517,7 @@ body{background:#fff!important;color:#17191c!important}
  <div class="top">
   <div class="brand">
    <div class="logo">V26</div>
-   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.3 · 스킬 130 · 선수사진 없음</span></h1>
+   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v10.4 · 스킬 130 · 선수사진 없음</span></h1>
    <div class="sub">8,982장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
   </div>
   <div class="toolbar">
@@ -1553,52 +1570,51 @@ body{background:#fff!important;color:#17191c!important}
     <button onclick="openCustomCards()">커스텀 선수</button>
     <button onclick="toggleRefPanel('refBattingOrderPanel')">타순 설정</button>
     <button onclick="fillReferenceDummy()">더미 데이터 채우기</button>
-    <button onclick="openExport()">스쿼드 내보내기</button>
     <button onclick="saveAll();toast('현재 설정을 저장했어.')">전체 저장</button>
     <button onclick="toggleRefPanel('advancedSetdeckPanel')">세트덱·특훈</button>
     <button onclick="toggleRefPanel('refBullpenPanel')">투수 전술 설정</button>
-    <button onclick="openPlayerPhotoSettings()">선수 사진 추가 설정</button>
     <button onclick="toggleRefPanel('refPatchPanel')">패치 노트</button>
    </div>
 
-   <section id="refPlayerPhotoPanel" class="panel ref-collapsible">
-    <div class="ph">
-     <div><strong>선수 사진 추가 설정</strong><div class="sub">선수를 검색한 뒤 기기에서 사진을 선택하면 선수 카드에 표시돼.</div></div>
-     <button class="mini" onclick="toggleRefPanel('refPlayerPhotoPanel')">닫기</button>
-    </div>
-    <div class="pb player-photo-settings">
-     <div class="photo-settings-note">사진은 현재 사용 중인 브라우저/기기에만 저장돼. 다른 사람의 기기에는 자동으로 공유되지 않아.</div>
-     <label class="photo-search-label">선수 검색
-      <input id="photoPlayerQ" type="search" placeholder="선수 이름 · 구단 · 카드 종류 검색" oninput="renderPhotoPlayerMatches()">
-     </label>
-     <div id="photoPlayerMatches" class="photo-player-results"><div class="photo-empty">선수 이름을 검색해 줘.</div></div>
-     <div id="photoSelectedBox" class="photo-selected-box">
-      <div class="photo-selected-head">
-       <div><small>선택한 선수</small><strong id="photoSelectedInfo">아직 선택하지 않았어.</strong></div>
-       <span id="photoSavedScope" class="photo-saved-scope"></span>
-      </div>
-      <div class="photo-editor-grid">
-       <div class="photo-preview-box">
-        <img id="photoPreviewImage" alt="선수 사진 미리보기">
-        <span id="photoPreviewFallback">사진 미리보기</span>
-       </div>
-       <div class="photo-editor-controls">
-        <label>사진 파일
-         <input id="photoFileInput" type="file" accept="image/png,image/jpeg,image/webp" onchange="previewSelectedPlayerPhoto(this)">
-        </label>
-        <div class="photo-settings-note">사진을 저장하면 <b>같은 내부 선수명 + 같은 구단</b>의 모든 카드에 자동으로 한 번에 적용돼. 동명이인은 B/S/C/D 같은 내부 구분자를 그대로 사용해서 서로 섞이지 않아.</div>
-        <div class="photo-setting-actions">
-         <button type="button" onclick="saveSelectedPlayerPhoto()">같은 이름·구단 전체에 사진 저장</button>
-         <button type="button" class="danger" onclick="deleteSelectedPlayerPhoto()">같은 이름·구단 사진 삭제</button>
-        </div>
-        <small class="photo-help">JPG · PNG · WEBP, 최대 8MB. 카드 종류·연도·포지션이 달라도 내부 선수명과 구단이 같으면 같은 사진을 사용해. 예: 김재현S와 김재현C는 서로 다른 선수로 처리돼.</small>
-       </div>
-      </div>
+<div id="playerPhotoModal" class="modal" onclick="if(event.target===this)closePlayerPhotoSettings()">
+ <div class="modal-box player-photo-modal-box">
+  <div class="player-photo-modal-head">
+   <h2 id="playerPhotoModalTitle">선수 사진 추가</h2>
+   <button class="btn" onclick="closePlayerPhotoSettings()">닫기</button>
+  </div>
+  <div class="player-photo-modal-grid">
+   <section class="photo-drop-panel">
+    <input id="photoFileInput" type="file" accept="image/png,image/jpeg,image/webp" hidden onchange="previewSelectedPlayerPhoto(this)">
+    <div id="photoDropZone" class="photo-drop-zone" onclick="triggerPhotoFileInput()" ondragover="handlePhotoDropDragOver(event)" ondragleave="handlePhotoDropDragLeave(event)" ondrop="handlePhotoDrop(event)">
+     <div>
+      <div class="photo-drop-title">이미지를 여기에 드래그하거나 클릭해 주세요</div>
+      <div class="photo-drop-sub">지원 형식: JPG, PNG, WebP (최대 8MB)</div>
      </div>
     </div>
    </section>
+   <section class="photo-preview-panel">
+    <div class="photo-selected-head">
+     <div><small>선택한 선수</small><strong id="photoSelectedInfo">아직 선택하지 않았어.</strong></div>
+     <span id="photoSavedScope" class="photo-saved-scope"></span>
+    </div>
+    <div class="photo-preview-box photo-modal-preview">
+     <img id="photoPreviewImage" alt="선수 사진 미리보기">
+     <span id="photoPreviewFallback">이미지를 선택하면 미리보기가 표시됩니다</span>
+    </div>
+    <div class="photo-modal-note">사진을 저장하면 <b>같은 내부 선수명 + 같은 구단</b>의 모든 카드에 자동 적용돼. 동명이인은 B/S/C/D 같은 내부 구분자를 그대로 사용해서 서로 섞이지 않아.</div>
+   </section>
+  </div>
+  <div class="player-photo-modal-actions">
+   <button class="btn danger" type="button" onclick="deleteSelectedPlayerPhoto()">저장 사진 삭제</button>
+   <div class="player-photo-modal-actions-right">
+    <button class="btn" type="button" onclick="closePlayerPhotoSettings()">취소</button>
+    <button class="btn primary" type="button" onclick="saveSelectedPlayerPhoto()">업로드 완료</button>
+   </div>
+  </div>
+ </div>
+</div>
 
-   <section id="advancedSetdeckPanel" class="panel ref-collapsible">
+<section id="advancedSetdeckPanel" class="panel ref-collapsible">
     <div class="ph">
      <div><strong>세트덱 스코어 · 포지션 특훈</strong><div class="sub">라인업 선수 합계로 자동 계산 · 모드별 선택 효과는 따로 저장돼.</div></div>
      <span class="tag">포지션 특훈 최대 20레벨 · 보너스에 따라 총합 +38~+42</span>
@@ -1769,3 +1785,33 @@ body{background:#fff!important;color:#17191c!important}
 
 </body>
 </html>
+
+<style id="light-choice-trigger-fix-v103">
+/* v10.4 select trigger visual fix: keep selected controls light instead of black. */
+.choice-grid-trigger,
+.year-grid-trigger,
+#preferredTeamPickerBtn,
+#lineupModePickerBtn {
+  background:#ffffff !important;
+  color:#273142 !important;
+  border-color:#ccd6e3 !important;
+  box-shadow:none !important;
+}
+.choice-grid-trigger:hover,
+.choice-grid-trigger:focus-visible,
+.year-grid-trigger:hover,
+.year-grid-trigger:focus-visible,
+#preferredTeamPickerBtn:hover,
+#preferredTeamPickerBtn:focus-visible,
+#lineupModePickerBtn:hover,
+#lineupModePickerBtn:focus-visible {
+  background:#f7f5ff !important;
+  color:#5f49d8 !important;
+  border-color:#8d7cf0 !important;
+  outline:none !important;
+}
+.choice-grid-trigger > span,
+.year-grid-trigger > span {
+  color:#7b8492 !important;
+}
+</style>

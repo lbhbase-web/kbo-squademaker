@@ -1886,6 +1886,7 @@ const PLAYER_PHOTO_DB_VERSION=1;
 const PLAYER_PHOTO_STORE="photos";
 let selectedPhotoPlayerId=null;
 let photoPreviewObjectUrl="";
+let pendingPhotoFile=null;
 
 function photoGroupKey(p){return `group:${String(p?.name||"").trim()}|${String(p?.team||"").trim()}`}
 function photoCardKey(p){return `card:${String(p?.id||"")}`}
@@ -1920,11 +1921,41 @@ async function deletePlayerPhotoRecord(key){
 }
 function selectedPhotoPlayer(){return players.find(p=>String(p.id)===String(selectedPhotoPlayerId))||null}
 function selectedPhotoStorageKey(){const p=selectedPhotoPlayer();return p?photoGroupKey(p):""}
+function updatePlayerPhotoModalTitle(){
+ const el=$("playerPhotoModalTitle"); if(!el) return;
+ const p=selectedPhotoPlayer();
+ el.textContent=p?`선수 사진 추가 - ${p.series||p.type||"선수"} ${p.name}`:"선수 사진 추가";
+}
+function openPlayerPhotoFor(id){
+ if(id!=null) selectedPhotoPlayerId=id;
+ const p=selectedPhotoPlayer();
+ if(!p) return alert("먼저 선수를 선택해 줘.");
+ const modal=$("playerPhotoModal"); if(!modal) return;
+ const input=$("photoFileInput"); if(input) input.value="";
+ pendingPhotoFile=null;
+ clearPhotoPreviewObjectUrl();
+ updatePlayerPhotoModalTitle();
+ renderSelectedPhotoState();
+ modal.classList.add("open");
+}
 function openPlayerPhotoSettings(){
- const panel=$("refPlayerPhotoPanel");if(!panel)return;
- if(!panel.classList.contains("open"))panel.classList.add("open");
- renderPhotoPlayerMatches();renderSelectedPhotoState();
- setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"start"}),20);
+ if(currentGrowId) return openPlayerPhotoFor(currentGrowId);
+ const modal=$("playerPhotoModal"); if(!modal) return;
+ updatePlayerPhotoModalTitle();
+ renderSelectedPhotoState();
+ modal.classList.add("open");
+}
+function closePlayerPhotoSettings(){ const modal=$("playerPhotoModal"); if(modal) modal.classList.remove("open"); }
+function triggerPhotoFileInput(){ $("photoFileInput")?.click(); }
+function handlePhotoDropDragOver(e){ e.preventDefault(); const z=$("photoDropZone"); if(z) z.classList.add("drag"); }
+function handlePhotoDropDragLeave(e){ e.preventDefault(); const z=$("photoDropZone"); if(z) z.classList.remove("drag"); }
+function handlePhotoDrop(e){
+ e.preventDefault();
+ const z=$("photoDropZone"); if(z) z.classList.remove("drag");
+ const input=$("photoFileInput"); if(!input) return;
+ const dt=e.dataTransfer; if(!dt?.files?.length) return;
+ pendingPhotoFile=dt.files[0]||null;
+ previewSelectedPlayerPhoto({files:dt.files});
 }
 function renderPhotoPlayerMatches(){
  const box=$("photoPlayerMatches");if(!box)return;
@@ -1943,21 +1974,23 @@ function showPhotoPreview(url){
 function renderSelectedPhotoState(){
  const p=selectedPhotoPlayer(),info=$("photoSelectedInfo"),scope=$("photoSavedScope");
  if(!info)return;
- if(!p){info.textContent="아직 선택하지 않았어.";if(scope)scope.textContent="";showPhotoPreview("");return}
+ if(!p){info.textContent="아직 선택하지 않았어.";if(scope)scope.textContent="";showPhotoPreview("");updatePlayerPhotoModalTitle();return}
  info.textContent=`${p.name} · ${p.team||"-"} · ${p.pos||"-"} · ${p.type||""}${p.year?` · ${p.year}`:""}`;
  const exact=CUSTOM_PLAYER_PHOTO_URLS.has(photoCardKey(p)),group=CUSTOM_PLAYER_PHOTO_URLS.has(photoGroupKey(p));
  if(scope)scope.textContent=group?"같은 이름·구단 전체 적용 중":exact?"이전 버전 카드 사진 있음":"저장된 사진 없음";
  const pending=photoPreviewObjectUrl||customPlayerPhotoUrl(p);showPhotoPreview(pending);
+ updatePlayerPhotoModalTitle();
 }
 function previewSelectedPlayerPhoto(input){
- clearPhotoPreviewObjectUrl();const file=input?.files?.[0];if(!file){renderSelectedPhotoState();return}
- if(!/^image\/(png|jpeg|webp)$/i.test(file.type)){alert("JPG, PNG, WEBP 사진만 선택해 줘.");input.value="";return}
- if(file.size>8*1024*1024){alert("사진은 8MB 이하로 선택해 줘.");input.value="";return}
+ clearPhotoPreviewObjectUrl();const file=input?.files?.[0]||pendingPhotoFile;if(!file){pendingPhotoFile=null;renderSelectedPhotoState();return}
+ if(!/^image\/(png|jpeg|webp)$/i.test(file.type)){alert("JPG, PNG, WEBP 사진만 선택해 줘.");if(input&&"value" in input)input.value="";pendingPhotoFile=null;return}
+ if(file.size>8*1024*1024){alert("사진은 8MB 이하로 선택해 줘.");if(input&&"value" in input)input.value="";pendingPhotoFile=null;return}
+ pendingPhotoFile=file;
  photoPreviewObjectUrl=URL.createObjectURL(file);renderSelectedPhotoState();
 }
 async function saveSelectedPlayerPhoto(){
  const p=selectedPhotoPlayer();if(!p)return alert("먼저 사진을 넣을 선수를 선택해 줘.");
- const file=$("photoFileInput")?.files?.[0];if(!file)return alert("저장할 사진 파일을 선택해 줘.");
+ const file=pendingPhotoFile||$("photoFileInput")?.files?.[0];if(!file)return alert("저장할 사진 파일을 선택해 줘.");
  if(!/^image\/(png|jpeg|webp)$/i.test(file.type)||file.size>8*1024*1024)return alert("JPG, PNG, WEBP 형식의 8MB 이하 사진을 선택해 줘.");
  const key=photoGroupKey(p);
  try{
@@ -1965,6 +1998,7 @@ async function saveSelectedPlayerPhoto(){
   // 예전 버전에서 카드별로 저장된 사진이 있으면 제거해서 그룹 사진이 항상 동일하게 적용되도록 함.
   const samePlayers=players.filter(x=>String(x?.name||"").trim()===String(p?.name||"").trim()&&String(x?.team||"").trim()===String(p?.team||"").trim());
   for(const x of samePlayers){const cardKey=photoCardKey(x);if(CUSTOM_PLAYER_PHOTO_URLS.has(cardKey))await deletePlayerPhotoRecord(cardKey)}
+  pendingPhotoFile=null;
   clearPhotoPreviewObjectUrl();$("photoFileInput").value="";renderAll();if(currentPickerSlot)renderPlayerPicker();renderPhotoPlayerMatches();renderSelectedPhotoState();
   toast(`${p.name} · ${p.team||"-"}의 모든 카드에 사진을 적용했어.`);
  }catch(e){console.error(e);alert("사진을 저장하지 못했어. 브라우저 저장 공간을 확인해 줘.")}
@@ -1979,6 +2013,7 @@ async function deleteSelectedPlayerPhoto(){
  try{
   if(CUSTOM_PLAYER_PHOTO_URLS.has(key))await deletePlayerPhotoRecord(key);
   for(const cardKey of legacyKeys)await deletePlayerPhotoRecord(cardKey);
+  pendingPhotoFile=null; if($("photoFileInput"))$("photoFileInput").value="";
   renderAll();if(currentPickerSlot)renderPlayerPicker();renderPhotoPlayerMatches();renderSelectedPhotoState();toast("같은 이름·구단의 모든 카드 사진을 삭제했어.");
  }catch(e){console.error(e);alert("사진을 삭제하지 못했어.")}
 }
@@ -2852,7 +2887,7 @@ function renderGrow(){
  const sum=m=>Object.values(m||{}).reduce((a,b)=>a+Number(b||0),0);
  const level=(key,value,max)=>`<span>레벨 <input aria-label="${key} 레벨" type="number" min="0" max="${max}" value="${value}" onchange="detailSetLevel('${key}',this.value)"></span><button onclick="detailSetLevel('${key}',0)">0</button><button onclick="detailSetLevel('${key}',${max})">${max}</button>`;
  $('growBody').innerHTML=`<div class="reference-detail">
- <div class="reference-header"><div class="reference-card">${gamePlayerCardHTML(p,{slot:slot||''}).replace(/onclick="[^"]*"/g,'')}</div><div class="reference-info"><div class="reference-actions">${canChangeTeam(p,g)?`<button onclick="openFa('${p.id}')">FA 영입</button>`:''}</div><strong>${esc(p.series||p.type)} ${esc(p.name)}${p.year?" ’"+p.year:''}</strong><div>${esc(effectiveTeam(p,g))} · ${esc(p.type)}</div><div class="reference-six">${statMeta(p).map(([k,l])=>{const base=Number(p.stats?.[k]||0),v=es.stats[k],diff=Number(v)-base;return `<span>${l}: <b>${v??'—'}</b> <small>(${base}${diff>=0?'+':''}${diff})</small></span>`}).join('')}</div><div>세트덱 포인트: ${effectiveSetdeckScore(p)??"—"}</div></div></div>
+ <div class="reference-header"><div class="reference-card">${gamePlayerCardHTML(p,{slot:slot||''}).replace(/onclick="[^"]*"/g,'')}</div><div class="reference-info"><div class="reference-actions"><button onclick="openPlayerPhotoFor('${p.id}')">페이스온 추가</button>${canChangeTeam(p,g)?`<button onclick="openFa('${p.id}')">FA 영입</button>`:''}</div><strong>${esc(p.series||p.type)} ${esc(p.name)}${p.year?" ’"+p.year:''}</strong><div>${esc(effectiveTeam(p,g))} · ${esc(p.type)}</div><div class="reference-six">${statMeta(p).map(([k,l])=>{const base=Number(p.stats?.[k]||0),v=es.stats[k],diff=Number(v)-base;return `<span>${l}: <b>${v??'—'}</b> <small>(${base}${diff>=0?'+':''}${diff})</small></span>`}).join('')}</div><div>세트덱 포인트: ${effectiveSetdeckScore(p)??"—"}</div></div></div>
  ${handednessControlHTML(p)}
  <section><h3>훈련</h3><div class="reference-controls">${level('training',g.training,maxTraining(p))}<span>훈련 총합: ${sum(es.trainingBonus)}/${3*g.training}</span><span>${g.trainingMode==='manual'?'수동 배분':'자동 배분'}</span></div><div class="reference-allocation">${detailRows(p,es.trainingBonus,'training')}</div></section>
  <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div>${false?`<label>증가 능력치 <select aria-label="특훈 증가 능력치" onchange="setSpecialStat(this.value)">${statMeta(p).map(([k,l])=>`<option value="${k}" ${g.specialStat===k?'selected':''}>${l}</option>`).join('')}</select></label>`:''}</section>
