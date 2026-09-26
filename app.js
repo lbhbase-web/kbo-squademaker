@@ -215,6 +215,7 @@ if(!preferredTeam||(!TEAMS.includes(preferredTeam)&&preferredTeam!==NO_PREFERRED
 let lineups={ranking:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},realtime:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},club:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},league:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},special:{slots:{},order:{},setdeckChoices:{},positionTraining:{}}};
 let growth={};
 let currentGrowId=null,currentFaId=null;
+let faMenuOpen=false;
 
 // Lineups and growth belong only to this page instance; reloads start empty.
 // The browser supplies the localized confirmation text after user interaction.
@@ -2765,8 +2766,8 @@ function calcSummary(){
  if($("stBatOvr"))$("stBatOvr").textContent=avg(bat);
  if($("stPitOvr"))$("stPitOvr").textContent=avg(pit);
 }
-function openGrow(id,slot=null){if(!players.some(p=>p.id===id))return;currentGrowId=id;currentGrowSlot=slot;renderGrow();const modal=$("growModal");modal.classList.add("open");modal.style.display="flex";modal.setAttribute("aria-hidden","false");}
-function closeGrow(){const modal=$("growModal");modal.classList.remove("open");modal.style.display="none";modal.setAttribute("aria-hidden","true");currentGrowSlot=null}
+function openGrow(id,slot=null){if(!players.some(p=>p.id===id))return;currentGrowId=id;currentGrowSlot=slot;currentFaId=id;faMenuOpen=false;renderGrow();const modal=$("growModal");modal.classList.add("open");modal.style.display="flex";modal.setAttribute("aria-hidden","false");}
+function closeGrow(){const modal=$("growModal");modal.classList.remove("open");modal.style.display="none";modal.setAttribute("aria-hidden","true");currentGrowSlot=null;faMenuOpen=false;currentFaId=null}
 
 function setGrowthLevelExact(key,value){
  const p=players.find(x=>x.id===currentGrowId);if(!p)return;
@@ -2943,37 +2944,33 @@ function detailSetLevel(key,value){
 }
 function detailRows(p,map,kind){return statMeta(p).map(([k,l])=>`<label>${l}: <input type="number" min="0" aria-label="${kind} ${l}" value="${map[k]??0}" onchange="detailSetStat('${kind}','${k}',this.value)"></label>`).join('')}
 function renderGrow(){
- renderGrowAdvanced();
- const advanced=$('growBody').innerHTML;
  const p=players.find(x=>x.id===currentGrowId);if(!p)return;
  const g=getGrowth(p),slot=Object.keys(lineup().slots).find(k=>lineup().slots[k]===p.id)||null;
  const es=effectiveStats(p,slot,currentMode),[lo,hi]=specialBounds(p,g.faTeam);
  const sum=m=>Object.values(m||{}).reduce((a,b)=>a+Number(b||0),0);
  const level=(key,value,max)=>`<span>레벨 <input aria-label="${key} 레벨" type="number" min="0" max="${max}" value="${value}" onchange="detailSetLevel('${key}',this.value)"></span><button onclick="detailSetLevel('${key}',0)">0</button><button onclick="detailSetLevel('${key}',${max})">${max}</button>`;
+ const faMenu=canChangeTeam(p,g)&&faMenuOpen?`<div class="fa-inline-menu"><div class="fa-inline-grid">${TEAMS.map(t=>`<button class="fa-inline-item ${effectiveTeam(p,g)===t?"active":""}" onclick="setFaTeam('${t}')">${t}</button>`).join("")}</div></div>`:"";
  $('growBody').innerHTML=`<div class="reference-detail">
- <div class="reference-header"><div class="reference-card">${gamePlayerCardHTML(p,{slot:slot||''}).replace(/onclick="[^"]*"/g,'')}</div><div class="reference-info"><div class="reference-actions"><button onclick="openPlayerPhotoFor('${p.id}')">페이스온 추가</button>${canChangeTeam(p,g)?`<button onclick="openFa('${p.id}')">FA 영입</button>`:''}</div><strong>${esc(p.series||p.type)} ${esc(p.name)}${p.year?" ’"+p.year:''}</strong><div>${esc(effectiveTeam(p,g))} · ${esc(p.type)}</div><div class="reference-six">${statMeta(p).map(([k,l])=>{const base=Number(p.stats?.[k]||0),v=es.stats[k],diff=Number(v)-base;return `<span>${l}: <b>${v??'—'}</b> <small>(${base}${diff>=0?'+':''}${diff})</small></span>`}).join('')}</div><div>세트덱 포인트: ${effectiveSetdeckScore(p)??"—"}</div></div></div>
+ <div class="reference-header"><div class="reference-card">${gamePlayerCardHTML(p,{slot:slot||''}).replace(/onclick="[^"]*"/g,'')}</div><div class="reference-info"><div class="reference-actions"><button onclick="openPlayerPhotoFor('${p.id}')">페이스온 추가</button>${canChangeTeam(p,g)?`<button onclick="openFa('${p.id}')">FA 영입</button>${faMenu}`:''}</div><strong>${esc(p.series||p.type)} ${esc(p.name)}${p.year?" ’"+p.year:''}</strong><div>${esc(effectiveTeam(p,g))} · ${esc(p.type)}</div><div class="reference-six">${statMeta(p).map(([k,l])=>{const base=Number(p.stats?.[k]||0),v=es.stats[k],diff=Number(v)-base;return `<span>${l}: <b>${v??'—'}</b> <small>(${base}${diff>=0?'+':''}${diff})</small></span>`}).join('')}</div><div>세트덱 포인트: ${effectiveSetdeckScore(p)??"—"}</div></div></div>
  ${handednessControlHTML(p)}
  <section><h3>훈련</h3><div class="reference-controls">${level('training',g.training,maxTraining(p))}<span>훈련 총합: ${sum(es.trainingBonus)}/${3*g.training}</span><span>${g.trainingMode==='manual'?'수동 배분':'자동 배분'}</span></div><div class="reference-allocation">${detailRows(p,es.trainingBonus,'training')}</div></section>
- <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div>${false?`<label>증가 능력치 <select aria-label="특훈 증가 능력치" onchange="setSpecialStat(this.value)">${statMeta(p).map(([k,l])=>`<option value="${k}" ${g.specialStat===k?'selected':''}>${l}</option>`).join('')}</select></label>`:''}</section>
+ <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div></section>
  <section><h3>포지션 특훈</h3><div class="reference-controls">${slot?level('position',lineup().positionTraining[slot]??20,20):'라인업에 배치하면 적용돼.'}<span>적용 총합: ${sum(es.positionBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.positionBonus||{},'position')}</div></section>
  ${slot&&/^RP[1-6]$/.test(slot)?`<section><h3>불펜 전술</h3><div class="reference-controls"><span>${bullpenRole(slot)}</span><span>전술 능력치 총합: +${sum(es.bullpenTacticBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.bullpenTacticBonus||{},'bullpen')}</div></section>`:''}
  ${skillControls(p,slot)}
  <details class="reference-extra"><summary>강화·각성</summary>${quickEnhanceHTML(p,g)}${quickAwakeningHTML(p,g)}</details>
- 
- <details class="reference-advanced"><summary>세부 배분·FA·추가 설정</summary>${advanced}</details></div>`;
+ </div>`;
  hydratePlayerPhotos($('growBody'));
 }
+
 
 function controlHTML(label,value,min,max,key){
  return `<div class="control"><label>${label} · 범위 ${min}~${max}</label><div class="stepper"><button onclick="stepGrowth('${key}',-1)">−</button><div class="value">${value}</div><button onclick="stepGrowth('${key}',1)">＋</button></div></div>`;
 }
 function openFa(id){
- const p=players.find(x=>x.id===id);if(!p||!canChangeTeam(p))return;currentFaId=id;
- const g=getGrowth(p);
- $("faTeams").innerHTML=TEAMS.map(t=>`<button class="team-btn ${effectiveTeam(p,g)===t?"active":""}" onclick="setFaTeam('${t}')">${t}${t===p.team?"<br><small>원소속</small>":""}</button>`).join("");
- $("faModal").classList.add("open");
+ const p=players.find(x=>x.id===id);if(!p||!canChangeTeam(p))return;currentFaId=id;faMenuOpen=!faMenuOpen;renderGrow();
 }
-function closeFa(){$("faModal").classList.remove("open")}
+function closeFa(){faMenuOpen=false;const modal=$("faModal");if(modal)modal.classList.remove("open");renderGrow()}
 function setFaTeam(team){
  const p=players.find(x=>x.id===currentFaId);if(!p||!TEAMS.includes(team)||!canChangeTeam(p))return;
  const g=getGrowth(p);
@@ -2992,7 +2989,7 @@ function setFaTeam(team){
  const wasFa=isFa(p,g);g.faTeam=proposed.faTeam;
  const nowFa=isFa(p,g),[base,max]=specialBounds(p,g.faTeam);
  if(wasFa!==nowFa)g.special=base;else g.special=Math.min(max,Math.max(base,g.special));
- closeFa();renderGrow();renderAll();
+ faMenuOpen=false;renderGrow();renderAll();
 }
 function saveAll(){
  localStorage.setItem("v26_pref_team",preferredTeam);
