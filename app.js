@@ -3246,6 +3246,49 @@ function initCustomCards(){
 
 initCustomCards();
 initViewMode();
+
+/* ===== Cloud lineup bridge v11.2 ===== */
+function cloudLineupSnapshot(){
+ const payload=lineupPayload(currentMode);
+ return {
+  schema:"kbo-cloud-lineup-v1",
+  appVersion:"11.2",
+  savedAt:new Date().toISOString(),
+  mode:currentMode,
+  modeName:MODES[currentMode]||currentMode,
+  preferredTeam,
+  playerCount:payload.players?.length||0,
+  playerNames:(payload.players||[]).map(x=>x.name).filter(Boolean),
+  payload
+ };
+}
+function loadCloudLineupSnapshot(snapshot){
+ const payload=snapshot?.payload||snapshot;
+ if(!payload||typeof payload!=="object")throw Error("저장된 라인업 데이터가 올바르지 않아.");
+ const targetMode=(payload.mode&&Object.hasOwn(MODES,payload.mode))?payload.mode:currentMode;
+ const backupLineups=lineups;
+ const backupMode=currentMode;
+ const count=importLineupData(payload);
+ const loadedMode=currentMode;
+ const loadedState=lineups[loadedMode];
+ lineups=backupLineups;
+ lineups[targetMode]=loadedState;
+ currentMode=targetMode;
+ ensureLineupState(currentMode);
+ $("preferredTeam").value=preferredTeam;
+ refreshCustomSearch();renderTabs();renderAll();closeExport();
+ toast(`${count}명 라인업을 계정 저장본에서 불러왔어.`);
+ return count;
+}
+window.KBOCloudBridge={
+ getSnapshot:cloudLineupSnapshot,
+ loadSnapshot:loadCloudLineupSnapshot,
+ getCurrentMode:()=>currentMode,
+ getModeName:()=>MODES[currentMode]||currentMode,
+ getPreferredTeam:()=>preferredTeam
+};
+window.dispatchEvent(new Event("kbo-cloud-bridge-ready"));
+
 init();
 initPlayerPhotoFeature();
 

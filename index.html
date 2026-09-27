@@ -1302,6 +1302,34 @@ body{background:#fff!important;color:#17191c!important}
 .picker-simple-results .picker-list{max-height:430px!important;min-height:430px!important;padding-right:4px}
 @media(max-width:760px){.picker-body{grid-template-columns:1fr!important}.picker-choice-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.picker-pos-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.picker-simple-results .picker-list{min-height:280px!important;max-height:280px!important}}
 
+
+/* ===== Google account + cloud lineup shelf v11.3 ===== */
+.cloud-login-btn{white-space:nowrap}
+.cloud-account-btn{display:inline-flex!important;align-items:center;gap:6px;max-width:170px;white-space:nowrap}
+.cloud-account-btn[hidden]{display:none!important}
+.cloud-account-btn img{width:22px;height:22px;border-radius:50%;object-fit:cover;background:#eef1f5}
+.cloud-account-btn span{overflow:hidden;text-overflow:ellipsis}
+.cloud-account-modal{z-index:22000!important;background:rgba(0,0,0,.58)!important;align-items:center!important;justify-content:center!important}
+.cloud-account-modal.open{display:flex!important}
+.cloud-account-box{width:min(920px,94vw)!important;max-height:88vh!important;overflow:auto!important;background:#fff!important;color:#20242b!important;border-radius:14px!important;padding:20px!important}
+.cloud-account-head{position:sticky;top:-20px;z-index:4;background:#fff;padding:4px 0 14px!important;margin-bottom:12px!important;border-bottom:1px solid #e4e7ec!important}
+.cloud-account-identity{font-size:12px;color:#6c7582;margin-top:4px}
+.cloud-setup-notice{padding:12px 14px;border:1px solid #eadba5;background:#fff9df;border-radius:10px;font-size:12px;line-height:1.55;margin-bottom:12px}
+.cloud-account-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.cloud-lineup-status{min-height:18px;font-size:12px;color:#68717e;margin:5px 0 10px}
+.cloud-lineup-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cloud-lineup-card,.cloud-plus-tile{min-height:170px;border:1px solid #d9dee6;background:#fff;color:#252a32;border-radius:13px;padding:14px;text-align:left;box-shadow:0 2px 8px rgba(25,36,50,.06)}
+.cloud-lineup-card{display:flex;flex-direction:column;gap:8px}
+.cloud-lineup-card:hover,.cloud-plus-tile:hover{border-color:#8c71ec;box-shadow:0 5px 16px rgba(91,68,190,.12)}
+.cloud-plus-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;border-style:dashed}
+.cloud-plus-tile span{font-size:44px;line-height:1;color:#7957df}.cloud-plus-tile b{font-size:15px;margin-top:8px}.cloud-plus-tile small{font-size:11px;color:#7b8490;margin-top:5px}
+.cloud-lineup-card-title{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.cloud-lineup-card-title b{font-size:15px;overflow-wrap:anywhere}.cloud-lineup-card-title .cloud-mode{font-size:9px;background:#f0ecff;color:#6846cf;border-radius:999px;padding:4px 7px;white-space:nowrap}
+.cloud-lineup-meta{font-size:11px;color:#707986;line-height:1.5;flex:1}
+.cloud-lineup-players{font-size:11px;color:#4b5563;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cloud-lineup-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.cloud-lineup-card-actions button{min-height:31px;border:1px solid #d7dce4;background:#f9fafc;color:#303743;border-radius:7px;font-size:10px;cursor:pointer}.cloud-lineup-card-actions button.primary{background:#7253d6;color:#fff;border-color:#7253d6}.cloud-lineup-card-actions button.danger{color:#b33142}
+@media(max-width:760px){.cloud-lineup-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cloud-account-box{padding:14px!important}.cloud-account-head{top:-14px}.cloud-account-actions .btn{flex:1 1 42%}}
+@media(max-width:480px){.cloud-lineup-grid{grid-template-columns:1fr}.cloud-lineup-card,.cloud-plus-tile{min-height:150px}}
+
 </style>
 <style>
 #growModal .modal{width:min(760px,96vw)}
@@ -1361,7 +1389,7 @@ body{background:#fff!important;color:#17191c!important}
 #playerPhotoModal{z-index:13000!important}
 #playerPhotoModal.open{display:flex!important;z-index:13000!important}
 #playerPhotoModal .player-photo-modal-box{position:relative;z-index:13001!important}
-/* v11.1: FA 선택 팝업은 선수 상세 내용보다 항상 앞 */
+/* v11.3: FA 선택 팝업은 선수 상세 내용보다 항상 앞 */
 #growModal .reference-header{position:relative!important;z-index:200!important;overflow:visible!important}
 #growModal .reference-info{position:relative!important;z-index:210!important;overflow:visible!important}
 #growModal .reference-actions{position:relative!important;z-index:220!important;overflow:visible!important}
@@ -1565,7 +1593,7 @@ body{background:#fff!important;color:#17191c!important}
  <div class="top">
   <div class="brand">
    <div class="logo">V26</div>
-   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v11.1 · 스킬 130 · 선수사진 없음</span></h1>
+   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v11.3 · 스킬 130 · 선수사진 없음</span></h1>
    <div class="sub">8,982장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
   </div>
   <div class="toolbar">
@@ -1574,6 +1602,8 @@ body{background:#fff!important;color:#17191c!important}
    <button class="btn primary" onclick="saveAll()">전체 저장</button>
    <button class="btn" onclick="openExport()">라인업 내보내기</button>
    <button class="btn" onclick="document.getElementById('lineupImportFile').click()">라인업 가져오기</button><input id="lineupImportFile" type="file" accept=".json,application/json" hidden onchange="importLineupFile(this)">
+   <button id="cloudLoginBtn" class="btn cloud-login-btn" type="button">Google 로그인</button>
+   <button id="cloudAccountBtn" class="btn cloud-account-btn" type="button" hidden><img id="cloudAccountAvatar" alt="" referrerpolicy="no-referrer"><span id="cloudAccountName">내 라인업</span></button>
   </div>
  </div>
 
@@ -1819,6 +1849,32 @@ body{background:#fff!important;color:#17191c!important}
 </div>
 
 
+<div id="cloudAccountModal" class="modal cloud-account-modal" aria-hidden="true">
+ <div class="modal-box cloud-account-box">
+  <div class="mhead cloud-account-head">
+   <div>
+    <h2 style="margin:0">내 라인업 보관함</h2>
+    <div id="cloudAccountIdentity" class="cloud-account-identity">Google 계정에 로그인하면 다른 기기에서도 불러올 수 있어.</div>
+   </div>
+   <button class="btn" id="cloudAccountCloseBtn" type="button">닫기</button>
+  </div>
+  <div id="cloudSetupNotice" class="cloud-setup-notice" hidden>
+   Firebase 설정이 아직 연결되지 않았어. <b>firebase-config.js</b>에 Firebase 웹 앱 설정값을 넣으면 Google 로그인과 계정별 클라우드 저장이 활성화돼.
+  </div>
+  <div class="cloud-account-actions">
+   <button id="cloudSaveNewBtn" type="button" class="btn primary">＋ 현재 라인업 새로 저장</button>
+   <button id="cloudRefreshBtn" type="button" class="btn">목록 새로고침</button>
+   <button id="cloudLogoutBtn" type="button" class="btn">로그아웃</button>
+  </div>
+  <div id="cloudLineupStatus" class="cloud-lineup-status"></div>
+  <div id="cloudLineupGrid" class="cloud-lineup-grid">
+   <button id="cloudPlusTile" type="button" class="cloud-plus-tile">
+    <span>＋</span><b>새 라인업</b><small>현재 라인업을 계정에 저장</small>
+   </button>
+  </div>
+ </div>
+</div>
+
 <dialog id="customDialog" aria-labelledby="customTitle">
  <header><strong id="customTitle">커스텀 선수</strong><button type="button" onclick="document.getElementById('customDialog').close()">닫기</button></header>
  <p>이 기기의 브라우저에 저장돼. 다른 기기에서는 백업 파일을 불러와 줘. 기존 라인업의 새로고침 초기화와 별도로 커스텀 선수는 유지돼.</p>
@@ -1844,6 +1900,7 @@ body{background:#fff!important;color:#17191c!important}
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
 <script src="./bootstrap.js"></script>
+<script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
  <span id="viewToggleText">화면 전환</span>

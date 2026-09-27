@@ -1,4 +1,4 @@
-KBO SquadMaker v11.1
+KBO SquadMaker v11.2
 
 - 커스텀 선수 기본 OVR 자동 계산
 - 타자/투수 6개 기본 능력치의 산술평균에서 소수점 이하 버림(Math.floor)
