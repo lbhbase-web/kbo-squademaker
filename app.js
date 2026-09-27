@@ -303,8 +303,14 @@ function yearSortNumber(value){
  if(!Number.isFinite(y))return 9999;
  return y>=82?1900+y:2000+y;
 }
+function receivesAllYearSetdeckEffects(p){
+ // 임팩트 카드는 카드 자체의 표기 연도와 관계없이 모든 선택 연도 세트덱 효과를 받는다.
+ // receivesAllYearEffects는 클라우드/내보내기 데이터 호환용 플래그다.
+ return Boolean(p?.receivesAllYearEffects) || isYearlessImpact(p) || family(p)==="impact";
+}
 function receivesYearEffect(p,selectedYear){
- return isYearlessImpact(p) || normalizeYearKey(p.year)===normalizeYearKey(selectedYear);
+ if(receivesAllYearSetdeckEffects(p))return true;
+ return normalizeYearKey(p.year)===normalizeYearKey(selectedYear);
 }
 
 function maxTraining(p){
@@ -614,6 +620,7 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
  const enhancement=enhancementBonusMap(p,g);
  const awakening=awakeningBonusMap(p,g);
  const posBonus=positionTrainingBonuses(p,slot,mode);
+ const bullpenBonus=bullpenTacticBonusMap(p,slot,mode);
  const modeBonus=lineupModeBonus(p,mode);
  const deckBonus=setdeckBonusMap(p,slot,mode);
  const anti=antiSynergyStatus(mode);
@@ -629,6 +636,7 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
      Number(enhancement[k]||0)+
      Number(awakening[k]||0)+
      Number(posBonus[k]||0)+
+     Number(bullpenBonus[k]||0)+
      Number(modeBonus||0)+
      Number(deckBonus[k]||0)+
      Number(anti.totalPenalty||0)+Number(skills.total[k]||0);
@@ -3043,7 +3051,7 @@ function lineupPayload(mode){
   players:Object.entries(L.slots).filter(([,id])=>id).map(([slot,id])=>{
    const p=players.find(x=>x.id===id),g=getGrowth(p),es=effectiveStats(p,slot,mode);
    return {
-    slot,id:p.id,name:p.name,year:isYearlessImpact(p)?null:p.year,receivesAllYearEffects:isYearlessImpact(p),
+    slot,id:p.id,name:p.name,year:isYearlessImpact(p)?null:p.year,receivesAllYearEffects:receivesAllYearSetdeckEffects(p),
     originalTeam:p.team,effectiveTeam:effectiveTeam(p,g),teamForEffects:teamForEffects(p,g),isFA:isFa(p,g),type:p.type,series:p.series,pos:p.pos,bats:g.battingHand||p.bats||null,throws:g.pitchingHand||p.throws||null,
     baseOvr:p.ovr,ovr:effectiveCardOvr(p,g,slot,mode),nationalVariant:nationalVariant(p,g),stars:cardStars(p,g),setdeckScore:effectiveSetdeckScore(p),
     growth:g,effectiveStats:es.stats,skillBonus:es.skillBonus,skillEffects:es.skillEffects,wildcardBasePenalty:es.wildcardBasePenalty,specialBonus:es.specialBonus,trainingBonus:es.trainingBonus,enhancementBonus:es.enhancementBonus,awakeningBonus:es.awakeningBonus,

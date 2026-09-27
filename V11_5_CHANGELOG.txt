@@ -1,4 +1,4 @@
-KBO SquadMaker v11.5
+KBO SquadMaker v11.6
 
 - Firestore 라인업 저장 실패 수정
 - Firestore가 지원하지 않는 중첩 배열을 직접 저장하지 않고 snapshotJson(JSON 문자열)로 저장
