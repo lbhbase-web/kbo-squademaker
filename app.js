@@ -2949,9 +2949,11 @@ function renderGrow(){
  const es=effectiveStats(p,slot,currentMode),[lo,hi]=specialBounds(p,g.faTeam);
  const sum=m=>Object.values(m||{}).reduce((a,b)=>a+Number(b||0),0);
  const level=(key,value,max)=>`<span>레벨 <input aria-label="${key} 레벨" type="number" min="0" max="${max}" value="${value}" onchange="detailSetLevel('${key}',this.value)"></span><button onclick="detailSetLevel('${key}',0)">0</button><button onclick="detailSetLevel('${key}',${max})">${max}</button>`;
- const faMenu=canChangeTeam(p,g)&&faMenuOpen?`<div class="fa-inline-menu"><div class="fa-inline-grid">${TEAMS.map(t=>`<button class="fa-inline-item ${effectiveTeam(p,g)===t?"active":""}" onclick="setFaTeam('${t}')">${t}</button>`).join("")}</div></div>`:"";
+ const national=family(p)==="national";
+ const faMenu=faMenuOpen?`<div class="fa-inline-menu"><div class="fa-inline-grid">${TEAMS.map(t=>`<button class="fa-inline-item ${effectiveTeam(p,g)===t?"active":""}" onclick="${national?`setWildcardTeam('${t}')`:`setFaTeam('${t}')`}">${t}</button>`).join("")}</div>${national&&isNationalWildcard(p,g)?`<div class="fa-inline-clear"><button onclick="clearWildcardRecruit()">와일드카드 해제</button></div>`:""}</div>`:"";
+ const recruitAction=canFa(p)?`<button onclick="openFa('${p.id}')">FA 영입</button>${faMenu}`:national?`<button onclick="openWildcardRecruit('${p.id}')">와일드카드 영입</button>${faMenu}`:"";
  $('growBody').innerHTML=`<div class="reference-detail">
- <div class="reference-header"><div class="reference-card">${gamePlayerCardHTML(p,{slot:slot||''}).replace(/onclick="[^"]*"/g,'')}</div><div class="reference-info"><div class="reference-actions"><button onclick="openPlayerPhotoFor('${p.id}')">페이스온 추가</button>${canChangeTeam(p,g)?`<button onclick="openFa('${p.id}')">FA 영입</button>${faMenu}`:''}</div><strong>${esc(p.series||p.type)} ${esc(p.name)}${p.year?" ’"+p.year:''}</strong><div>${esc(effectiveTeam(p,g))} · ${esc(p.type)}</div><div class="reference-six">${statMeta(p).map(([k,l])=>{const base=Number(p.stats?.[k]||0),v=es.stats[k],diff=Number(v)-base;return `<span>${l}: <b>${v??'—'}</b> <small>(${base}${diff>=0?'+':''}${diff})</small></span>`}).join('')}</div><div>세트덱 포인트: ${effectiveSetdeckScore(p)??"—"}</div></div></div>
+ <div class="reference-header"><div class="reference-card">${gamePlayerCardHTML(p,{slot:slot||''}).replace(/onclick="[^"]*"/g,'')}</div><div class="reference-info"><div class="reference-actions"><button onclick="openPlayerPhotoFor('${p.id}')">페이스온 추가</button>${recruitAction}</div><strong>${esc(p.series||p.type)} ${esc(p.name)}${p.year?" ’"+p.year:''}</strong><div>${esc(effectiveTeam(p,g))} · ${esc(p.type)}</div><div class="reference-six">${statMeta(p).map(([k,l])=>{const base=Number(p.stats?.[k]||0),v=es.stats[k],diff=Number(v)-base;return `<span>${l}: <b>${v??'—'}</b> <small>(${base}${diff>=0?'+':''}${diff})</small></span>`}).join('')}</div><div>세트덱 포인트: ${effectiveSetdeckScore(p)??"—"}</div></div></div>
  ${handednessControlHTML(p)}
  <section><h3>훈련</h3><div class="reference-controls">${level('training',g.training,maxTraining(p))}<span>훈련 총합: ${sum(es.trainingBonus)}/${3*g.training}</span><span>${g.trainingMode==='manual'?'수동 배분':'자동 배분'}</span></div><div class="reference-allocation">${detailRows(p,es.trainingBonus,'training')}</div></section>
  <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div></section>
@@ -2966,6 +2968,40 @@ function renderGrow(){
 
 function controlHTML(label,value,min,max,key){
  return `<div class="control"><label>${label} · 범위 ${min}~${max}</label><div class="stepper"><button onclick="stepGrowth('${key}',-1)">−</button><div class="value">${value}</div><button onclick="stepGrowth('${key}',1)">＋</button></div></div>`;
+}
+function openWildcardRecruit(id){
+ const p=players.find(x=>x.id===id);if(!p||family(p)!=="national")return;
+ currentFaId=id;
+ faMenuOpen=!faMenuOpen;
+ renderGrow();
+}
+function setWildcardTeam(team){
+ const p=players.find(x=>x.id===currentFaId);if(!p||family(p)!=="national"||!TEAMS.includes(team))return;
+ if(!canSetNationalVariant(p,"wildcard")){
+  toast("FA 임팩트·FA 시그니처·국가대표 와일드카드는 합쳐서 한 라인업에 최대 2장까지 사용할 수 있어.");
+  faMenuOpen=false;renderGrow();return;
+ }
+ const g=getGrowth(p),old=nationalVariant(p,g);
+ g.nationalVariant="wildcard";
+ if(old!=="wildcard")g.special=1;
+ g.faTeam=team===p.team?null:team;
+ const [lo,hi]=specialBounds(p,g.faTeam);
+ g.special=Math.max(lo,Math.min(hi,Number(g.special)||lo));
+ faMenuOpen=false;
+ renderGrow();renderAll();
+ toast(`${p.name}을(를) ${team} 와일드카드로 영입했어.`);
+}
+function clearWildcardRecruit(){
+ const p=players.find(x=>x.id===currentFaId||x.id===currentGrowId);if(!p||family(p)!=="national")return;
+ const g=getGrowth(p);
+ g.nationalVariant="normal";
+ g.faTeam=null;
+ g.special=Math.max(4,Number(g.special)||4);
+ const [lo,hi]=specialBounds(p,g.faTeam);
+ g.special=Math.max(lo,Math.min(hi,g.special));
+ faMenuOpen=false;
+ renderGrow();renderAll();
+ toast(`${p.name}을(를) 일반 국가대표로 되돌렸어.`);
 }
 function openFa(id){
  const p=players.find(x=>x.id===id);if(!p||!canChangeTeam(p))return;currentFaId=id;faMenuOpen=!faMenuOpen;renderGrow();
@@ -3252,7 +3288,7 @@ function cloudLineupSnapshot(){
  const payload=lineupPayload(currentMode);
  return {
   schema:"kbo-cloud-lineup-v1",
-  appVersion:"11.2",
+  appVersion:"11.5",
   savedAt:new Date().toISOString(),
   mode:currentMode,
   modeName:MODES[currentMode]||currentMode,

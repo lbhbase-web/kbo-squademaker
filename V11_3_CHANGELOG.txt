@@ -1,4 +1,4 @@
-KBO SquadMaker v11.3
+KBO SquadMaker v11.4
 - Firebase 웹 앱 설정값 실제 연결
 - Google 로그인 활성화 준비 완료
 - Firestore 계정별 라인업 보관함 연결
