@@ -309,8 +309,8 @@ function receivesAllYearSetdeckEffects(p){
  return Boolean(p?.receivesAllYearEffects) || String(p?.type||"").trim()==="임팩트" || isYearlessImpact(p) || family(p)==="impact";
 }
 function receivesYearEffect(p,selectedYear){
- if(String(p?.type||"").trim()==="임팩트")return true;
- if(receivesAllYearSetdeckEffects(p))return true;
+ // 예전 정상 동작 규칙: 임팩트 카드는 카드 연도와 무관하게 모든 선택 연도 효과를 받는다.
+ if(isYearlessImpact(p) || family(p)==="impact") return true;
  return normalizeYearKey(p.year)===normalizeYearKey(selectedYear);
 }
 
@@ -977,7 +977,8 @@ function setdeckBonusMap(p,slot,mode=currentMode){
    const selectedYear=param.year||getSetdeckParam(score,"year",mode);
    const selectedTeam=param.team||getSetdeckParam(score,"team",mode);
    const isSelectedPlayer=selectedPlayer===p.id;
-   const yearOk=String(p?.type||"").trim()==="임팩트"||receivesYearEffect(p,selectedYear);
+   const impactAllYear=isYearlessImpact(p)||f==="impact";
+   const yearOk=!impactAllYear&&receivesYearEffect(p,selectedYear);
    const teamOk=receivesTeamEffect(p,selectedTeam);
 
    switch(score){
@@ -1113,6 +1114,30 @@ function setdeckBonusMap(p,slot,mode=currentMode){
      if(side==="left"&&teamOk&&batter)addSetdeckAll(out,2);
      if(side==="right"&&teamOk&&pitcher)addSetdeckAll(out,2);
      break;
+   }
+
+   // 임팩트 전용 연도 호환 처리. 예전 정상 버전처럼 선택 연도와 관계없이 연도 효과를 직접 적용한다.
+   // 위 switch에서는 impactAllYear일 때 yearOk=false로 두어 중복 적용을 막는다.
+   if(impactAllYear){
+    switch(score){
+     case 55:
+      if(side==="left"&&batter)addSetdeckKeys(out,["baserun","fielding"],2);
+      if(side==="right"&&pitcher)addSetdeckKeys(out,["break","stamina"],2);
+      break;
+     case 75:
+      if(side==="left"&&batter)addSetdeckKeys(out,["power","contact"],3);
+      if(side==="right"&&pitcher)addSetdeckKeys(out,["stuff","control"],3);
+      break;
+     case 180:
+      if(side==="right")addSetdeckAll(out,1);
+      break;
+     case 185:
+      if(side==="right"&&batter)addSetdeckAll(out,1);
+      break;
+     case 190:
+      if(side==="right"&&pitcher)addSetdeckAll(out,1);
+      break;
+    }
    }
  }
  return out;
