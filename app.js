@@ -285,7 +285,7 @@ function effectiveSetdeckScore(p){
 }
 
 
-function isYearlessImpact(p){return family(p)==="impact"}
+function isYearlessImpact(p){return String(p?.type||"").trim()==="임팩트"||family(p)==="impact"}
 function displayYear(p){return isYearlessImpact(p)?"":(p.year??"")}
 function normalizeYearKey(value){
  if(value===null||value===undefined||value==="")return "";
@@ -304,11 +304,12 @@ function yearSortNumber(value){
  return y>=82?1900+y:2000+y;
 }
 function receivesAllYearSetdeckEffects(p){
- // 임팩트 카드는 카드 자체의 표기 연도와 관계없이 모든 선택 연도 세트덱 효과를 받는다.
- // receivesAllYearEffects는 클라우드/내보내기 데이터 호환용 플래그다.
- return Boolean(p?.receivesAllYearEffects) || isYearlessImpact(p) || family(p)==="impact";
+ // 임팩트는 연도 없음 카드이며 선택 연도와 무관하게 모든 연도 세트덱 효과를 받는다.
+ // type 직접 판정까지 넣어 데이터/커스텀/클라우드 복원 경로가 달라도 동일하게 처리한다.
+ return Boolean(p?.receivesAllYearEffects) || String(p?.type||"").trim()==="임팩트" || isYearlessImpact(p) || family(p)==="impact";
 }
 function receivesYearEffect(p,selectedYear){
+ if(String(p?.type||"").trim()==="임팩트")return true;
  if(receivesAllYearSetdeckEffects(p))return true;
  return normalizeYearKey(p.year)===normalizeYearKey(selectedYear);
 }
@@ -976,7 +977,7 @@ function setdeckBonusMap(p,slot,mode=currentMode){
    const selectedYear=param.year||getSetdeckParam(score,"year",mode);
    const selectedTeam=param.team||getSetdeckParam(score,"team",mode);
    const isSelectedPlayer=selectedPlayer===p.id;
-   const yearOk=receivesYearEffect(p,selectedYear);
+   const yearOk=String(p?.type||"").trim()==="임팩트"||receivesYearEffect(p,selectedYear);
    const teamOk=receivesTeamEffect(p,selectedTeam);
 
    switch(score){
@@ -2961,7 +2962,7 @@ function renderGrow(){
  const faMenu=faMenuOpen?`<div class="fa-inline-menu"><div class="fa-inline-grid">${TEAMS.map(t=>`<button class="fa-inline-item ${effectiveTeam(p,g)===t?"active":""}" onclick="${national?`setWildcardTeam('${t}')`:`setFaTeam('${t}')`}">${t}</button>`).join("")}</div>${national&&isNationalWildcard(p,g)?`<div class="fa-inline-clear"><button onclick="clearWildcardRecruit()">와일드카드 해제</button></div>`:""}</div>`:"";
  const recruitAction=canFa(p)?`<button onclick="openFa('${p.id}')">FA 영입</button>${faMenu}`:national?`<button onclick="openWildcardRecruit('${p.id}')">와일드카드 영입</button>${faMenu}`:"";
  $('growBody').innerHTML=`<div class="reference-detail">
- <div class="reference-header"><div class="reference-card">${gamePlayerCardHTML(p,{slot:slot||''}).replace(/onclick="[^"]*"/g,'')}</div><div class="reference-info"><div class="reference-actions"><button onclick="openPlayerPhotoFor('${p.id}')">페이스온 추가</button>${recruitAction}</div><strong>${esc(p.series||p.type)} ${esc(p.name)}${p.year?" ’"+p.year:''}</strong><div>${esc(effectiveTeam(p,g))} · ${esc(p.type)}</div><div class="reference-six">${statMeta(p).map(([k,l])=>{const base=Number(p.stats?.[k]||0),v=es.stats[k],diff=Number(v)-base;return `<span>${l}: <b>${v??'—'}</b> <small>(${base}${diff>=0?'+':''}${diff})</small></span>`}).join('')}</div><div>세트덱 포인트: ${effectiveSetdeckScore(p)??"—"}</div></div></div>
+ <div class="reference-header"><div class="reference-card">${gamePlayerCardHTML(p,{slot:slot||''}).replace(/onclick="[^"]*"/g,'')}</div><div class="reference-info"><div class="reference-actions"><button onclick="openPlayerPhotoFor('${p.id}')">페이스온 추가</button>${recruitAction}</div><strong>${esc(p.series||p.type)} ${esc(p.name)}${p.year?" ’"+p.year:''}</strong><div>${esc(effectiveTeam(p,g))} · ${esc(p.type)}</div><div class="reference-six">${statMeta(p).map(([k,l])=>{const base=Number(p.stats?.[k]||0),v=es.stats[k],diff=Number(v)-base;return `<span>${l}: <b>${v??'—'}</b> <small>(${base}${diff>=0?'+':''}${diff})</small></span>`}).join('')}</div><div>세트덱 포인트: ${effectiveSetdeckScore(p)??"—"}${String(p?.type||"").trim()==="임팩트"?` · <b>모든 연도 효과 적용</b>`:""}</div></div></div>
  ${handednessControlHTML(p)}
  <section><h3>훈련</h3><div class="reference-controls">${level('training',g.training,maxTraining(p))}<span>훈련 총합: ${sum(es.trainingBonus)}/${3*g.training}</span><span>${g.trainingMode==='manual'?'수동 배분':'자동 배분'}</span></div><div class="reference-allocation">${detailRows(p,es.trainingBonus,'training')}</div></section>
  <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div></section>
@@ -3296,7 +3297,7 @@ function cloudLineupSnapshot(){
  const payload=lineupPayload(currentMode);
  return {
   schema:"kbo-cloud-lineup-v1",
-  appVersion:"11.5",
+  appVersion:"11.7",
   savedAt:new Date().toISOString(),
   mode:currentMode,
   modeName:MODES[currentMode]||currentMode,
@@ -3310,17 +3311,21 @@ function loadCloudLineupSnapshot(snapshot){
  const payload=snapshot?.payload||snapshot;
  if(!payload||typeof payload!=="object")throw Error("저장된 라인업 데이터가 올바르지 않아.");
  const targetMode=(payload.mode&&Object.hasOwn(MODES,payload.mode))?payload.mode:currentMode;
- const backupLineups=lineups;
- const backupMode=currentMode;
+ const previousLineups=lineups;
  const count=importLineupData(payload);
- const loadedMode=currentMode;
- const loadedState=lineups[loadedMode];
- lineups=backupLineups;
- lineups[targetMode]=loadedState;
+ // importLineupData()가 만든 복원 완료 상태를 확보한다.
+ // 이 앱은 ensureLineupState()에서 ranking을 모든 모드의 기준 상태로 사용하므로,
+ // 클라우드 불러오기에서도 ranking에 복원 상태를 넣어야 슬롯이 다시 빈 상태로 덮이지 않는다.
+ const importedState=lineups[currentMode]||lineups.ranking;
+ if(!importedState||!importedState.slots)throw Error("복원된 라인업 상태를 찾지 못했어.");
+ lineups=previousLineups;
+ lineups.ranking=importedState;
+ for(const mode of Object.keys(MODES))lineups[mode]=importedState;
  currentMode=targetMode;
  ensureLineupState(currentMode);
+ localStorage.setItem("v26_mode",currentMode);
  $("preferredTeam").value=preferredTeam;
- refreshCustomSearch();renderTabs();renderAll();closeExport();
+ refreshCustomSearch();renderTabs();updateChoiceGridTriggers();renderAll();closeExport();
  toast(`${count}명 라인업을 계정 저장본에서 불러왔어.`);
  return count;
 }

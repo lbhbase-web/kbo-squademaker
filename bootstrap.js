@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js';
-  const DATA_URLS=['./players.json','./data/players.json'];
+  const APP_URL='./app.js?v=11.8';
+  const DATA_URLS=['./players.json?v=11.8','./data/players.json?v=11.8'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -19,6 +19,8 @@
         if(!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
         const data=await r.json();
         if(!Array.isArray(data)) throw new Error(`${url}: 선수 데이터 형식 오류`);
+        // 임팩트는 카드 연도가 없는 대신 모든 선택 연도 세트덱 효과를 받는다.
+        data.forEach(p=>{if(String(p?.type||'').trim()==='임팩트')p.receivesAllYearEffects=true;});
         return data;
       }catch(err){
         lastError=err;
