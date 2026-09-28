@@ -1179,7 +1179,20 @@ const POSITION_SKILL_TIER_WEIGHTS={major:0.10,minor:0.30,rookie:0.30,amateur:0.3
 function skillPitcher(p){return ['SP','RP','CP'].includes(p.pos)}
 function skillRoleAllowed(d,pos){return d.role==='B'?!['SP','RP','CP'].includes(pos):d.role==='P'?['SP','RP','CP'].includes(pos):d.role==='R'?['RP','CP'].includes(pos):d.role==='SR'?['SP','RP'].includes(pos):pos===d.role}
 function skillDefinition(id){return GENERAL_SKILLS.find(d=>d.id===id)||NATIONAL_SKILLS.find(d=>d.id===id)}
-function skillCap(p,i){return family(p)==='gold'?6:(i===0?6:5)}
+function skillCap(p,i){
+ const f=family(p);
+ // LIVE 카드는 연도와 무관하게 기본 스킬 최대 레벨 7 / 7 / 7.
+ if(f==='live')return 7;
+ // 라이브 올스타: 현재 26년 카드는 8 / 7 / 7, 25년 이하는 7 / 6 / 6.
+ if(f==='allstar'){
+  const rawYear=Number(p?.year);
+  const yy=Number.isFinite(rawYear)?(rawYear>=2000?rawYear%100:rawYear):0;
+  const caps=yy===26?[8,7,7]:[7,6,6];
+  return caps[i]??caps[2];
+ }
+ if(f==='gold')return 6;
+ return i===0?6:5;
+}
 function allowedSkills(p){return [...(family(p)==='national'?NATIONAL_SKILLS:[]),...GENERAL_SKILLS].filter(d=>skillRoleAllowed(d,p.pos))}
 function playerSkills(p){
  const g=getGrowth(p),allowed=allowedSkills(p),seen=new Set();
@@ -1187,7 +1200,12 @@ function playerSkills(p){
  return g.skills;
 }
 function skillContext(p){return getGrowth(p).skillContext||{}}
-function positionSkillPool(slot){const pos=/^SP/.test(slot)?'SP':/^RP/.test(slot)?'RP':slot==='CP'?'CP':slot;return GENERAL_SKILLS.filter(d=>skillRoleAllowed(d,pos)).sort((a,b)=>SKILL_TIER_ORDER.indexOf(a.tier)-SKILL_TIER_ORDER.indexOf(b.tier)||a.name.localeCompare(b.name,'ko'))}
+function positionSkillPool(slot){
+ const pos=/^SP/.test(slot)?'SP':/^RP/.test(slot)?'RP':slot==='CP'?'CP':slot;
+ return GENERAL_SKILLS
+  .filter(d=>skillRoleAllowed(d,pos)||(BENCH.includes(slot)&&d.id==='m_catcher'))
+  .sort((a,b)=>SKILL_TIER_ORDER.indexOf(a.tier)-SKILL_TIER_ORDER.indexOf(b.tier)||a.name.localeCompare(b.name,'ko'));
+}
 function positionSkillRows(slot,milestone,mode=currentMode){
  const L=ensureLineupState(mode),pool=positionSkillPool(slot),seen=new Set(),raw=L.positionSkills?.[slot]?.[milestone];
  return Array.from({length:3},(_,i)=>{const id=raw?.[i];if(typeof id!=='string'||seen.has(id)||!pool.some(d=>d.id===id))return '';seen.add(id);return id});
@@ -1444,6 +1462,10 @@ function original_trainingBonuses(p,g=getGrowth(p)){
 }
 function trainingPreset(p){
  const pitcher=["SP","RP","CP"].includes(p.pos),f=family(p);
+ // 라이브 올스타는 훈련 30레벨 만렙 기준 지정 배분 사용.
+ // 타자: 파워20 / 정확20 / 선구15 / 인내14 / 주루10 / 수비11 = 총 90
+ // 투수: 구속11 / 변화20 / 구위20 / 제구15 / 지구력14 / 수비10 = 총 90
+ if(f==="allstar")return pitcher?[11,20,20,15,14,10]:[20,20,15,14,10,11];
  if(f==="impact")return pitcher?[8,13,13,7,7,6]:[13,13,8,7,7,6];
  if(f==="national")return pitcher?[10,16,16,8,9,7]:[16,16,11,8,7,8];
  if(f==="signature"||(f==="gold"&&cardStars(p)===5))return pitcher?[12,18,17,10,9,9]:[18,17,12,10,9,9];
