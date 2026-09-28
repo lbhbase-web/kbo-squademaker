@@ -1468,7 +1468,9 @@ function trainingPreset(p){
  if(f==="allstar")return pitcher?[11,20,20,15,14,10]:[20,20,15,14,10,11];
  if(f==="impact")return pitcher?[8,13,13,7,7,6]:[13,13,8,7,7,6];
  if(f==="national")return pitcher?[10,16,16,8,9,7]:[16,16,11,8,7,8];
- if(f==="signature"||(f==="gold"&&cardStars(p)===5))return pitcher?[12,18,17,10,9,9]:[18,17,12,10,9,9];
+ // LIVE 5성은 시그니처/골든글러브 5성과 동일한 지정 훈련값을 사용한다.
+ // LIVE 4성·3성은 preset을 사용하지 않고 기존 자동 랜덤 훈련을 사용한다.
+ if(f==="signature"||(f==="gold"&&cardStars(p)===5)||(f==="live"&&cardStars(p)===5))return pitcher?[12,18,17,10,9,9]:[18,17,12,10,9,9];
  if(f==="gold"&&cardStars(p)===4&&!pitcher)return [17,16,11,9,8,8];
  return null;
 }
