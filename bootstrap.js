@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=13.2';
-  const DATA_URLS=['./players.json?v=13.2','./data/players.json?v=13.2'];
+  const APP_URL='./app.js?v=13.3';
+  const DATA_URLS=['./players.json?v=13.3','./data/players.json?v=13.3'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -33,16 +33,27 @@
   loadPlayers()
     .then(data=>{
       window.__KBO_PLAYERS__=data;
-      const script=document.createElement('script');
-      script.src=APP_URL;
-      script.onerror=()=>showError('앱 스크립트를 불러오지 못했습니다. app.js가 저장소 최상위에 있는지 확인해 주세요.');
-      script.onload=()=>{
-        const logoPatch=document.createElement('script');
-        logoPatch.src='./historic-logo-transparent.js?v=13.2';
-        logoPatch.onerror=()=>console.warn('옛 구단 로고 투명 배경 패치를 불러오지 못했습니다.');
-        document.body.appendChild(logoPatch);
+      const startApp=()=>{
+        const script=document.createElement('script');
+        script.src=APP_URL;
+        script.onerror=()=>showError('앱 스크립트를 불러오지 못했습니다. app.js가 저장소 최상위에 있는지 확인해 주세요.');
+        script.onload=()=>{
+          const logoPatch=document.createElement('script');
+          logoPatch.src='./historic-logo-transparent.js?v=13.3';
+          logoPatch.onerror=()=>console.warn('옛 구단 로고 투명 배경 패치를 불러오지 못했습니다.');
+          document.body.appendChild(logoPatch);
+          const photoPatch=document.createElement('script');
+          photoPatch.src='./player-photo-runtime-patch.js?v=13.3';
+          photoPatch.onerror=()=>console.warn('선수사진 런타임 패치를 불러오지 못했습니다.');
+          document.body.appendChild(photoPatch);
+        };
+        document.body.appendChild(script);
       };
-      document.body.appendChild(script);
+      const loader=document.createElement('script');
+      loader.src='./player-photo-loader.js?v=13.3';
+      loader.onload=startApp;
+      loader.onerror=()=>{console.warn('선수사진 로더를 불러오지 못했습니다.');startApp();};
+      document.head.appendChild(loader);
     })
     .catch(err=>showError('선수 데이터를 불러오지 못했습니다. players.json 또는 data/players.json 파일을 확인해 주세요. ('+err.message+')'));
 })();
