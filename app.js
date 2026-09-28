@@ -3087,7 +3087,6 @@ function setFaTeam(team){
 }
 function saveAll(){
  localStorage.setItem("v26_pref_team",preferredTeam);
- toast("현재 창에 적용했어. 새로고침하면 라인업과 육성은 초기화돼. 보관하려면 내보내기를 사용해줘.");
 }
 function openExport(){$("exportModal").classList.add("open")}
 function closeExport(){$("exportModal").classList.remove("open")}
