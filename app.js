@@ -2255,7 +2255,7 @@ function fullGrowSlot(slot,event){
  activeLineupSlot=slot;
  saveAll();
  renderAll();
- toast(`${p.name} 풀성장 적용 · 훈련 ${g.training}/${maxTraining(p)} · +${g.enhance}강${maxAwakening(p)?` · ${g.awakening}각`:""}${bounds[1]?` · 특훈 ${g.special}`:""} · 포지션특훈 20`);
+ 
  const shell=document.querySelector(`[data-slot="${CSS.escape(slot)}"] .lineup-card-shell`);
  if(shell){shell.classList.add("fullgrow-flash");setTimeout(()=>shell.classList.remove("fullgrow-flash"),400)}
 }
