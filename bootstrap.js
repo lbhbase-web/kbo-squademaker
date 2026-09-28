@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=12.0';
-  const DATA_URLS=['./players.json?v=12.0','./data/players.json?v=12.0'];
+  const APP_URL='./app.js?v=12.8';
+  const DATA_URLS=['./players.json?v=12.8','./data/players.json?v=12.8'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');

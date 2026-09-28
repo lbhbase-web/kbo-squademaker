@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+ <rect x="2" y="2" width="96" height="96" rx="22" fill="#163b73" stroke="#d72c2c" stroke-width="4"/>
+ <circle cx="50" cy="43" r="25" fill="#ffffff" opacity=".96"/>
+ <text x="50" y="52" text-anchor="middle" font-family="Arial,Apple SD Gothic Neo,Noto Sans KR,sans-serif" font-size="24" font-weight="900" fill="#163b73">OB</text>
+ <text x="50" y="18" text-anchor="middle" font-family="Arial,Apple SD Gothic Neo,Noto Sans KR,sans-serif" font-size="11" font-weight="900" fill="#ffffff">OB</text>
+ <text x="50" y="84" text-anchor="middle" font-family="Arial,Apple SD Gothic Neo,Noto Sans KR,sans-serif" font-size="10" font-weight="800" fill="#ffffff">BEARS</text>
+</svg>

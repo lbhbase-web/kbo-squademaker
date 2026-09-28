@@ -1330,6 +1330,11 @@ body{background:#fff!important;color:#17191c!important}
 @media(max-width:760px){.cloud-lineup-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cloud-account-box{padding:14px!important}.cloud-account-head{top:-14px}.cloud-account-actions .btn{flex:1 1 42%}}
 @media(max-width:480px){.cloud-lineup-grid{grid-template-columns:1fr}.cloud-lineup-card,.cloud-plus-tile{min-height:150px}}
 
+
+/* v12.8: 선호구단 버튼에 현재팀(옛팀) 이름을 함께 표시 */
+#choiceGridBackdrop .choice-grid .choice-cell{white-space:normal;line-height:1.25;min-height:52px;padding:8px 6px;font-size:12px}
+#preferredTeamPickerBtn{white-space:normal;line-height:1.25;max-width:300px}
+
 </style>
 <style>
 #growModal .modal{width:min(760px,96vw)}
@@ -1593,7 +1598,7 @@ body{background:#fff!important;color:#17191c!important}
  <div class="top">
   <div class="brand">
    <div class="logo">V26</div>
-   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v12.4 · 스킬 130 · 선수사진 없음</span></h1>
+   <div><h1>컴프야V26 스쿼드 메이커 <span style="font-size:10px;color:#7047d8">통합 v12.8 · 스킬 130 · 선수사진 없음</span></h1>
    <div class="sub">8,982장 전체 DB · 포지션별 선수 선택 · 실제 10개 구단 로고 · PC/모바일</div></div>
   </div>
   <div class="toolbar">
@@ -1899,7 +1904,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=12.0"></script>
+<script src="./bootstrap.js?v=12.5"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
