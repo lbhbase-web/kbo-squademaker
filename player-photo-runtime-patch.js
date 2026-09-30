@@ -3,6 +3,11 @@
   const aliasNames=new Set(["오전익","임총오","호스틴","데니스","테런스"]);
   const e=s=>typeof window.esc==='function'?window.esc(String(s??'')):String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const pitcherPos=pos=>/^(SP|RP|CP|P)$/i.test(String(pos||'').trim())||/(투수|선발|계투|마무리)/.test(String(pos||''));
+  const nineAwakenable=p=>{
+    try{if(typeof window.maxAwakening==='function')return Number(window.maxAwakening(p))===9}catch(e){}
+    const t=String(p?.type||p?.cardType||'').replace(/\s+/g,'');
+    return ['임팩트','시그니처','국가대표','골든글러브'].some(k=>t.includes(k));
+  };
   const svgUri=kind=>{
     const pitcher=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300"><g fill="#031833" stroke="#031833" stroke-linecap="round" stroke-linejoin="round"><circle cx="132" cy="48" r="28"/><path d="M92 92c10-21 31-32 53-28 31 5 50 27 53 62l8 88c3 35-20 58-58 58H92c-32 0-55-19-56-48l-2-54c-1-27 8-52 28-70 9-8 18-12 30-8Z"/><path d="M126 92c-8-18-6-34 6-45 10-9 23-13 35-9 12 5 17 17 13 29-4 11-14 18-28 22" stroke-width="23" fill="none"/><path d="M171 105c17 7 27 18 32 33" stroke-width="24" fill="none"/><ellipse cx="207" cy="144" rx="22" ry="28"/><path d="M72 204 52 289M151 212l24 77" stroke-width="30" fill="none"/></g></svg>`;
     const batter=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300"><g fill="#08346d" stroke="#08346d" stroke-linecap="round" stroke-linejoin="round"><circle cx="132" cy="52" r="29"/><path d="M88 97c12-21 32-32 55-31 33 2 54 27 55 64l2 79c1 39-22 63-61 63H86c-33 0-55-20-55-51l2-61c1-33 14-54 38-67 6-3 11-4 17 4Z"/><path d="M96 112 37 134" stroke-width="29" fill="none"/><path d="M171 110 224 88" stroke-width="27" fill="none"/><path d="M32 132 8 128" stroke-width="13" fill="none"/><path d="M222 86 238 80" stroke-width="11" fill="none"/><path d="M81 211 54 289M151 211l31 78" stroke-width="30" fill="none"/></g></svg>`;
@@ -29,15 +34,16 @@
 
   window.playerPhotoHTML=function(p,cls='player-photo'){
     const custom=typeof window.customPlayerPhotoUrl==='function'?window.customPlayerPhotoUrl(p):'';
-    if(custom)return `<div class="picker-photo-wrap"><img class="${cls} loaded" src="${e(custom)}" alt="${e(p?.name||'선수')} 사진"></div>`;
-    return `<div class="picker-photo-wrap" data-player-photo-wrap="1" data-player-name="${e(p?.name||'')}" data-player-team="${e(p?.team||'')}" data-player-pos="${e(p?.pos||'')}"><img class="${cls}" alt="${e(p?.name||'선수')} 사진"><span class="photo-fallback">${e(p?.name||'선수')}</span></div>`;
+    if(custom)return `<div class="picker-photo-wrap ${nineAwakenable(p)?'awakening9-photo':''}"><img class="${cls} loaded" src="${e(custom)}" alt="${e(p?.name||'선수')} 사진"></div>`;
+    return `<div class="picker-photo-wrap ${nineAwakenable(p)?'awakening9-photo':''}" data-player-photo-wrap="1" data-player-name="${e(p?.name||'')}" data-player-team="${e(p?.team||'')}" data-player-pos="${e(p?.pos||'')}"><img class="${cls}" alt="${e(p?.name||'선수')} 사진"><span class="photo-fallback">${e(p?.name||'선수')}</span></div>`;
   };
 
   window.gamePhotoHTML=function(p,compact=false){
     const custom=typeof window.customPlayerPhotoUrl==='function'?window.customPlayerPhotoUrl(p):'';
     const cls=compact?'lc-photo':'game-card-photo';
-    if(custom)return `<div class="${cls}"><img class="loaded" src="${e(custom)}" alt="${e(p?.name||'선수')} 사진"></div>`;
-    return `<div class="${cls}" data-player-photo-wrap="1" data-player-name="${e(p?.name||'')}" data-player-team="${e(p?.team||'')}" data-player-pos="${e(p?.pos||'')}"><img alt="${e(p?.name||'선수')} 사진"><span class="photo-fallback">${e(p?.name||'선수')}</span></div>`;
+    const glow=nineAwakenable(p)?' awakening9-photo':'';
+    if(custom)return `<div class="${cls}${glow}"><img class="loaded" src="${e(custom)}" alt="${e(p?.name||'선수')} 사진"></div>`;
+    return `<div class="${cls}${glow}" data-player-photo-wrap="1" data-player-name="${e(p?.name||'')}" data-player-team="${e(p?.team||'')}" data-player-pos="${e(p?.pos||'')}"><img alt="${e(p?.name||'선수')} 사진"><span class="photo-fallback">${e(p?.name||'선수')}</span></div>`;
   };
 
   let observer=null;
@@ -143,5 +149,60 @@
     }
   `;
   document.head.appendChild(photoVisualStyle);
+
+
+
+  /* v13.9: 9각성 가능 카드 선수사진 흰색 아우라 */
+  const awakeningGlowStyle=document.createElement('style');
+  awakeningGlowStyle.id='awakening9-player-photo-glow-v139';
+  awakeningGlowStyle.textContent=`
+    .awakening9-photo{
+      overflow:visible!important;
+      isolation:isolate;
+    }
+    .awakening9-photo::before{
+      content:"";
+      position:absolute;
+      left:12%;right:8%;top:12%;bottom:8%;
+      border-radius:46%;
+      background:radial-gradient(ellipse at 50% 54%,rgba(255,255,255,.88) 0%,rgba(255,255,255,.48) 34%,rgba(255,255,255,.18) 56%,rgba(255,255,255,0) 76%);
+      filter:blur(5px);
+      opacity:.88;
+      z-index:0;
+      pointer-events:none;
+    }
+    .awakening9-photo img.loaded{
+      position:relative!important;
+      z-index:1!important;
+      filter:
+        drop-shadow(0 0 1px rgba(255,255,255,1))
+        drop-shadow(0 0 4px rgba(255,255,255,.98))
+        drop-shadow(0 0 8px rgba(255,255,255,.82))!important;
+    }
+    .lineup-card-shell .awakening9-photo::before{
+      left:8%;right:4%;top:8%;bottom:4%;
+      filter:blur(3px);
+      opacity:.92;
+    }
+    .lineup-card-shell .awakening9-photo img.loaded{
+      filter:
+        drop-shadow(0 0 1px #fff)
+        drop-shadow(0 0 3px rgba(255,255,255,.98))
+        drop-shadow(0 0 6px rgba(255,255,255,.88))!important;
+    }
+    .picker-photo-wrap.awakening9-photo::before{
+      left:8%;right:8%;top:8%;bottom:5%;
+      filter:blur(4px);
+    }
+    @media (max-width:900px){
+      .awakening9-photo img.loaded{
+        filter:
+          drop-shadow(0 0 1px #fff)
+          drop-shadow(0 0 3px rgba(255,255,255,.96))
+          drop-shadow(0 0 6px rgba(255,255,255,.82))!important;
+      }
+    }
+  `;
+  document.head.appendChild(awakeningGlowStyle);
 
 })();
