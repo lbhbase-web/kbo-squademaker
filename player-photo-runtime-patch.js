@@ -69,4 +69,79 @@
   `;
   document.head.appendChild(style);
   try{if(typeof window.renderAll==='function')window.renderAll();setTimeout(()=>{try{window.hydratePlayerPhotos&&window.hydratePlayerPhotos(document)}catch(e){}},0);}catch(err){console.warn('선수사진 실루엣 패치 재렌더 실패',err)}
+
+
+  /* v13.8: 선수사진을 조금 더 크게, 투명 컷아웃이 카드에 자연스럽게 보이도록 */
+  const photoVisualStyle=document.createElement('style');
+  photoVisualStyle.id='player-photo-visual-v138';
+  photoVisualStyle.textContent=`
+    /* 전체 카드 */
+    .game-card-photo{
+      left:7%!important;
+      right:5%!important;
+      top:42px!important;
+      bottom:39px!important;
+      background:transparent!important;
+    }
+    .game-card-photo img.loaded{
+      width:100%!important;
+      height:100%!important;
+      object-fit:contain!important;
+      object-position:center bottom!important;
+      transform:scale(1.08)!important;
+      transform-origin:center bottom!important;
+      background:transparent!important;
+      filter:none!important;
+    }
+
+    /* 라인업/벤치/투수 카드 */
+    .lineup-card-shell .lc-photo{
+      left:12%!important;
+      right:7%!important;
+      top:14px!important;
+      bottom:22px!important;
+      background:transparent!important;
+    }
+    .lineup-card-shell .lc-photo img.loaded{
+      width:100%!important;
+      height:100%!important;
+      object-fit:contain!important;
+      object-position:center bottom!important;
+      transform:scale(1.10)!important;
+      transform-origin:center bottom!important;
+      background:transparent!important;
+      filter:none!important;
+    }
+
+    /* 선수 선택창 */
+    .picker-photo-wrap{
+      width:78px!important;
+      min-width:78px!important;
+      height:96px!important;
+    }
+    .picker-photo-wrap:has(img.loaded){background:transparent!important}
+    .picker-photo-wrap .player-photo.loaded{
+      width:100%!important;
+      height:100%!important;
+      object-fit:contain!important;
+      object-position:center bottom!important;
+      transform:scale(1.05)!important;
+      transform-origin:center bottom!important;
+      background:transparent!important;
+    }
+
+    /* 이미지 뒤에 별도 흰/회색 박스가 생기지 않도록 */
+    .game-card-photo,.lc-photo,.player-photo-wrap,
+    .game-card-photo img,.lc-photo img,.player-photo{
+      box-shadow:none!important;
+    }
+
+    @media (max-width:900px){
+      .picker-photo-wrap{width:64px!important;min-width:64px!important;height:82px!important}
+      .game-card-photo img.loaded{transform:scale(1.06)!important}
+      .lineup-card-shell .lc-photo img.loaded{transform:scale(1.08)!important}
+    }
+  `;
+  document.head.appendChild(photoVisualStyle);
+
 })();
