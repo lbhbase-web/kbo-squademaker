@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=13.4';
-  const DATA_URLS=['./players.json?v=13.4','./data/players.json?v=13.4'];
+  const APP_URL='./app.js?v=13.7';
+  const DATA_URLS=['./players.json?v=13.7','./data/players.json?v=13.7'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -39,18 +39,18 @@
         script.onerror=()=>showError('앱 스크립트를 불러오지 못했습니다. app.js가 저장소 최상위에 있는지 확인해 주세요.');
         script.onload=()=>{
           const logoPatch=document.createElement('script');
-          logoPatch.src='./historic-logo-transparent.js?v=13.4';
+          logoPatch.src='./historic-logo-transparent.js?v=13.7';
           logoPatch.onerror=()=>console.warn('옛 구단 로고 투명 배경 패치를 불러오지 못했습니다.');
           document.body.appendChild(logoPatch);
           const photoPatch=document.createElement('script');
-          photoPatch.src='./player-photo-runtime-patch.js?v=13.4';
+          photoPatch.src='./player-photo-runtime-patch.js?v=13.7';
           photoPatch.onerror=()=>console.warn('선수사진 런타임 패치를 불러오지 못했습니다.');
           document.body.appendChild(photoPatch);
         };
         document.body.appendChild(script);
       };
       const loader=document.createElement('script');
-      loader.src='./player-photo-loader.js?v=13.4';
+      loader.src='./player-photo-loader.js?v=13.7';
       loader.onload=startApp;
       loader.onerror=()=>{console.warn('선수사진 로더를 불러오지 못했습니다.');startApp();};
       document.head.appendChild(loader);

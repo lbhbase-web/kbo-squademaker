@@ -7,7 +7,7 @@ window.__loadPlayerPhotoTeam=function(team){
   if(pending[team])return pending[team];
   pending[team]=new Promise((resolve,reject)=>{
     const s=document.createElement('script');
-    s.src='./'+files[team]+'?v=13.3';
+    s.src='./'+files[team]+'?v=13.7';
     s.async=true;
     s.onload=()=>resolve();
     s.onerror=()=>reject(new Error('load failed: '+team));
