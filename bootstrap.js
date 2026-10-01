@@ -39,7 +39,7 @@
         script.onerror=()=>showError('앱 스크립트를 불러오지 못했습니다. app.js가 저장소 최상위에 있는지 확인해 주세요.');
         script.onload=()=>{
           const skillStatPatch=document.createElement('script');
-          skillStatPatch.src='./skill-stat-runtime-patch.js?v=14.1';
+          skillStatPatch.src='./skill-stat-runtime-patch.js?v=14.2';
           skillStatPatch.onerror=()=>console.warn('스킬 능력치 미반영 패치를 불러오지 못했습니다.');
           document.body.appendChild(skillStatPatch);
           const logoPatch=document.createElement('script');
