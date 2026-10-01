@@ -91,6 +91,21 @@
       .khome-modal{padding:16px}
     }
 
+
+    .sim-skill-result{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+    .sim-skill-card{min-height:112px;border:1px solid #e0e7ef;background:#fff;border-radius:14px;padding:12px;text-align:center}
+    .sim-skill-card small{display:block;color:#8b96a6;font-size:9px;margin-bottom:6px}
+    .sim-skill-tier{display:inline-block;font-size:9px;font-weight:1000;padding:3px 7px;border-radius:999px;margin-bottom:7px;background:#f1f4f8}
+    .sim-skill-name{font-size:13px;font-weight:1000;color:#26364a;line-height:1.35;min-height:36px;display:flex;align-items:center;justify-content:center}
+    .sim-skill-lv{font-size:15px;font-weight:1000;margin-top:6px;color:#44556c}
+    .sim-fixed-select{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px}
+    .sim-fixed-select select{width:100%;border:1px solid #d7dfe9;border-radius:10px;background:#fff;color:#253244;padding:10px;font-size:11px}
+    .sim-level-note{font-size:9px;color:#8995a5;line-height:1.5;margin-top:7px}
+    @media(max-width:650px){
+      .sim-skill-result{grid-template-columns:1fr}
+      .sim-skill-card{min-height:88px}
+      .sim-fixed-select{grid-template-columns:1fr}
+    }
     #kboHomeButton{order:-10}
     @media(max-width:900px){
       .khome-nav{padding:0 16px}.khome-menu button:not(.khome-start-small){display:none}.khome-brand{font-size:21px}
@@ -105,7 +120,7 @@
   `;
 
   const style=document.createElement('style');
-  style.id='kbo-home-dashboard-style-v144';
+  style.id='kbo-home-dashboard-style-v146';
   style.textContent=css;
   document.head.appendChild(style);
 
@@ -177,16 +192,48 @@
     </main>`;
   document.body.prepend(home);
 
-  function enterApp(){
+  const HOME_STATE='home';
+  const APP_STATE='app';
+
+  const baseUrl=()=>location.pathname+location.search;
+
+  function enterApp(pushHistory=true){
+    if(pushHistory && history.state?.kboView!==APP_STATE){
+      history.pushState({...(history.state||{}),kboView:APP_STATE},'',baseUrl()+'#squad');
+    }
     document.body.classList.remove('kbo-home-open');
     window.scrollTo({top:0,left:0,behavior:'instant'});
   }
-  function showHome(){
+
+  function showHome(fromHistory=false){
+    // 스쿼드 화면에서 '홈' 버튼을 누른 경우에도 브라우저 뒤로가기와
+    // 동일한 히스토리 흐름을 사용해 중복 홈 기록이 쌓이지 않게 한다.
+    if(!fromHistory && history.state?.kboView===APP_STATE){
+      history.back();
+      return;
+    }
     document.body.classList.add('kbo-home-open');
     window.scrollTo({top:0,left:0,behavior:'instant'});
+    if(!fromHistory && history.state?.kboView!==HOME_STATE){
+      history.replaceState({...(history.state||{}),kboView:HOME_STATE},'',baseUrl());
+    }
   }
-  window.openKboHome=showHome;
-  window.enterKboSquadMaker=enterApp;
+
+  // 사이트 최초 진입은 홈 상태로 고정한다.
+  history.replaceState({...(history.state||{}),kboView:HOME_STATE},'',baseUrl());
+
+  // Android/Chrome/브라우저 뒤로가기:
+  // 스쿼드 화면 -> 홈 화면, 다시 뒤로가기 -> 이전 사이트/탭 기록.
+  window.addEventListener('popstate',e=>{
+    if(e.state?.kboView===APP_STATE){
+      enterApp(false);
+    }else{
+      showHome(true);
+    }
+  });
+
+  window.openKboHome=()=>showHome(false);
+  window.enterKboSquadMaker=()=>enterApp(true);
 
   const normalOdds={메이저:7,마이너:23,루키:40,아마추어:30};
   const advancedOdds={메이저:17,마이너:30,루키:28,아마추어:25};
@@ -218,6 +265,51 @@
   };
   const selectedPill=id=>modalBody.querySelector(`#${id} .sim-pill.selected`)?.dataset.value||'';
 
+  const skillCatalog=()=>window.__KBO_SKILL_SIM_CATALOG__||[];
+  const targetPos=(target,batterType)=>{
+    if(target==='sp')return 'SP';
+    if(target==='rp')return 'RP';
+    if(target==='cp')return 'CP';
+    return batterType==='catcher'?'C':'CF';
+  };
+  const roleAllowed=(d,pos)=>{
+    if(d.role==='B')return !['SP','RP','CP'].includes(pos);
+    if(d.role==='P')return ['SP','RP','CP'].includes(pos);
+    if(d.role==='R')return ['RP','CP'].includes(pos);
+    if(d.role==='SR')return ['SP','RP'].includes(pos);
+    return pos===d.role;
+  };
+  const skillPool=(target,batterType,cardType,tier)=>{
+    const pos=targetPos(target,batterType);
+    return skillCatalog().filter(d=>{
+      if(d.tier==='national'&&cardType!=='national')return false;
+      if(tier&&d.tier!==tier)return false;
+      return roleAllowed(d,pos);
+    });
+  };
+  const cardCaps=(cardType,allstarYear='26')=>{
+    if(cardType==='live')return [7,7,7];
+    if(cardType==='allstar')return allstarYear==='26'?[8,7,7]:[7,6,6];
+    if(cardType==='gold')return [6,6,6];
+    return [6,5,5];
+  };
+  const tierLabel={national:'국가대표',major:'메이저',minor:'마이너',rookie:'루키',amateur:'아마추어'};
+  const tierColor={national:'#c62828',major:'#8e24aa',minor:'#1565c0',rookie:'#238636',amateur:'#6b7280'};
+  const randomSkill=(target,batterType,cardType,tier,used)=>{
+    const pool=skillPool(target,batterType,cardType,tier).filter(d=>!used.has(d.id));
+    if(!pool.length)return null;
+    return pool[Math.floor(Math.random()*pool.length)];
+  };
+  const skillResultHtml=rows=>`<div class="sim-skill-result">${rows.map((x,i)=>`<div class="sim-skill-card"><small>${i+1}옵션</small>${x?`<span class="sim-skill-tier" style="color:${tierColor[x.tier]||'#667'}">[${tierLabel[x.tier]||x.tier}]</span><div class="sim-skill-name">${x.name}</div><div class="sim-skill-lv">Lv ${x.level}</div>`:`<div class="sim-skill-name">-</div>`}</div>`).join('')}</div>`;
+  const fixedSkillOptions=(target,batterType,cardType)=>{
+    const order=['national','major','minor','rookie','amateur'];
+    return order.map(t=>{
+      const list=skillPool(target,batterType,cardType,t);
+      if(!list.length)return '';
+      return `<optgroup label="${tierLabel[t]}">${list.map(d=>`<option value="${d.id}" data-tier="${d.tier}">${d.name}</option>`).join('')}</optgroup>`;
+    }).join('');
+  };
+
   function showNormalRoll(){
     const targetItems=[
       {value:'batter',label:'타자'},{value:'sp',label:'선발'},{value:'rp',label:'중계'},{value:'cp',label:'마무리'}
@@ -230,50 +322,89 @@
     openModal('일스변 시뮬 설정',`
       <div class="sim-config">
         <div class="sim-panel">
-          <div class="sim-panel-title">계산 대상</div><div class="sim-panel-help">시뮬레이션할 포지션을 선택하세요.</div>
+          <div class="sim-panel-title">계산 대상</div><div class="sim-panel-help">스킬 풀을 구분할 포지션을 선택하세요.</div>
           ${pillGroup('normalTarget',targetItems,'batter')}
         </div>
         <div class="sim-panel" id="normalBatterPanel">
-          <div class="sim-panel-title">타자 구분</div><div class="sim-panel-help">타자의 세부 구분을 선택하세요.</div>
+          <div class="sim-panel-title">타자 구분</div><div class="sim-panel-help">포수 전용 스킬 포함 여부를 결정합니다.</div>
           ${pillGroup('normalBatterType',batterItems,'fielder')}
         </div>
         <div class="sim-panel">
-          <div class="sim-panel-title">카드 타입</div><div class="sim-panel-help">사용할 카드 타입을 선택하세요.</div>
+          <div class="sim-panel-title">카드 타입</div><div class="sim-panel-help">카드별 기본 스킬 레벨 상한을 적용합니다.</div>
           ${pillGroup('normalCardTypePills',cardItems,'live')}
+          <div id="allstarYearPanel" class="sim-lock-box sim-hidden">
+            <div class="sim-panel-title">LIVE 올스타 연도</div>
+            ${pillGroup('normalAllstarYear',[{value:'26',label:'2026'},{value:'old',label:'2025 이하'}],'26')}
+          </div>
           <div id="normalFixedPanel" class="sim-lock-box sim-hidden">
-            <div class="sim-panel-title">1옵 고정</div>
-            <div class="sim-panel-help">임팩트와 LIVE 올스타는 일스변에서 1옵이 유지됩니다.</div>
-            ${pillGroup('normalFixedGradePills',[
-              {value:'메이저',label:'메이저'},{value:'마이너',label:'마이너'},{value:'루키',label:'루키'},{value:'아마추어',label:'아마추어'}
-            ],'메이저')}
+            <div class="sim-panel-title">고정된 1옵 스킬</div>
+            <div class="sim-panel-help">임팩트·LIVE 올스타는 일스변에서 1옵이 바뀌지 않습니다.</div>
+            <div class="sim-fixed-select">
+              <select id="normalFixedSkill"></select>
+              <select id="normalFixedLevel"></select>
+            </div>
           </div>
         </div>
         ${oddsBoxes(normalOdds)}
         <div class="sim-summary" id="normalSummary"></div>
         <div class="sim-action-row"><button class="khome-roll" id="normalRollBtn" type="button">시뮬 시작 →</button></div>
-        <div class="khome-result" id="normalRollResult">${slotsHtml(['-','-','-'])}</div>
+        <div class="khome-result" id="normalRollResult">${skillResultHtml([null,null,null])}</div>
+        <div class="sim-level-note">스킬 레벨은 현재 스쿼드메이커의 카드 타입별 기본 최대 레벨 규칙을 사용합니다.</div>
       </div>`);
     const batterPanel=modalBody.querySelector('#normalBatterPanel');
     const fixedPanel=modalBody.querySelector('#normalFixedPanel');
+    const yearPanel=modalBody.querySelector('#allstarYearPanel');
+    const fixedSkill=modalBody.querySelector('#normalFixedSkill');
+    const fixedLevel=modalBody.querySelector('#normalFixedLevel');
+
+    const refreshFixed=()=>{
+      const target=selectedPill('normalTarget');
+      const bt=selectedPill('normalBatterType');
+      const card=selectedPill('normalCardTypePills');
+      const year=selectedPill('normalAllstarYear')||'26';
+      fixedSkill.innerHTML=fixedSkillOptions(target,bt,card);
+      const cap=cardCaps(card,year)[0];
+      fixedLevel.innerHTML=Array.from({length:cap},(_,i)=>`<option value="${i+1}" ${i+1===cap?'selected':''}>Lv ${i+1}</option>`).join('');
+    };
     const updateSummary=()=>{
-      const target=selectedPill('normalTarget'), card=selectedPill('normalCardTypePills'), bt=selectedPill('normalBatterType');
+      const target=selectedPill('normalTarget'),card=selectedPill('normalCardTypePills'),bt=selectedPill('normalBatterType');
+      const year=selectedPill('normalAllstarYear')||'26';
       const targetLabel={batter:'타자',sp:'선발',rp:'중계',cp:'마무리'}[target];
       const cardLabel={live:'LIVE',allstar:'LIVE 올스타',impact:'임팩트',signature:'시그니처',gold:'골든글러브',national:'국가대표'}[card];
-      const btLabel={fielder:'야수',catcher:'포수'}[bt];
-      modalBody.querySelector('#normalSummary').innerHTML=`<span>${targetLabel}</span>${target==='batter'?`<span>${btLabel}</span>`:''}<span>${cardLabel}</span>`;
-      fixedPanel.classList.toggle('sim-hidden',!(card==='impact'||card==='allstar'));
+      modalBody.querySelector('#normalSummary').innerHTML=`<span>${targetLabel}</span>${target==='batter'?`<span>${bt==='catcher'?'포수':'야수'}</span>`:''}<span>${cardLabel}</span><span>Lv ${cardCaps(card,year).join('/')}</span>`;
+      const fixed=card==='impact'||card==='allstar';
+      fixedPanel.classList.toggle('sim-hidden',!fixed);
+      yearPanel.classList.toggle('sim-hidden',card!=='allstar');
+      if(fixed)refreshFixed();
     };
+
     bindPills('normalTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
     bindPills('normalBatterType',updateSummary);
     bindPills('normalCardTypePills',updateSummary);
-    bindPills('normalFixedGradePills');
+    bindPills('normalAllstarYear',updateSummary);
     updateSummary();
+
     modalBody.querySelector('#normalRollBtn').onclick=()=>{
-      const card=selectedPill('normalCardTypePills');
-      const grades=(card==='impact'||card==='allstar')
-        ? [selectedPill('normalFixedGradePills'),drawGrade(normalOdds),drawGrade(normalOdds)]
-        : [drawGrade(normalOdds),drawGrade(normalOdds),drawGrade(normalOdds)];
-      modalBody.querySelector('#normalRollResult').innerHTML=slotsHtml(grades);
+      const target=selectedPill('normalTarget'),bt=selectedPill('normalBatterType'),card=selectedPill('normalCardTypePills');
+      const year=selectedPill('normalAllstarYear')||'26',caps=cardCaps(card,year),used=new Set(),rows=[];
+      const fixed=card==='impact'||card==='allstar';
+      if(fixed){
+        const id=fixedSkill.value;
+        const d=skillCatalog().find(x=>x.id===id);
+        if(d){rows.push({...d,level:Number(fixedLevel.value)||caps[0]});used.add(d.id)}
+        else rows.push(null);
+      }else{
+        const tier=drawGrade(normalOdds);
+        const d=randomSkill(target,bt,card,{메이저:'major',마이너:'minor',루키:'rookie',아마추어:'amateur'}[tier],used);
+        if(d){used.add(d.id);rows.push({...d,level:caps[0]})}else rows.push(null);
+      }
+      for(let i=1;i<3;i++){
+        const tier=drawGrade(normalOdds);
+        const key={메이저:'major',마이너:'minor',루키:'rookie',아마추어:'amateur'}[tier];
+        const d=randomSkill(target,bt,card,key,used);
+        if(d){used.add(d.id);rows.push({...d,level:caps[i]})}else rows.push(null);
+      }
+      modalBody.querySelector('#normalRollResult').innerHTML=skillResultHtml(rows);
     };
   }
 
@@ -289,54 +420,87 @@
     openModal('고스변 시뮬 설정',`
       <div class="sim-config">
         <div class="sim-panel">
-          <div class="sim-panel-title">계산 대상</div><div class="sim-panel-help">시뮬레이션할 포지션을 선택하세요.</div>
+          <div class="sim-panel-title">계산 대상</div><div class="sim-panel-help">실제 사이트의 포지션별 스킬 풀을 사용합니다.</div>
           ${pillGroup('advTarget',targetItems,'batter')}
         </div>
         <div class="sim-panel" id="advBatterPanel">
-          <div class="sim-panel-title">타자 구분</div><div class="sim-panel-help">타자의 세부 구분을 선택하세요.</div>
+          <div class="sim-panel-title">타자 구분</div><div class="sim-panel-help">포수 전용 스킬 포함 여부를 결정합니다.</div>
           ${pillGroup('advBatterType',batterItems,'fielder')}
         </div>
         <div class="sim-panel">
-          <div class="sim-panel-title">카드 타입</div><div class="sim-panel-help">사용할 카드 타입을 선택하세요.</div>
+          <div class="sim-panel-title">카드 타입</div><div class="sim-panel-help">카드별 기본 스킬 레벨 상한을 적용합니다.</div>
           ${pillGroup('advCardTypePills',cardItems,'impact')}
+          <div id="nationalFirstTierPanel" class="sim-lock-box sim-hidden">
+            <div class="sim-panel-title">국가대표 1옵 등급</div>
+            <div class="sim-panel-help">공개표에 따라 국가대표 카드는 1옵이 메이저 또는 국가대표 등급입니다.</div>
+            ${pillGroup('nationalFirstTier',[{value:'major',label:'메이저'},{value:'national',label:'국가대표'}],'major')}
+          </div>
           <div id="impactLockArea" class="sim-lock-box">
             <label class="khome-check"><input type="checkbox" id="impactKeepLock"> 임팩트 1옵 잠금 유지</label>
-            <div id="impactFixedGradeField" class="sim-hidden" style="margin-top:10px">
-              <div class="sim-panel-help">현재 1옵 등급을 선택하세요.</div>
-              ${pillGroup('impactFixedGradePills',[
-                {value:'메이저',label:'메이저'},{value:'마이너',label:'마이너'},{value:'루키',label:'루키'},{value:'아마추어',label:'아마추어'}
-              ],'메이저')}
+            <div id="impactFixedSkillField" class="sim-hidden" style="margin-top:10px">
+              <div class="sim-panel-help">현재 1옵 스킬과 레벨을 선택하세요.</div>
+              <div class="sim-fixed-select">
+                <select id="impactFixedSkill"></select>
+                <select id="impactFixedLevel"></select>
+              </div>
             </div>
           </div>
         </div>
         ${oddsBoxes(advancedOdds)}
         <div class="sim-summary" id="advSummary"></div>
         <div class="sim-action-row"><button class="khome-roll" id="advRollBtn" type="button">시뮬 시작 →</button></div>
-        <div class="khome-result" id="advRollResult">${slotsHtml(['메이저','-','-'])}</div>
+        <div class="khome-result" id="advRollResult">${skillResultHtml([null,null,null])}</div>
+        <div class="sim-level-note">스킬 이름은 스쿼드메이커에 등록된 실제 스킬 목록에서 중복 없이 추첨합니다. 레벨은 카드 타입별 기본 최대 레벨을 적용합니다.</div>
       </div>`);
     const batterPanel=modalBody.querySelector('#advBatterPanel');
     const lockArea=modalBody.querySelector('#impactLockArea');
     const keep=modalBody.querySelector('#impactKeepLock');
-    const fixedField=modalBody.querySelector('#impactFixedGradeField');
+    const fixedField=modalBody.querySelector('#impactFixedSkillField');
+    const fixedSkill=modalBody.querySelector('#impactFixedSkill');
+    const fixedLevel=modalBody.querySelector('#impactFixedLevel');
+    const natPanel=modalBody.querySelector('#nationalFirstTierPanel');
+
+    const refreshFixed=()=>{
+      const target=selectedPill('advTarget'),bt=selectedPill('advBatterType'),card=selectedPill('advCardTypePills');
+      fixedSkill.innerHTML=fixedSkillOptions(target,bt,card);
+      const cap=cardCaps(card)[0];
+      fixedLevel.innerHTML=Array.from({length:cap},(_,i)=>`<option value="${i+1}" ${i+1===cap?'selected':''}>Lv ${i+1}</option>`).join('');
+    };
     const updateSummary=()=>{
-      const target=selectedPill('advTarget'), card=selectedPill('advCardTypePills'), bt=selectedPill('advBatterType');
+      const target=selectedPill('advTarget'),card=selectedPill('advCardTypePills'),bt=selectedPill('advBatterType');
       const targetLabel={batter:'타자',sp:'선발',rp:'중계',cp:'마무리'}[target];
       const cardLabel={impact:'임팩트',signature:'시그니처',gold:'골든글러브',national:'국가대표'}[card];
-      const btLabel={fielder:'야수',catcher:'포수'}[bt];
-      modalBody.querySelector('#advSummary').innerHTML=`<span>${targetLabel}</span>${target==='batter'?`<span>${btLabel}</span>`:''}<span>${cardLabel}</span>`;
+      modalBody.querySelector('#advSummary').innerHTML=`<span>${targetLabel}</span>${target==='batter'?`<span>${bt==='catcher'?'포수':'야수'}</span>`:''}<span>${cardLabel}</span><span>Lv ${cardCaps(card).join('/')}</span>`;
       lockArea.classList.toggle('sim-hidden',card!=='impact');
+      natPanel.classList.toggle('sim-hidden',card!=='national');
       if(card!=='impact'){keep.checked=false;fixedField.classList.add('sim-hidden')}
+      refreshFixed();
     };
     bindPills('advTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
     bindPills('advBatterType',updateSummary);
     bindPills('advCardTypePills',updateSummary);
-    bindPills('impactFixedGradePills');
-    keep.onchange=()=>fixedField.classList.toggle('sim-hidden',!keep.checked);
+    bindPills('nationalFirstTier');
+    keep.onchange=()=>{fixedField.classList.toggle('sim-hidden',!keep.checked);if(keep.checked)refreshFixed()};
     updateSummary();
+
     modalBody.querySelector('#advRollBtn').onclick=()=>{
-      const card=selectedPill('advCardTypePills');
-      const first=(card==='impact'&&keep.checked)?selectedPill('impactFixedGradePills'):'메이저';
-      modalBody.querySelector('#advRollResult').innerHTML=slotsHtml([first,drawGrade(advancedOdds),drawGrade(advancedOdds)]);
+      const target=selectedPill('advTarget'),bt=selectedPill('advBatterType'),card=selectedPill('advCardTypePills');
+      const caps=cardCaps(card),used=new Set(),rows=[];
+      if(card==='impact'&&keep.checked){
+        const d=skillCatalog().find(x=>x.id===fixedSkill.value);
+        if(d){used.add(d.id);rows.push({...d,level:Number(fixedLevel.value)||caps[0]})}else rows.push(null);
+      }else{
+        const firstTier=card==='national'?(selectedPill('nationalFirstTier')||'major'):'major';
+        const d=randomSkill(target,bt,card,firstTier,used);
+        if(d){used.add(d.id);rows.push({...d,level:caps[0]})}else rows.push(null);
+      }
+      for(let i=1;i<3;i++){
+        const grade=drawGrade(advancedOdds);
+        const tier={메이저:'major',마이너:'minor',루키:'rookie',아마추어:'amateur'}[grade];
+        const d=randomSkill(target,bt,card,tier,used);
+        if(d){used.add(d.id);rows.push({...d,level:caps[i]})}else rows.push(null);
+      }
+      modalBody.querySelector('#advRollResult').innerHTML=skillResultHtml(rows);
     };
   }
 
