@@ -42,7 +42,7 @@
     .khome-icon.orange{background:linear-gradient(145deg,#fff1e8,#ffecdd);color:#ed7a25}
     .khome-modal-backdrop{position:fixed;inset:0;z-index:40000;background:rgba(20,28,40,.46);display:none;align-items:center;justify-content:center;padding:18px}
     .khome-modal-backdrop.open{display:flex}
-    .khome-modal{width:min(620px,100%);max-height:min(760px,90vh);overflow:auto;background:#fff;border-radius:22px;border:1px solid #e2e8f0;box-shadow:0 28px 80px rgba(17,32,57,.28);padding:22px}
+    .khome-modal{width:min(860px,100%);max-height:min(760px,90vh);overflow:auto;background:#fff;border-radius:22px;border:1px solid #e2e8f0;box-shadow:0 28px 80px rgba(17,32,57,.28);padding:22px}
     .khome-modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}
     .khome-modal-head h3{font-size:21px;margin:0;color:#202938}
     .khome-close{border:0;width:36px;height:36px;border-radius:50%;background:#f2f5f9;color:#516173;font-size:18px;font-weight:1000;cursor:pointer}
@@ -62,6 +62,35 @@
     .khome-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}.khome-table th,.khome-table td{border-bottom:1px solid #e8ecf2;padding:10px 8px;text-align:center}.khome-table th{background:#f6f8fb;color:#667487;font-weight:900}.khome-table td:first-child{text-align:left;font-weight:800;color:#354255}
     .khome-tip{font-size:10px;line-height:1.6;color:#7b8796;margin-top:11px}
 
+
+    .sim-config{display:grid;gap:12px}
+    .sim-panel{border:1px solid #e3e8ef;background:#f8fafc;border-radius:16px;padding:15px}
+    .sim-panel-title{font-size:13px;font-weight:1000;color:#344256;margin-bottom:5px}
+    .sim-panel-help{font-size:10px;color:#8b96a6;margin-bottom:11px}
+    .sim-pills{display:flex;flex-wrap:wrap;gap:8px}
+    .sim-pill{
+      min-width:92px;border:1px solid #d8e0e9;background:#fff;color:#344256;
+      border-radius:999px;padding:11px 16px;font-size:12px;font-weight:900;
+      cursor:pointer;box-shadow:0 2px 8px rgba(34,52,77,.04)
+    }
+    .sim-pill:hover{border-color:#aebed1;background:#f7f9fc}
+    .sim-pill.selected{
+      background:linear-gradient(135deg,#26364d,#3b4d69);
+      border-color:#26364d;color:#fff;box-shadow:0 7px 16px rgba(38,54,77,.18)
+    }
+    .sim-pill[disabled]{opacity:.4;cursor:not-allowed}
+    .sim-summary{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+    .sim-summary span{padding:5px 8px;border-radius:999px;background:#eef3f8;color:#58677b;font-size:9px;font-weight:900}
+    .sim-action-row{display:flex;justify-content:flex-end;margin-top:4px}
+    .sim-action-row .khome-roll{width:auto;min-width:160px;padding:12px 22px}
+    .sim-hidden{display:none!important}
+    .sim-lock-box{margin-top:10px;padding:12px;border-radius:12px;border:1px dashed #ccd6e2;background:#fff}
+    @media(max-width:650px){
+      .sim-pill{min-width:calc(50% - 5px);padding:10px 9px}
+      .sim-action-row .khome-roll{width:100%}
+      .khome-modal{padding:16px}
+    }
+
     #kboHomeButton{order:-10}
     @media(max-width:900px){
       .khome-nav{padding:0 16px}.khome-menu button:not(.khome-start-small){display:none}.khome-brand{font-size:21px}
@@ -76,7 +105,7 @@
   `;
 
   const style=document.createElement('style');
-  style.id='kbo-home-dashboard-style-v143';
+  style.id='kbo-home-dashboard-style-v144';
   style.textContent=css;
   document.head.appendChild(style);
 
@@ -177,40 +206,136 @@
   const oddsBoxes=odds=>`<div class="khome-prob-grid">${Object.entries(odds).map(([g,p])=>`<div class="khome-prob"><b>${p}%</b>${g}</div>`).join('')}</div>`;
   const slotsHtml=grades=>`<div class="khome-slots">${grades.map((g,i)=>`<div class="khome-slot"><small>${i+1}옵션</small><b class="${gradeClass(g)}">${g}</b></div>`).join('')}</div>`;
 
+  const pillGroup=(id,items,selected)=>`<div class="sim-pills" id="${id}">${items.map(x=>`<button type="button" class="sim-pill ${x.value===selected?'selected':''}" data-value="${x.value}">${x.label}</button>`).join('')}</div>`;
+  const bindPills=(id,onChange)=>{
+    const group=modalBody.querySelector('#'+id);
+    if(!group)return;
+    group.addEventListener('click',e=>{
+      const btn=e.target.closest('.sim-pill'); if(!btn||btn.disabled)return;
+      group.querySelectorAll('.sim-pill').forEach(b=>b.classList.toggle('selected',b===btn));
+      onChange?.(btn.dataset.value,btn);
+    });
+  };
+  const selectedPill=id=>modalBody.querySelector(`#${id} .sim-pill.selected`)?.dataset.value||'';
+
   function showNormalRoll(){
-    openModal('일스변 시뮬레이터',`
-      <div class="khome-field"><label>카드 종류</label><select id="normalCardType"><option value="normal">일반 카드</option><option value="impact">임팩트</option><option value="allstar">LIVE 올스타</option></select></div>
-      <div class="khome-field" id="normalFixedField" style="display:none"><label>고정된 1옵 등급</label><select id="normalFixedGrade"><option>메이저</option><option>마이너</option><option>루키</option><option>아마추어</option></select></div>
-      ${oddsBoxes(normalOdds)}
-      <button class="khome-roll" id="normalRollBtn" type="button">일스변 돌리기</button>
-      <div class="khome-result" id="normalRollResult">${slotsHtml(['-','-','-'])}</div>
-      <div class="khome-tip">임팩트와 LIVE 올스타는 일스변에서 1옵이 잠겨 있고, 2·3옵만 새로 추첨됩니다.</div>`);
-    const type=modalBody.querySelector('#normalCardType'), fixed=modalBody.querySelector('#normalFixedField');
-    type.onchange=()=>fixed.style.display=type.value==='normal'?'none':'block';
+    const targetItems=[
+      {value:'batter',label:'타자'},{value:'sp',label:'선발'},{value:'rp',label:'중계'},{value:'cp',label:'마무리'}
+    ];
+    const batterItems=[{value:'fielder',label:'야수'},{value:'catcher',label:'포수'}];
+    const cardItems=[
+      {value:'live',label:'LIVE'},{value:'allstar',label:'LIVE 올스타'},{value:'impact',label:'임팩트'},
+      {value:'signature',label:'시그니처'},{value:'gold',label:'골든글러브'},{value:'national',label:'국가대표'}
+    ];
+    openModal('일스변 시뮬 설정',`
+      <div class="sim-config">
+        <div class="sim-panel">
+          <div class="sim-panel-title">계산 대상</div><div class="sim-panel-help">시뮬레이션할 포지션을 선택하세요.</div>
+          ${pillGroup('normalTarget',targetItems,'batter')}
+        </div>
+        <div class="sim-panel" id="normalBatterPanel">
+          <div class="sim-panel-title">타자 구분</div><div class="sim-panel-help">타자의 세부 구분을 선택하세요.</div>
+          ${pillGroup('normalBatterType',batterItems,'fielder')}
+        </div>
+        <div class="sim-panel">
+          <div class="sim-panel-title">카드 타입</div><div class="sim-panel-help">사용할 카드 타입을 선택하세요.</div>
+          ${pillGroup('normalCardTypePills',cardItems,'live')}
+          <div id="normalFixedPanel" class="sim-lock-box sim-hidden">
+            <div class="sim-panel-title">1옵 고정</div>
+            <div class="sim-panel-help">임팩트와 LIVE 올스타는 일스변에서 1옵이 유지됩니다.</div>
+            ${pillGroup('normalFixedGradePills',[
+              {value:'메이저',label:'메이저'},{value:'마이너',label:'마이너'},{value:'루키',label:'루키'},{value:'아마추어',label:'아마추어'}
+            ],'메이저')}
+          </div>
+        </div>
+        ${oddsBoxes(normalOdds)}
+        <div class="sim-summary" id="normalSummary"></div>
+        <div class="sim-action-row"><button class="khome-roll" id="normalRollBtn" type="button">시뮬 시작 →</button></div>
+        <div class="khome-result" id="normalRollResult">${slotsHtml(['-','-','-'])}</div>
+      </div>`);
+    const batterPanel=modalBody.querySelector('#normalBatterPanel');
+    const fixedPanel=modalBody.querySelector('#normalFixedPanel');
+    const updateSummary=()=>{
+      const target=selectedPill('normalTarget'), card=selectedPill('normalCardTypePills'), bt=selectedPill('normalBatterType');
+      const targetLabel={batter:'타자',sp:'선발',rp:'중계',cp:'마무리'}[target];
+      const cardLabel={live:'LIVE',allstar:'LIVE 올스타',impact:'임팩트',signature:'시그니처',gold:'골든글러브',national:'국가대표'}[card];
+      const btLabel={fielder:'야수',catcher:'포수'}[bt];
+      modalBody.querySelector('#normalSummary').innerHTML=`<span>${targetLabel}</span>${target==='batter'?`<span>${btLabel}</span>`:''}<span>${cardLabel}</span>`;
+      fixedPanel.classList.toggle('sim-hidden',!(card==='impact'||card==='allstar'));
+    };
+    bindPills('normalTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
+    bindPills('normalBatterType',updateSummary);
+    bindPills('normalCardTypePills',updateSummary);
+    bindPills('normalFixedGradePills');
+    updateSummary();
     modalBody.querySelector('#normalRollBtn').onclick=()=>{
-      const grades=type.value==='normal'
-        ? [drawGrade(normalOdds),drawGrade(normalOdds),drawGrade(normalOdds)]
-        : [modalBody.querySelector('#normalFixedGrade').value,drawGrade(normalOdds),drawGrade(normalOdds)];
+      const card=selectedPill('normalCardTypePills');
+      const grades=(card==='impact'||card==='allstar')
+        ? [selectedPill('normalFixedGradePills'),drawGrade(normalOdds),drawGrade(normalOdds)]
+        : [drawGrade(normalOdds),drawGrade(normalOdds),drawGrade(normalOdds)];
       modalBody.querySelector('#normalRollResult').innerHTML=slotsHtml(grades);
     };
   }
 
   function showAdvancedRoll(){
-    openModal('고스변 시뮬레이터',`
-      <div class="khome-field"><label>카드 종류</label><select id="advCardType"><option value="normal">일반 카드</option><option value="impact">임팩트</option></select></div>
-      <div id="impactLockArea" style="display:none">
-        <label class="khome-check"><input type="checkbox" id="impactKeepLock"> 임팩트 1옵 잠금 유지</label>
-        <div class="khome-field" id="impactFixedGradeField" style="display:none"><label>유지할 1옵 등급</label><select id="impactFixedGrade"><option>메이저</option><option>마이너</option><option>루키</option><option>아마추어</option></select></div>
-      </div>
-      ${oddsBoxes(advancedOdds)}
-      <button class="khome-roll" id="advRollBtn" type="button">고스변 돌리기</button>
-      <div class="khome-result" id="advRollResult">${slotsHtml(['메이저','-','-'])}</div>
-      <div class="khome-tip">고스변은 기본적으로 1옵이 메이저 확정입니다. 임팩트는 원하면 1옵 잠금을 유지할 수 있고, 잠금을 풀면 1옵도 메이저로 다시 뽑습니다.</div>`);
-    const type=modalBody.querySelector('#advCardType'), lockArea=modalBody.querySelector('#impactLockArea'), keep=modalBody.querySelector('#impactKeepLock'), fixedField=modalBody.querySelector('#impactFixedGradeField');
-    type.onchange=()=>{lockArea.style.display=type.value==='impact'?'block':'none';fixedField.style.display='none';keep.checked=false};
-    keep.onchange=()=>fixedField.style.display=keep.checked?'block':'none';
+    const targetItems=[
+      {value:'batter',label:'타자'},{value:'sp',label:'선발'},{value:'rp',label:'중계'},{value:'cp',label:'마무리'}
+    ];
+    const batterItems=[{value:'fielder',label:'야수'},{value:'catcher',label:'포수'}];
+    const cardItems=[
+      {value:'impact',label:'임팩트'},{value:'signature',label:'시그니처'},
+      {value:'gold',label:'골든글러브'},{value:'national',label:'국가대표'}
+    ];
+    openModal('고스변 시뮬 설정',`
+      <div class="sim-config">
+        <div class="sim-panel">
+          <div class="sim-panel-title">계산 대상</div><div class="sim-panel-help">시뮬레이션할 포지션을 선택하세요.</div>
+          ${pillGroup('advTarget',targetItems,'batter')}
+        </div>
+        <div class="sim-panel" id="advBatterPanel">
+          <div class="sim-panel-title">타자 구분</div><div class="sim-panel-help">타자의 세부 구분을 선택하세요.</div>
+          ${pillGroup('advBatterType',batterItems,'fielder')}
+        </div>
+        <div class="sim-panel">
+          <div class="sim-panel-title">카드 타입</div><div class="sim-panel-help">사용할 카드 타입을 선택하세요.</div>
+          ${pillGroup('advCardTypePills',cardItems,'impact')}
+          <div id="impactLockArea" class="sim-lock-box">
+            <label class="khome-check"><input type="checkbox" id="impactKeepLock"> 임팩트 1옵 잠금 유지</label>
+            <div id="impactFixedGradeField" class="sim-hidden" style="margin-top:10px">
+              <div class="sim-panel-help">현재 1옵 등급을 선택하세요.</div>
+              ${pillGroup('impactFixedGradePills',[
+                {value:'메이저',label:'메이저'},{value:'마이너',label:'마이너'},{value:'루키',label:'루키'},{value:'아마추어',label:'아마추어'}
+              ],'메이저')}
+            </div>
+          </div>
+        </div>
+        ${oddsBoxes(advancedOdds)}
+        <div class="sim-summary" id="advSummary"></div>
+        <div class="sim-action-row"><button class="khome-roll" id="advRollBtn" type="button">시뮬 시작 →</button></div>
+        <div class="khome-result" id="advRollResult">${slotsHtml(['메이저','-','-'])}</div>
+      </div>`);
+    const batterPanel=modalBody.querySelector('#advBatterPanel');
+    const lockArea=modalBody.querySelector('#impactLockArea');
+    const keep=modalBody.querySelector('#impactKeepLock');
+    const fixedField=modalBody.querySelector('#impactFixedGradeField');
+    const updateSummary=()=>{
+      const target=selectedPill('advTarget'), card=selectedPill('advCardTypePills'), bt=selectedPill('advBatterType');
+      const targetLabel={batter:'타자',sp:'선발',rp:'중계',cp:'마무리'}[target];
+      const cardLabel={impact:'임팩트',signature:'시그니처',gold:'골든글러브',national:'국가대표'}[card];
+      const btLabel={fielder:'야수',catcher:'포수'}[bt];
+      modalBody.querySelector('#advSummary').innerHTML=`<span>${targetLabel}</span>${target==='batter'?`<span>${btLabel}</span>`:''}<span>${cardLabel}</span>`;
+      lockArea.classList.toggle('sim-hidden',card!=='impact');
+      if(card!=='impact'){keep.checked=false;fixedField.classList.add('sim-hidden')}
+    };
+    bindPills('advTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
+    bindPills('advBatterType',updateSummary);
+    bindPills('advCardTypePills',updateSummary);
+    bindPills('impactFixedGradePills');
+    keep.onchange=()=>fixedField.classList.toggle('sim-hidden',!keep.checked);
+    updateSummary();
     modalBody.querySelector('#advRollBtn').onclick=()=>{
-      const first=(type.value==='impact'&&keep.checked)?modalBody.querySelector('#impactFixedGrade').value:'메이저';
+      const card=selectedPill('advCardTypePills');
+      const first=(card==='impact'&&keep.checked)?selectedPill('impactFixedGradePills'):'메이저';
       modalBody.querySelector('#advRollResult').innerHTML=slotsHtml([first,drawGrade(advancedOdds),drawGrade(advancedOdds)]);
     };
   }
