@@ -120,7 +120,7 @@
   `;
 
   const style=document.createElement('style');
-  style.id='kbo-home-dashboard-style-v146';
+  style.id='kbo-home-dashboard-style-v147';
   style.textContent=css;
   document.head.appendChild(style);
 
@@ -300,6 +300,12 @@
     if(!pool.length)return null;
     return pool[Math.floor(Math.random()*pool.length)];
   };
+  const randomHighGradeSkill=(target,batterType,cardType,used)=>{
+    const tiers=cardType==='national'?['major','national']:['major'];
+    const pool=tiers.flatMap(t=>skillPool(target,batterType,cardType,t)).filter(d=>!used.has(d.id));
+    if(!pool.length)return null;
+    return pool[Math.floor(Math.random()*pool.length)];
+  };
   const skillResultHtml=rows=>`<div class="sim-skill-result">${rows.map((x,i)=>`<div class="sim-skill-card"><small>${i+1}옵션</small>${x?`<span class="sim-skill-tier" style="color:${tierColor[x.tier]||'#667'}">[${tierLabel[x.tier]||x.tier}]</span><div class="sim-skill-name">${x.name}</div><div class="sim-skill-lv">Lv ${x.level}</div>`:`<div class="sim-skill-name">-</div>`}</div>`).join('')}</div>`;
   const fixedSkillOptions=(target,batterType,cardType)=>{
     const order=['national','major','minor','rookie','amateur'];
@@ -430,11 +436,6 @@
         <div class="sim-panel">
           <div class="sim-panel-title">카드 타입</div><div class="sim-panel-help">카드별 기본 스킬 레벨 상한을 적용합니다.</div>
           ${pillGroup('advCardTypePills',cardItems,'impact')}
-          <div id="nationalFirstTierPanel" class="sim-lock-box sim-hidden">
-            <div class="sim-panel-title">국가대표 1옵 등급</div>
-            <div class="sim-panel-help">공개표에 따라 국가대표 카드는 1옵이 메이저 또는 국가대표 등급입니다.</div>
-            ${pillGroup('nationalFirstTier',[{value:'major',label:'메이저'},{value:'national',label:'국가대표'}],'major')}
-          </div>
           <div id="impactLockArea" class="sim-lock-box">
             <label class="khome-check"><input type="checkbox" id="impactKeepLock"> 임팩트 1옵 잠금 유지</label>
             <div id="impactFixedSkillField" class="sim-hidden" style="margin-top:10px">
@@ -450,7 +451,7 @@
         <div class="sim-summary" id="advSummary"></div>
         <div class="sim-action-row"><button class="khome-roll" id="advRollBtn" type="button">시뮬 시작 →</button></div>
         <div class="khome-result" id="advRollResult">${skillResultHtml([null,null,null])}</div>
-        <div class="sim-level-note">스킬 이름은 스쿼드메이커에 등록된 실제 스킬 목록에서 중복 없이 추첨합니다. 레벨은 카드 타입별 기본 최대 레벨을 적용합니다.</div>
+        <div class="sim-level-note">스킬 이름은 실제 등록 스킬 목록에서 중복 없이 추첨합니다. 국가대표 카드는 1~3옵 모두 메이저급 판정 슬롯에서 국가대표 스킬이 함께 등장할 수 있습니다.</div>
       </div>`);
     const batterPanel=modalBody.querySelector('#advBatterPanel');
     const lockArea=modalBody.querySelector('#impactLockArea');
@@ -458,7 +459,6 @@
     const fixedField=modalBody.querySelector('#impactFixedSkillField');
     const fixedSkill=modalBody.querySelector('#impactFixedSkill');
     const fixedLevel=modalBody.querySelector('#impactFixedLevel');
-    const natPanel=modalBody.querySelector('#nationalFirstTierPanel');
 
     const refreshFixed=()=>{
       const target=selectedPill('advTarget'),bt=selectedPill('advBatterType'),card=selectedPill('advCardTypePills');
@@ -472,14 +472,12 @@
       const cardLabel={impact:'임팩트',signature:'시그니처',gold:'골든글러브',national:'국가대표'}[card];
       modalBody.querySelector('#advSummary').innerHTML=`<span>${targetLabel}</span>${target==='batter'?`<span>${bt==='catcher'?'포수':'야수'}</span>`:''}<span>${cardLabel}</span><span>Lv ${cardCaps(card).join('/')}</span>`;
       lockArea.classList.toggle('sim-hidden',card!=='impact');
-      natPanel.classList.toggle('sim-hidden',card!=='national');
       if(card!=='impact'){keep.checked=false;fixedField.classList.add('sim-hidden')}
       refreshFixed();
     };
     bindPills('advTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
     bindPills('advBatterType',updateSummary);
     bindPills('advCardTypePills',updateSummary);
-    bindPills('nationalFirstTier');
     keep.onchange=()=>{fixedField.classList.toggle('sim-hidden',!keep.checked);if(keep.checked)refreshFixed()};
     updateSummary();
 
@@ -490,14 +488,15 @@
         const d=skillCatalog().find(x=>x.id===fixedSkill.value);
         if(d){used.add(d.id);rows.push({...d,level:Number(fixedLevel.value)||caps[0]})}else rows.push(null);
       }else{
-        const firstTier=card==='national'?(selectedPill('nationalFirstTier')||'major'):'major';
-        const d=randomSkill(target,bt,card,firstTier,used);
+        const d=randomHighGradeSkill(target,bt,card,used);
         if(d){used.add(d.id);rows.push({...d,level:caps[0]})}else rows.push(null);
       }
       for(let i=1;i<3;i++){
         const grade=drawGrade(advancedOdds);
         const tier={메이저:'major',마이너:'minor',루키:'rookie',아마추어:'amateur'}[grade];
-        const d=randomSkill(target,bt,card,tier,used);
+        const d=(grade==='메이저')
+          ? randomHighGradeSkill(target,bt,card,used)
+          : randomSkill(target,bt,card,tier,used);
         if(d){used.add(d.id);rows.push({...d,level:caps[i]})}else rows.push(null);
       }
       modalBody.querySelector('#advRollResult').innerHTML=skillResultHtml(rows);
