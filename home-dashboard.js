@@ -106,6 +106,41 @@
       .sim-skill-card{min-height:88px}
       .sim-fixed-select{grid-template-columns:1fr}
     }
+
+    .skill-grade-box{
+      margin-top:12px;padding:14px;border-radius:15px;background:#f8fafc;
+      border:1px solid #dfe6ef
+    }
+    .skill-grade-input-row{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:9px;align-items:end}
+    .skill-grade-input-row label{font-size:10px;font-weight:900;color:#647286}
+    .skill-grade-input-row input{
+      width:100%;box-sizing:border-box;margin-top:6px;border:1px solid #ccd6e2;
+      border-radius:11px;background:#fff;color:#26364a;padding:11px 12px;font-size:14px;font-weight:900
+    }
+    .skill-grade-badge{
+      min-height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-size:23px;font-weight:1000;letter-spacing:-.5px;border:1px solid #dce3ec;background:#fff
+    }
+    .grade-srp{color:#7b2cbf;background:#f4e9ff;border-color:#d8b7f4}
+    .grade-ss{color:#d62828;background:#fff0f0;border-color:#f2b8b8}
+    .grade-s{color:#e67700;background:#fff5e6;border-color:#ffd49a}
+    .grade-a{color:#16803a;background:#edf9f0;border-color:#bce5c7}
+    .grade-b{color:#1769aa;background:#edf6ff;border-color:#bad8ef}
+    .grade-c{color:#667085;background:#f3f4f6;border-color:#d7dbe0}
+    .skill-grade-cuts{
+      margin-top:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px
+    }
+    .skill-grade-cut{
+      padding:8px 5px;border-radius:9px;background:#fff;border:1px solid #e2e8f0;
+      text-align:center;font-size:9px;color:#7a8798
+    }
+    .skill-grade-cut b{display:block;margin-bottom:2px;color:#314158;font-size:12px}
+    .skill-grade-note{margin-top:8px;color:#8490a0;font-size:9px;line-height:1.55}
+    @media(max-width:650px){
+      .skill-grade-input-row{grid-template-columns:1fr}
+      .skill-grade-cuts{grid-template-columns:repeat(3,1fr)}
+    }
+
     #kboHomeButton{order:-10}
     @media(max-width:900px){
       .khome-nav{padding:0 16px}.khome-menu button:not(.khome-start-small){display:none}.khome-brand{font-size:21px}
@@ -120,7 +155,7 @@
   `;
 
   const style=document.createElement('style');
-  style.id='kbo-home-dashboard-style-v147';
+  style.id='kbo-home-dashboard-style-v148';
   style.textContent=css;
   document.head.appendChild(style);
 
@@ -178,6 +213,9 @@
         </button>
         <button class="khome-card" type="button" data-home-action="oddsTable">
           <span class="khome-icon orange">%</span><h3>스킬 변경 확률표</h3><p>일스변과 고스변의 등급별 등장 확률과 1옵 규칙을 한눈에 확인합니다.</p><span class="khome-arrow">→</span>
+        </button>
+        <button class="khome-card" type="button" data-home-action="skillGradeCalc">
+          <span class="khome-tool-badge">NEW</span><span class="khome-icon blue">🏅</span><h3>스킬 등급 계산기</h3><p>총 스킬점수를 입력하면 카드·보직별 SR+ / SS / S / A / B / C를 바로 판정합니다.</p><span class="khome-arrow">→</span>
         </button>
       </section>
 
@@ -264,6 +302,99 @@
     });
   };
   const selectedPill=id=>modalBody.querySelector(`#${id} .sim-pill.selected`)?.dataset.value||'';
+
+  // v14.8: 카드/보직별 고스변 스킬점수 등급 컷.
+  // SR+ 상위 0.1%, SS 0.5%, S 1.5%, A 5%, B 12%, B 미만 C.
+  const SKILL_GRADE_CUTS={
+    batter_fielder:{
+      signature:{srp:51.36,ss:45.96,s:41.36,a:35.47,b:30.82,scope:'3스킬 총합'},
+      gold:{srp:56.25,ss:49.96,s:45.04,a:38.72,b:33.19,scope:'3스킬 총합'},
+      national:{srp:53.42,ss:47.74,s:43.44,a:37.54,b:32.53,scope:'3스킬 총합'},
+      impact:{srp:35.10,ss:28.78,s:24.96,a:21.15,b:15.32,scope:'2·3옵 합계'}
+    },
+    batter_catcher:{
+      signature:{srp:51.10,ss:45.69,s:41.13,a:35.23,b:30.62,scope:'3스킬 총합'},
+      gold:{srp:56.02,ss:49.68,s:44.86,a:38.38,b:32.99,scope:'3스킬 총합'},
+      national:{srp:53.16,ss:47.59,s:43.24,a:37.29,b:32.31,scope:'3스킬 총합'},
+      impact:{srp:34.86,ss:28.36,s:24.93,a:20.97,b:15.18,scope:'2·3옵 합계'}
+    },
+    sp:{
+      signature:{srp:49.92,ss:44.71,s:39.97,a:34.63,b:29.80,scope:'3스킬 총합'},
+      gold:{srp:55.42,ss:49.34,s:44.05,a:37.61,b:32.21,scope:'3스킬 총합'},
+      national:{srp:53.06,ss:47.32,s:42.83,a:36.96,b:32.14,scope:'3스킬 총합'},
+      impact:{srp:33.28,ss:28.35,s:24.12,a:19.52,b:15.69,scope:'2·3옵 합계'}
+    },
+    rp:{
+      signature:{srp:52.46,ss:46.98,s:41.80,a:36.06,b:30.83,scope:'3스킬 총합'},
+      gold:{srp:57.67,ss:51.15,s:45.52,a:38.80,b:32.94,scope:'3스킬 총합'},
+      national:{srp:54.84,ss:48.89,s:44.16,a:38.05,b:32.92,scope:'3스킬 총합'},
+      impact:{srp:35.81,ss:29.87,s:25.63,a:20.23,b:15.99,scope:'2·3옵 합계'}
+    },
+    cp:{
+      signature:{srp:51.52,ss:46.19,s:41.22,a:35.45,b:30.44,scope:'3스킬 총합'},
+      gold:{srp:56.65,ss:50.54,s:44.83,a:38.22,b:32.54,scope:'3스킬 총합'},
+      national:{srp:54.17,ss:48.26,s:43.66,a:37.51,b:32.62,scope:'3스킬 총합'},
+      impact:{srp:33.95,ss:29.42,s:25.48,a:19.73,b:15.77,scope:'2·3옵 합계'}
+    }
+  };
+  const gradeTargetKey=(target,batterType)=>target==='batter'
+    ? `batter_${batterType==='catcher'?'catcher':'fielder'}`
+    : target;
+  const gradeCutFor=(target,batterType,cardType)=>{
+    const key=gradeTargetKey(target,batterType);
+    return SKILL_GRADE_CUTS[key]?.[cardType]||null;
+  };
+  const skillGradeFor=(score,cut)=>{
+    const n=Number(score);
+    if(!cut||!Number.isFinite(n))return '';
+    if(n>=cut.srp)return 'SR+';
+    if(n>=cut.ss)return 'SS';
+    if(n>=cut.s)return 'S';
+    if(n>=cut.a)return 'A';
+    if(n>=cut.b)return 'B';
+    return 'C';
+  };
+  const gradeCss=g=>g==='SR+'?'grade-srp':g==='SS'?'grade-ss':g==='S'?'grade-s':g==='A'?'grade-a':g==='B'?'grade-b':'grade-c';
+  const gradeCutHtml=cut=>cut?`
+    <div class="skill-grade-cuts">
+      <div class="skill-grade-cut"><b>SR+ ${cut.srp.toFixed(2)}</b>상위 0.1%</div>
+      <div class="skill-grade-cut"><b>SS ${cut.ss.toFixed(2)}</b>상위 0.5%</div>
+      <div class="skill-grade-cut"><b>S ${cut.s.toFixed(2)}</b>상위 1.5%</div>
+      <div class="skill-grade-cut"><b>A ${cut.a.toFixed(2)}</b>상위 5%</div>
+      <div class="skill-grade-cut"><b>B ${cut.b.toFixed(2)}</b>상위 12%</div>
+    </div>`:'';
+  const gradeBoxHtml=(id,cut)=>`
+    <div class="skill-grade-box" id="${id}Box">
+      <div class="skill-grade-input-row">
+        <label>총 스킬점수
+          <input id="${id}Score" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${cut?.scope||'점수'} 입력">
+        </label>
+        <div class="skill-grade-badge grade-c" id="${id}Badge">—</div>
+      </div>
+      <div id="${id}Cuts">${gradeCutHtml(cut)}</div>
+      <div class="skill-grade-note" id="${id}Note">${cut?`판정 점수: ${cut.scope}. B컷보다 낮으면 전부 C등급.`:'이 카드/보직은 현재 등급컷 계산 대상이 아닙니다.'}</div>
+    </div>`;
+  const bindGradeBox=(id,getCut)=>{
+    const input=modalBody.querySelector('#'+id+'Score');
+    const badge=modalBody.querySelector('#'+id+'Badge');
+    const cuts=modalBody.querySelector('#'+id+'Cuts');
+    const note=modalBody.querySelector('#'+id+'Note');
+    const box=modalBody.querySelector('#'+id+'Box');
+    if(!input||!badge||!cuts||!note||!box)return ()=>{};
+    const refresh=()=>{
+      const cut=getCut();
+      box.style.display=cut?'block':'none';
+      if(!cut)return;
+      cuts.innerHTML=gradeCutHtml(cut);
+      note.textContent=`판정 점수: ${cut.scope}. B컷보다 낮으면 전부 C등급.`;
+      const g=skillGradeFor(input.value,cut);
+      badge.textContent=g||'—';
+      badge.className='skill-grade-badge '+(g?gradeCss(g):'grade-c');
+    };
+    input.addEventListener('input',refresh);
+    refresh();
+    return refresh;
+  };
 
   const skillCatalog=()=>window.__KBO_SKILL_SIM_CATALOG__||[];
   const targetPos=(target,batterType)=>{
@@ -355,6 +486,7 @@
         <div class="sim-summary" id="normalSummary"></div>
         <div class="sim-action-row"><button class="khome-roll" id="normalRollBtn" type="button">시뮬 시작 →</button></div>
         <div class="khome-result" id="normalRollResult">${skillResultHtml([null,null,null])}</div>
+        ${gradeBoxHtml('normalGrade',gradeCutFor('batter','fielder','signature'))}
         <div class="sim-level-note">스킬 레벨은 현재 스쿼드메이커의 카드 타입별 기본 최대 레벨 규칙을 사용합니다.</div>
       </div>`);
     const batterPanel=modalBody.querySelector('#normalBatterPanel');
@@ -362,6 +494,12 @@
     const yearPanel=modalBody.querySelector('#allstarYearPanel');
     const fixedSkill=modalBody.querySelector('#normalFixedSkill');
     const fixedLevel=modalBody.querySelector('#normalFixedLevel');
+    let refreshNormalGrade=()=>{};
+    refreshNormalGrade=bindGradeBox('normalGrade',()=>gradeCutFor(
+      selectedPill('normalTarget'),
+      selectedPill('normalBatterType'),
+      selectedPill('normalCardTypePills')
+    ));
 
     const refreshFixed=()=>{
       const target=selectedPill('normalTarget');
@@ -382,6 +520,7 @@
       fixedPanel.classList.toggle('sim-hidden',!fixed);
       yearPanel.classList.toggle('sim-hidden',card!=='allstar');
       if(fixed)refreshFixed();
+      refreshNormalGrade();
     };
 
     bindPills('normalTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
@@ -451,6 +590,7 @@
         <div class="sim-summary" id="advSummary"></div>
         <div class="sim-action-row"><button class="khome-roll" id="advRollBtn" type="button">시뮬 시작 →</button></div>
         <div class="khome-result" id="advRollResult">${skillResultHtml([null,null,null])}</div>
+        ${gradeBoxHtml('advGrade',gradeCutFor('batter','fielder','impact'))}
         <div class="sim-level-note">스킬 이름은 실제 등록 스킬 목록에서 중복 없이 추첨합니다. 국가대표 카드는 1~3옵 모두 메이저급 판정 슬롯에서 국가대표 스킬이 함께 등장할 수 있습니다.</div>
       </div>`);
     const batterPanel=modalBody.querySelector('#advBatterPanel');
@@ -459,6 +599,12 @@
     const fixedField=modalBody.querySelector('#impactFixedSkillField');
     const fixedSkill=modalBody.querySelector('#impactFixedSkill');
     const fixedLevel=modalBody.querySelector('#impactFixedLevel');
+    let refreshAdvGrade=()=>{};
+    refreshAdvGrade=bindGradeBox('advGrade',()=>gradeCutFor(
+      selectedPill('advTarget'),
+      selectedPill('advBatterType'),
+      selectedPill('advCardTypePills')
+    ));
 
     const refreshFixed=()=>{
       const target=selectedPill('advTarget'),bt=selectedPill('advBatterType'),card=selectedPill('advCardTypePills');
@@ -474,6 +620,7 @@
       lockArea.classList.toggle('sim-hidden',card!=='impact');
       if(card!=='impact'){keep.checked=false;fixedField.classList.add('sim-hidden')}
       refreshFixed();
+      refreshAdvGrade();
     };
     bindPills('advTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
     bindPills('advBatterType',updateSummary);
@@ -523,6 +670,49 @@
     modalBody.querySelector('#calcBtn').onclick=calculate; calculate();
   }
 
+
+  function showSkillGradeCalc(){
+    const targetItems=[
+      {value:'batter',label:'타자'},{value:'sp',label:'선발'},{value:'rp',label:'중계'},{value:'cp',label:'마무리'}
+    ];
+    const batterItems=[{value:'fielder',label:'야수'},{value:'catcher',label:'포수'}];
+    const cardItems=[
+      {value:'impact',label:'임팩트'},{value:'signature',label:'시그니처'},
+      {value:'gold',label:'골든글러브'},{value:'national',label:'국가대표'}
+    ];
+    openModal('스킬 등급 계산기',`
+      <div class="sim-config">
+        <div class="sim-panel">
+          <div class="sim-panel-title">계산 대상</div>
+          <div class="sim-panel-help">보직에 따라 점수 분포와 등급컷이 달라집니다.</div>
+          ${pillGroup('gradeCalcTarget',targetItems,'batter')}
+        </div>
+        <div class="sim-panel" id="gradeCalcBatterPanel">
+          <div class="sim-panel-title">타자 구분</div>
+          ${pillGroup('gradeCalcBatterType',batterItems,'fielder')}
+        </div>
+        <div class="sim-panel">
+          <div class="sim-panel-title">카드 타입</div>
+          ${pillGroup('gradeCalcCard',cardItems,'signature')}
+        </div>
+        ${gradeBoxHtml('standaloneGrade',gradeCutFor('batter','fielder','signature'))}
+        <div class="khome-tip">등급 기준: SR+ 상위 0.1% · SS 0.5% · S 1.5% · A 5% · B 12% · 그 아래는 C.</div>
+      </div>`);
+    const batterPanel=modalBody.querySelector('#gradeCalcBatterPanel');
+    const refresh=bindGradeBox('standaloneGrade',()=>gradeCutFor(
+      selectedPill('gradeCalcTarget'),
+      selectedPill('gradeCalcBatterType'),
+      selectedPill('gradeCalcCard')
+    ));
+    bindPills('gradeCalcTarget',v=>{
+      batterPanel.classList.toggle('sim-hidden',v!=='batter');
+      refresh();
+    });
+    bindPills('gradeCalcBatterType',refresh);
+    bindPills('gradeCalcCard',refresh);
+    refresh();
+  }
+
   function showOddsTable(){
     openModal('스킬 변경 확률표',`
       <table class="khome-table">
@@ -543,6 +733,7 @@
     if(name==='advancedRoll') return showAdvancedRoll();
     if(name==='majorCalc') return showMajorCalc();
     if(name==='oddsTable') return showOddsTable();
+    if(name==='skillGradeCalc') return showSkillGradeCalc();
     enterApp();
     if(name==='lineups'){
       setTimeout(()=>{
