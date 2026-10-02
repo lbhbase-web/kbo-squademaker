@@ -406,31 +406,31 @@
   };
 
 
-  // v15.0: 사용자 제공 CPBV-LAB 스킬점수표의 Lv5~8 전체 데이터 사용.
+  // v15.0: 사용자 제공 CPBV-LAB 스킬점수표의 Lv5~10 사진 대조 및 올스타 계산기 확인 데이터 사용.
   const SKILL_SCORE_CARD_OVERRIDES={
     impact:{
-      batter:{m_challenge_B:[13.85,16.25,null,null],m_spirit_B:[10.08,11.52,null,null]},
-      sp:{m_challenge_P:[13.80,16.20,null,null],m_spirit_P:[15.96,18.24,null,null]},
-      rp:{m_challenge_P:[13.80,16.20,null,null],m_spirit_P:[16.80,19.20,null,null]},
-      cp:{m_challenge_P:[13.80,16.20,null,null],m_spirit_P:[16.80,19.20,null,null]}
+      batter:{m_challenge_B:[13.85,16.25,18.65,21.05,23.45,25.85],m_spirit_B:[10.08,11.52,12.96,14.40,null,null]},
+      sp:{m_challenge_P:[13.80,16.20,18.60,21.00,23.40,25.80],m_spirit_P:[15.96,18.24,20.52,22.80,25.08,27.36]},
+      rp:{m_challenge_P:[13.80,16.20,18.60,21.00,23.40,25.80],m_spirit_P:[16.80,19.20,21.60,24.00,26.40,28.80]},
+      cp:{m_challenge_P:[13.80,16.20,18.60,21.00,23.40,25.80],m_spirit_P:[16.80,19.20,21.60,24.00,26.40,28.80]}
     },
     gold:{
-      batter:{m_spirit_B:[1.68,1.92,null,null]},
-      sp:{m_spirit_P:[8.06,9.22,null,null]},
-      rp:{m_spirit_P:[8.06,9.22,null,null]},
-      cp:{m_spirit_P:[8.06,9.22,null,null]}
+      batter:{m_spirit_B:[1.68,1.92,2.16,2.40,2.64,2.88]},
+      sp:{m_spirit_P:[8.06,9.22,10.37,11.52,12.67,13.82]},
+      rp:{m_spirit_P:[8.06,9.22,10.37,11.52,12.67,13.82]},
+      cp:{m_spirit_P:[8.06,9.22,10.37,11.52,12.67,13.82]}
     },
     national:{
-      batter:{m_spirit_B:[4.20,4.80,5.40,6.00]},
+      batter:{m_spirit_B:[4.20,4.80,5.40,6.00,6.60,7.20]},
       sp:{m_spirit_P:[4.20,4.80,5.40,6.00]},
       rp:{m_spirit_P:[4.20,4.80,5.40,6.00]},
       cp:{m_spirit_P:[4.20,4.80,5.40,6.00]}
     },
     signature:{
-      batter:{m_spirit_B:[3.36,3.84,null,null]},
-      sp:{m_spirit_P:[10.75,12.29,null,null]},
-      rp:{m_spirit_P:[13.61,15.55,null,null]},
-      cp:{m_spirit_P:[13.61,15.55,null,null]}
+      batter:{m_spirit_B:[3.36,3.84,4.32,4.80,5.28,5.76]},
+      sp:{m_spirit_P:[10.75,12.29,13.82,15.36,16.90,18.44]},
+      rp:{m_spirit_P:[13.61,15.55,17.50,19.44,21.38,23.32]},
+      cp:{m_spirit_P:[13.61,15.55,17.50,19.44,21.38,23.32]}
     }
   };
 
@@ -438,7 +438,7 @@
     if(!x)return null;
     const level=Number(x.level);
     const idx=level-5;
-    if(idx<0||idx>3)return null;
+    if(idx<0||idx>5)return null;
     const override=SKILL_SCORE_CARD_OVERRIDES?.[card]?.[target]?.[x.id];
     const base=window.__KBO_SKILL_SCORE_DB__?.[target]?.[x.id];
     const values=override||base;

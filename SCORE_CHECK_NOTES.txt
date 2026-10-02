@@ -1,0 +1,141 @@
+v15.0 Lv9·10 보완 패치
+사진: 투수 102행 / 타자 86행, 총188행 Lv5~10 전사 및 조건별 보존.
+추가 확인: https://www.cpbv-lab.com/calculator/ 카드=올스타
+슬로우스타트 타자19.50/20.90, 선발16.74/18.45, 중계·마무리15.71/17.31
+소방수45.81/52.65
+Lv9·10 계산 인덱스 제한 해제. 카드별 패기/도전정신 override도 보완.
+기존 스킬 UI의 대표 조건/평균 방식 유지. 조건 전체값은 CSV/JSON에 보존.
+사진 또는 계산기에 없는 값은 추정하지 않음.
+이 ZIP은 기존 v15.0 PATCH를 보완한 패치이며, 전체 선수 데이터 통합본이 아님. 기존 프로젝트 위에 적용해야 함.
+
+Lv5~8 대조 수정:
+[
+  {
+    "role": "batter",
+    "id": "win_B",
+    "before": [
+      15.28,
+      19.92,
+      24.56,
+      29.2
+    ],
+    "after": [
+      14.28,
+      20.23,
+      null,
+      null
+    ]
+  },
+  {
+    "role": "sp",
+    "id": "m_spirit_P",
+    "before": [
+      10.75,
+      12.29,
+      null,
+      null
+    ],
+    "after": [
+      10.75,
+      12.29,
+      13.82,
+      15.36
+    ]
+  },
+  {
+    "role": "rp",
+    "id": "m_spirit_P",
+    "before": [
+      13.61,
+      15.55,
+      null,
+      null
+    ],
+    "after": [
+      13.61,
+      15.55,
+      17.5,
+      19.44
+    ]
+  },
+  {
+    "role": "cp",
+    "id": "m_spirit_P",
+    "before": [
+      13.61,
+      15.55,
+      null,
+      null
+    ],
+    "after": [
+      13.61,
+      15.55,
+      17.5,
+      19.44
+    ]
+  }
+]
+
+사진에 없고 Lv9·10 미지원 항목:
+[
+  {
+    "role": "batter",
+    "id": "m_league_B",
+    "name": "리그의강자"
+  },
+  {
+    "role": "batter",
+    "id": "m_fast",
+    "name": "빠른발"
+  },
+  {
+    "role": "batter",
+    "id": "a_bunt",
+    "name": "번트전문"
+  },
+  {
+    "role": "sp",
+    "id": "m_league_P",
+    "name": "리그의강자"
+  },
+  {
+    "role": "sp",
+    "id": "r_innings",
+    "name": "이닝이터"
+  },
+  {
+    "role": "sp",
+    "id": "a_safe",
+    "name": "사고방지"
+  },
+  {
+    "role": "rp",
+    "id": "m_league_P",
+    "name": "리그의강자"
+  },
+  {
+    "role": "rp",
+    "id": "r_innings",
+    "name": "이닝이터"
+  },
+  {
+    "role": "rp",
+    "id": "a_safe",
+    "name": "사고방지"
+  },
+  {
+    "role": "cp",
+    "id": "m_league_P",
+    "name": "리그의강자"
+  },
+  {
+    "role": "cp",
+    "id": "r_innings",
+    "name": "이닝이터"
+  },
+  {
+    "role": "cp",
+    "id": "a_safe",
+    "name": "사고방지"
+  }
+]
