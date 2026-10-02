@@ -141,6 +141,30 @@
       .skill-grade-cuts{grid-template-columns:repeat(3,1fr)}
     }
 
+
+    .sim-skill-score{
+      margin-top:5px;font-size:10px;font-weight:900;color:#66778c
+    }
+    .sim-roll-grade{
+      margin-top:12px;border:1px solid #dce4ee;border-radius:16px;background:#f8fafc;
+      padding:14px;display:grid;grid-template-columns:minmax(0,1fr) 135px;gap:12px;align-items:center
+    }
+    .sim-roll-grade-main small{display:block;color:#8491a2;font-size:9px;margin-bottom:4px}
+    .sim-roll-grade-score{font-size:24px;font-weight:1000;color:#26364a;letter-spacing:-.6px}
+    .sim-roll-grade-score em{font-style:normal;font-size:10px;color:#8894a4;margin-left:5px;font-weight:800}
+    .sim-roll-grade-badge{
+      min-height:60px;border-radius:14px;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;border:1px solid #d9e1ea;background:#fff;font-size:26px;font-weight:1000
+    }
+    .sim-roll-grade-badge small{font-size:9px;margin-bottom:3px;opacity:.72}
+    .sim-grade-cuts-mini{margin-top:9px;display:flex;flex-wrap:wrap;gap:5px}
+    .sim-grade-cuts-mini span{font-size:8px;padding:4px 6px;border-radius:999px;background:#fff;border:1px solid #e1e7ef;color:#718096}
+    .sim-score-warning{margin-top:7px;font-size:9px;line-height:1.5;color:#8793a3}
+    @media(max-width:650px){
+      .sim-roll-grade{grid-template-columns:1fr 105px}
+      .sim-roll-grade-score{font-size:21px}
+    }
+
     #kboHomeButton{order:-10}
     @media(max-width:900px){
       .khome-nav{padding:0 16px}.khome-menu button:not(.khome-start-small){display:none}.khome-brand{font-size:21px}
@@ -155,7 +179,7 @@
   `;
 
   const style=document.createElement('style');
-  style.id='kbo-home-dashboard-style-v148';
+  style.id='kbo-home-dashboard-style-v149';
   style.textContent=css;
   document.head.appendChild(style);
 
@@ -213,9 +237,6 @@
         </button>
         <button class="khome-card" type="button" data-home-action="oddsTable">
           <span class="khome-icon orange">%</span><h3>스킬 변경 확률표</h3><p>일스변과 고스변의 등급별 등장 확률과 1옵 규칙을 한눈에 확인합니다.</p><span class="khome-arrow">→</span>
-        </button>
-        <button class="khome-card" type="button" data-home-action="skillGradeCalc">
-          <span class="khome-tool-badge">NEW</span><span class="khome-icon blue">🏅</span><h3>스킬 등급 계산기</h3><p>총 스킬점수를 입력하면 카드·보직별 SR+ / SS / S / A / B / C를 바로 판정합니다.</p><span class="khome-arrow">→</span>
         </button>
       </section>
 
@@ -396,6 +417,168 @@
     return refresh;
   };
 
+
+  // 랭킹챌린지 기준 Lv5 / Lv6 스킬점수.
+  // 조건이 여러 개인 스킬은 시뮬레이터에서 별도 조건을 고르지 않으므로
+  // 보직/카드 타입에 맞는 대표 조건값을 사용한다.
+  const SKILL_SCORE56={
+    // 타자 메이저
+    m_touch:[7.30,9.50],m_precision:[20.70,24.59],m_veteran_B:[9.41,11.88],
+    m_decisive:[8.75,11.28],m_thief:[11.32,14.88],m_focus_B:[8.69,11.03],
+    m_hero_B:[7.20,10.56],m_catcher:[5.00,6.00],m_contact:[7.92,10.56],
+    m_best_B:[9.60,12.00],m_five:[7.40,12.95],m_shout_B:[8.26,9.74],
+    m_journey_B:[15.28,19.92],m_autumn_B:[12.65,14.90],m_defense:[8.40,11.20],
+    m_switch:[21.90,25.65],m_left:[16.80,18.52],m_vanguard:[7.83,10.44],
+    m_nonfa_B:[11.10,12.95],m_hidden:[3.70,5.55],m_big_B:[19.00,20.40],
+    m_represent:[14.40,16.80],m_top_B:[14.40,16.80],m_over_B:[18.36,18.36],
+    m_work_B:[20.76,20.76],m_early_B:[9.40,12.00],m_rank_B:[11.15,13.15],
+    m_bottom:[5.10,5.95],m_gambler_B:[8.75,9.90],m_league_B:[0,0],
+    m_pinch:[5.78,6.93],m_leadoff:[2.80,3.20],m_home_B:[10.00,12.00],
+    m_fast:[0,0],m_nuclear:[9.25,11.10],m_aim:[8.00,9.00],
+    m_clutchb:[4.00,4.80],m_high:[2.80,3.50],m_upper:[4.20,4.90],
+    m_machine:[13.50,15.75],m_slow_B:[9.05,11.60],
+
+    // 투수 메이저
+    m_speed:[14.40,16.80],m_winning:[14.23,18.39],m_veteran_P:[7.32,9.05],
+    m_focus_P:[8.45,10.57],m_winshot:[4.34,7.07],m_best_P:[9.60,12.00],
+    m_weather:[14.40,16.80],m_journey_P:[16.07,20.51],m_autumn_P:[13.35,15.75],
+    m_firefighter:[9.47,9.95],m_nonfa_P:[14.40,16.80],m_tenacity:[8.47,11.03],
+    m_calm:[11.40,13.32],m_big_P:[18.75,20.10],m_fireball:[17.00,20.23],
+    m_top_P:[14.40,16.80],m_rank_P:[14.40,16.80],m_gambler_P:[8.77,10.12],
+    m_league_P:[0,0],m_artist:[8.40,9.45],m_clutchp:[3.36,4.03],
+    m_support:[4.50,5.40],m_untouch:[8.40,9.45],m_ace:[12.00,14.40],
+    m_slow_P:[9.33,10.92],
+
+    // 하위 등급
+    mi_tempo:[3.84,4.61],mi_crisis:[2.86,3.33],mi_rightbat:[4.89,5.86],
+    mi_leftbat:[3.26,3.91],mi_hawk:[3.00,3.60],mi_connect:[5.00,6.00],
+    mi_rbi:[4.22,4.87],mi_rightpitch:[6.01,7.22],mi_leftpitch:[3.24,3.89],
+    r_confidence:[1.16,1.35],r_dirty:[1.76,2.05],r_sweet:[2.45,2.80],
+    r_table:[4.06,4.87],r_winning:[3.76,4.50],r_comeback:[3.76,4.50],
+    r_first:[2.88,3.46],r_innings:[0,0],r_calm:[6.75,8.10],
+    a_safe:[0,0],a_duel_p:[0.48,0.58],a_breaking:[2.44,2.92],
+    a_fast:[1.36,1.36],a_bunt:[0,0],a_breakingkiller:[2.73,3.22],
+    a_duel_b:[0.60,0.72],a_fastkiller:[1.97,2.33],a_pull:[2.00,2.40],
+    a_push:[2.00,2.40],
+
+    // 국가대표
+    order:[19.83,24.50],escape:[19.90,24.50],line:[13.13,19.03],
+    table:[14.97,22.90],relief:[12.32,14.30],solve_B:[17.76,21.98],
+    solve_P:[15.65,19.03],win_B:[14.28,20.23],win_P:[12.86,18.10],
+    golden_B:[17.04,24.72],golden_P:[17.04,24.72],fight_B:[13.32,16.38],
+    fight_P:[15.26,19.30],eighth_B:[12.48,15.12],eighth_P:[12.48,15.12],
+    ace_B:[12.00,14.40],ace_P:[12.00,14.40]
+  };
+
+  const scorePair=(id,target,card)=>{
+    // 카드/보직 조건에 따라 달라지는 스킬
+    if(id==='m_challenge_B') return card==='impact'?[13.85,16.25]:[12.00,14.40];
+    if(id==='m_challenge_P') return card==='impact'?[13.80,16.20]:[12.00,14.40];
+
+    if(id==='m_hero_P') return target==='sp'?[9.60,13.44]:[6.24,9.41];
+    if(id==='m_shout_P'){
+      if(target==='sp') return [7.74,9.15];
+      if(target==='cp') return [11.68,13.64];
+      return [7.90,9.32]; // 중계 대표값
+    }
+    if(id==='m_onetwo') return [13.60,17.40];
+    if(id==='m_workhorse') return [24.45,29.33];
+    if(id==='m_leftdeath') return [16.55,20.99]; // 좌/우 상대 평균
+    if(id==='m_over_P'){
+      if(target==='sp') return [14.53,14.53];
+      if(target==='cp') return [9.50,9.50];
+      return [11.52,11.52];
+    }
+    if(id==='m_work_P'){
+      if(target==='sp') return [13.37,13.37];
+      if(target==='cp') return [13.68,13.68];
+      return [17.06,17.06];
+    }
+    if(id==='m_emergency'){
+      if(target==='sp') return [11.60,13.19];
+      if(target==='cp') return [6.59,7.28];
+      return [13.16,15.05];
+    }
+    if(id==='m_early_P'){
+      if(target==='sp') return [8.03,9.70];
+      if(target==='cp') return [9.07,11.00];
+      return [8.58,10.39];
+    }
+    if(id==='m_rising') return target==='sp'?[6.93,8.11]:[9.98,11.77];
+    if(id==='m_onepoint') return target==='cp'?[10.85,12.67]:[10.01,11.73];
+    if(id==='m_first') return [8.88,10.58];
+    if(id==='m_iron') return [16.80,19.20];
+    if(id==='m_guardian'){
+      if(target==='sp') return [1.21,1.41];
+      if(target==='cp') return [14.40,16.80];
+      return [10.94,12.77];
+    }
+    if(id==='m_cut'){
+      if(target==='sp') return [1.10,1.28];
+      if(target==='cp') return [7.95,9.27];
+      return [6.29,7.32];
+    }
+    if(id==='r_intimidate'){
+      if(target==='sp') return [0.33,0.40];
+      if(target==='cp') return [2.43,2.92];
+      return [1.91,2.30];
+    }
+
+    if(id==='m_spirit_B'){
+      if(card==='impact') return [10.08,11.52];
+      if(card==='gold') return [1.68,1.92];
+      if(card==='national') return [4.20,4.80];
+      return [3.36,3.84];
+    }
+    if(id==='m_spirit_P'){
+      if(card==='impact') return target==='sp'?[15.96,18.24]:[16.80,19.20];
+      if(card==='gold') return [8.06,9.22];
+      if(card==='national') return [4.20,4.80];
+      return target==='sp'?[10.75,12.29]:[13.61,15.55];
+    }
+
+    if(id==='m_slow_P') return target==='sp'?[10.35,12.15]:[9.33,10.92];
+    return SKILL_SCORE56[id]||null;
+  };
+
+  const scoreForSkill=(x,target,card)=>{
+    if(!x)return null;
+    const pair=scorePair(x.id,target,card);
+    if(!pair)return null;
+    if(Number(x.level)===5)return pair[0];
+    if(Number(x.level)===6)return pair[1];
+    // 자동 등급 계산 대상 카드들은 5~6레벨만 사용.
+    return null;
+  };
+
+  const gradeResultHtml=(rows,target,batterType,card)=>{
+    const cut=gradeCutFor(target,batterType,card);
+    if(!cut) return `<div class="sim-score-warning">LIVE / LIVE 올스타는 현재 자동 등급 판정 대상에서 제외돼요.</div>`;
+
+    const scores=rows.map(x=>scoreForSkill(x,target,card));
+    const useIndexes=card==='impact'?[1,2]:[0,1,2];
+    const missing=useIndexes.some(i=>scores[i]==null);
+    if(missing){
+      return `<div class="sim-score-warning">이 조합에는 아직 점수표에 없는 조건이 포함되어 있어 자동 등급을 계산하지 못했어요.</div>`;
+    }
+
+    const total=useIndexes.reduce((a,i)=>a+Number(scores[i]||0),0);
+    const grade=skillGradeFor(total,cut);
+    const scope=card==='impact'?'2·3옵 판정 점수':'총 스킬 점수';
+    return `
+      <div class="sim-roll-grade">
+        <div class="sim-roll-grade-main">
+          <small>${scope}</small>
+          <div class="sim-roll-grade-score">${total.toFixed(2)}<em>점</em></div>
+          <div class="sim-grade-cuts-mini">
+            <span>SR+ ${cut.srp.toFixed(2)}</span><span>SS ${cut.ss.toFixed(2)}</span>
+            <span>S ${cut.s.toFixed(2)}</span><span>A ${cut.a.toFixed(2)}</span><span>B ${cut.b.toFixed(2)}</span>
+          </div>
+        </div>
+        <div class="sim-roll-grade-badge ${gradeCss(grade)}"><small>등급</small>${grade}</div>
+      </div>`;
+  };
+
   const skillCatalog=()=>window.__KBO_SKILL_SIM_CATALOG__||[];
   const targetPos=(target,batterType)=>{
     if(target==='sp')return 'SP';
@@ -437,7 +620,7 @@
     if(!pool.length)return null;
     return pool[Math.floor(Math.random()*pool.length)];
   };
-  const skillResultHtml=rows=>`<div class="sim-skill-result">${rows.map((x,i)=>`<div class="sim-skill-card"><small>${i+1}옵션</small>${x?`<span class="sim-skill-tier" style="color:${tierColor[x.tier]||'#667'}">[${tierLabel[x.tier]||x.tier}]</span><div class="sim-skill-name">${x.name}</div><div class="sim-skill-lv">Lv ${x.level}</div>`:`<div class="sim-skill-name">-</div>`}</div>`).join('')}</div>`;
+  const skillResultHtml=(rows,target='',card='')=>`<div class="sim-skill-result">${rows.map((x,i)=>{const sc=x?scoreForSkill(x,target,card):null;return `<div class="sim-skill-card"><small>${i+1}옵션</small>${x?`<span class="sim-skill-tier" style="color:${tierColor[x.tier]||'#667'}">[${tierLabel[x.tier]||x.tier}]</span><div class="sim-skill-name">${x.name}</div><div class="sim-skill-lv">Lv ${x.level}</div>${sc!=null?`<div class="sim-skill-score">${sc.toFixed(2)}점</div>`:''}`:`<div class="sim-skill-name">-</div>`}</div>`}).join('')}</div>`;
   const fixedSkillOptions=(target,batterType,cardType)=>{
     const order=['national','major','minor','rookie','amateur'];
     return order.map(t=>{
@@ -486,7 +669,7 @@
         <div class="sim-summary" id="normalSummary"></div>
         <div class="sim-action-row"><button class="khome-roll" id="normalRollBtn" type="button">시뮬 시작 →</button></div>
         <div class="khome-result" id="normalRollResult">${skillResultHtml([null,null,null])}</div>
-        ${gradeBoxHtml('normalGrade',gradeCutFor('batter','fielder','signature'))}
+        <div id="normalAutoGrade"></div>
         <div class="sim-level-note">스킬 레벨은 현재 스쿼드메이커의 카드 타입별 기본 최대 레벨 규칙을 사용합니다.</div>
       </div>`);
     const batterPanel=modalBody.querySelector('#normalBatterPanel');
@@ -494,12 +677,6 @@
     const yearPanel=modalBody.querySelector('#allstarYearPanel');
     const fixedSkill=modalBody.querySelector('#normalFixedSkill');
     const fixedLevel=modalBody.querySelector('#normalFixedLevel');
-    let refreshNormalGrade=()=>{};
-    refreshNormalGrade=bindGradeBox('normalGrade',()=>gradeCutFor(
-      selectedPill('normalTarget'),
-      selectedPill('normalBatterType'),
-      selectedPill('normalCardTypePills')
-    ));
 
     const refreshFixed=()=>{
       const target=selectedPill('normalTarget');
@@ -520,7 +697,7 @@
       fixedPanel.classList.toggle('sim-hidden',!fixed);
       yearPanel.classList.toggle('sim-hidden',card!=='allstar');
       if(fixed)refreshFixed();
-      refreshNormalGrade();
+      const g=modalBody.querySelector('#normalAutoGrade'); if(g)g.innerHTML='';
     };
 
     bindPills('normalTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
@@ -549,7 +726,8 @@
         const d=randomSkill(target,bt,card,key,used);
         if(d){used.add(d.id);rows.push({...d,level:caps[i]})}else rows.push(null);
       }
-      modalBody.querySelector('#normalRollResult').innerHTML=skillResultHtml(rows);
+      modalBody.querySelector('#normalRollResult').innerHTML=skillResultHtml(rows,target,card);
+      modalBody.querySelector('#normalAutoGrade').innerHTML=gradeResultHtml(rows,target,bt,card);
     };
   }
 
@@ -590,7 +768,7 @@
         <div class="sim-summary" id="advSummary"></div>
         <div class="sim-action-row"><button class="khome-roll" id="advRollBtn" type="button">시뮬 시작 →</button></div>
         <div class="khome-result" id="advRollResult">${skillResultHtml([null,null,null])}</div>
-        ${gradeBoxHtml('advGrade',gradeCutFor('batter','fielder','impact'))}
+        <div id="advAutoGrade"></div>
         <div class="sim-level-note">스킬 이름은 실제 등록 스킬 목록에서 중복 없이 추첨합니다. 국가대표 카드는 1~3옵 모두 메이저급 판정 슬롯에서 국가대표 스킬이 함께 등장할 수 있습니다.</div>
       </div>`);
     const batterPanel=modalBody.querySelector('#advBatterPanel');
@@ -599,12 +777,6 @@
     const fixedField=modalBody.querySelector('#impactFixedSkillField');
     const fixedSkill=modalBody.querySelector('#impactFixedSkill');
     const fixedLevel=modalBody.querySelector('#impactFixedLevel');
-    let refreshAdvGrade=()=>{};
-    refreshAdvGrade=bindGradeBox('advGrade',()=>gradeCutFor(
-      selectedPill('advTarget'),
-      selectedPill('advBatterType'),
-      selectedPill('advCardTypePills')
-    ));
 
     const refreshFixed=()=>{
       const target=selectedPill('advTarget'),bt=selectedPill('advBatterType'),card=selectedPill('advCardTypePills');
@@ -620,7 +792,7 @@
       lockArea.classList.toggle('sim-hidden',card!=='impact');
       if(card!=='impact'){keep.checked=false;fixedField.classList.add('sim-hidden')}
       refreshFixed();
-      refreshAdvGrade();
+      const g=modalBody.querySelector('#advAutoGrade'); if(g)g.innerHTML='';
     };
     bindPills('advTarget',v=>{batterPanel.classList.toggle('sim-hidden',v!=='batter');updateSummary()});
     bindPills('advBatterType',updateSummary);
@@ -646,7 +818,8 @@
           : randomSkill(target,bt,card,tier,used);
         if(d){used.add(d.id);rows.push({...d,level:caps[i]})}else rows.push(null);
       }
-      modalBody.querySelector('#advRollResult').innerHTML=skillResultHtml(rows);
+      modalBody.querySelector('#advRollResult').innerHTML=skillResultHtml(rows,target,card);
+      modalBody.querySelector('#advAutoGrade').innerHTML=gradeResultHtml(rows,target,bt,card);
     };
   }
 
@@ -671,48 +844,6 @@
   }
 
 
-  function showSkillGradeCalc(){
-    const targetItems=[
-      {value:'batter',label:'타자'},{value:'sp',label:'선발'},{value:'rp',label:'중계'},{value:'cp',label:'마무리'}
-    ];
-    const batterItems=[{value:'fielder',label:'야수'},{value:'catcher',label:'포수'}];
-    const cardItems=[
-      {value:'impact',label:'임팩트'},{value:'signature',label:'시그니처'},
-      {value:'gold',label:'골든글러브'},{value:'national',label:'국가대표'}
-    ];
-    openModal('스킬 등급 계산기',`
-      <div class="sim-config">
-        <div class="sim-panel">
-          <div class="sim-panel-title">계산 대상</div>
-          <div class="sim-panel-help">보직에 따라 점수 분포와 등급컷이 달라집니다.</div>
-          ${pillGroup('gradeCalcTarget',targetItems,'batter')}
-        </div>
-        <div class="sim-panel" id="gradeCalcBatterPanel">
-          <div class="sim-panel-title">타자 구분</div>
-          ${pillGroup('gradeCalcBatterType',batterItems,'fielder')}
-        </div>
-        <div class="sim-panel">
-          <div class="sim-panel-title">카드 타입</div>
-          ${pillGroup('gradeCalcCard',cardItems,'signature')}
-        </div>
-        ${gradeBoxHtml('standaloneGrade',gradeCutFor('batter','fielder','signature'))}
-        <div class="khome-tip">등급 기준: SR+ 상위 0.1% · SS 0.5% · S 1.5% · A 5% · B 12% · 그 아래는 C.</div>
-      </div>`);
-    const batterPanel=modalBody.querySelector('#gradeCalcBatterPanel');
-    const refresh=bindGradeBox('standaloneGrade',()=>gradeCutFor(
-      selectedPill('gradeCalcTarget'),
-      selectedPill('gradeCalcBatterType'),
-      selectedPill('gradeCalcCard')
-    ));
-    bindPills('gradeCalcTarget',v=>{
-      batterPanel.classList.toggle('sim-hidden',v!=='batter');
-      refresh();
-    });
-    bindPills('gradeCalcBatterType',refresh);
-    bindPills('gradeCalcCard',refresh);
-    refresh();
-  }
-
   function showOddsTable(){
     openModal('스킬 변경 확률표',`
       <table class="khome-table">
@@ -733,7 +864,6 @@
     if(name==='advancedRoll') return showAdvancedRoll();
     if(name==='majorCalc') return showMajorCalc();
     if(name==='oddsTable') return showOddsTable();
-    if(name==='skillGradeCalc') return showSkillGradeCalc();
     enterApp();
     if(name==='lineups'){
       setTimeout(()=>{
