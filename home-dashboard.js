@@ -13,6 +13,10 @@
     .khome-menu{display:flex;align-items:center;gap:8px}
     .khome-menu button{border:0;background:transparent;color:#667085;font-size:13px;font-weight:800;padding:10px 12px;border-radius:10px;cursor:pointer}
     .khome-menu button:hover{background:#f0f5ff;color:#3478e5}
+    .khome-google-auth{display:flex!important;align-items:center;gap:7px!important;border:1px solid #d9e0ea!important;background:#fff!important;color:#344256!important;padding:9px 12px!important}
+    .khome-google-auth:hover{background:#f6f9fc!important;color:#2367b1!important}
+    .khome-google-auth.signed-in{background:#f4f8ff!important;border-color:#c8d9f1!important}
+    .khome-google-auth img{width:22px;height:22px;border-radius:50%;object-fit:cover}
     .khome-start-small{background:#3f5f91!important;color:#fff!important;padding:10px 17px!important}
     .khome-main{max-width:1240px;margin:0 auto;padding:30px 20px 54px}
     .khome-hero{position:relative;overflow:hidden;min-height:250px;border-radius:24px;padding:38px 40px;display:flex;align-items:center;background:linear-gradient(125deg,#eef7ff 0%,#f8fbff 48%,#eef0ff 100%);border:1px solid #e3eaf4;box-shadow:0 15px 40px rgba(56,80,118,.08)}
@@ -167,7 +171,7 @@
 
     #kboHomeButton{order:-10}
     @media(max-width:900px){
-      .khome-nav{padding:0 16px}.khome-menu button:not(.khome-start-small){display:none}.khome-brand{font-size:21px}
+      .khome-nav{padding:0 16px}.khome-menu button:not(.khome-start-small):not(.khome-google-auth){display:none}.khome-brand{font-size:21px}
       .khome-main{padding:18px 14px 38px}.khome-hero{min-height:220px;padding:28px 24px;border-radius:18px}.khome-hero h1{font-size:29px}
       .khome-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.khome-card{min-height:185px;padding:21px 18px}.khome-icon{width:52px;height:52px;margin-bottom:15px}
     }
@@ -195,6 +199,7 @@
         <button type="button" data-home-action="skills">스킬·육성</button>
         <button type="button" data-home-action="lineups">내 라인업</button>
         <button type="button" data-home-action="patch">패치 노트</button>
+        <button id="khomeGoogleLoginBtn" class="khome-google-auth" type="button" data-home-action="googleAuth">Google 로그인</button>
         <button class="khome-start-small" type="button" data-home-action="squad">시작하기</button>
       </nav>
     </header>
@@ -207,24 +212,7 @@
           <button class="khome-primary" type="button" data-home-action="squad">스쿼드 만들기 →</button>
         </div>
       </section>
-
-      <div class="khome-section-title"><h2>바로가기</h2><span>원하는 기능을 선택하세요</span></div>
-      <section class="khome-grid">
-        <button class="khome-card" type="button" data-home-action="squad">
-          <span class="khome-icon">⚾</span><h3>스쿼드 메이커</h3><p>타자·투수를 배치하고 세트덱과 최종 능력치를 확인합니다.</p><span class="khome-arrow">→</span>
-        </button>
-        <button class="khome-card" type="button" data-home-action="skills">
-          <span class="khome-icon">🎯</span><h3>스킬·육성</h3><p>선수별 스킬, 훈련, 각성, 포지션 특훈을 설정합니다.</p><span class="khome-arrow">→</span>
-        </button>
-        <button class="khome-card" type="button" data-home-action="lineups">
-          <span class="khome-icon">☁️</span><h3>내 라인업</h3><p>Google 계정으로 저장한 라인업을 불러오고 관리합니다.</p><span class="khome-arrow">→</span>
-        </button>
-        <button class="khome-card" type="button" data-home-action="patch">
-          <span class="khome-icon">📝</span><h3>패치 노트</h3><p>새로 추가된 선수와 기능, 변경사항을 확인합니다.</p><span class="khome-arrow">→</span>
-        </button>
-      </section>
-
-      <div class="khome-section-title"><h2>스킬 도구</h2><span>실제 확률 규칙으로 바로 돌려볼 수 있어요</span></div>
+      <div class="khome-section-title"><h2>스킬 도구</h2><span>원하는 기능을 바로 선택하세요</span></div>
       <section class="khome-grid">
         <button class="khome-card" type="button" data-home-action="normalRoll">
           <span class="khome-tool-badge">NEW</span><span class="khome-icon blue">🎲</span><h3>일스변 시뮬레이터</h3><p>일반 스킬 변경권의 등급 확률로 3옵션을 시뮬레이션합니다.</p><span class="khome-arrow">→</span>
@@ -247,7 +235,7 @@
         </div>
       </div>
 
-      <div class="khome-note">이 홈 화면은 사이트에 들어올 때마다 먼저 표시됩니다. 스쿼드 화면 오른쪽 위의 <b>홈</b> 버튼으로 언제든 돌아올 수 있어요.</div>
+      <div class="khome-note">홈에서 일스변·고스변 등 스킬 도구를 바로 사용할 수 있어요. 스쿼드 화면의 <b>홈</b> 버튼이나 뒤로가기로 언제든 돌아올 수 있습니다.</div>
     </main>`;
   document.body.prepend(home);
 
@@ -328,34 +316,34 @@
   // SR+ 상위 0.1%, SS 0.5%, S 1.5%, A 5%, B 12%, B 미만 C.
   const SKILL_GRADE_CUTS={
     batter_fielder:{
-      signature:{srp:50.17,ss:44.6,s:39.86,a:34.22,b:29.65,scope:'3스킬 총합'},
-      gold:{srp:54.55,ss:48.45,s:43.31,a:36.88,b:31.94,scope:'3스킬 총합'},
-      national:{srp:51.71,ss:46.44,s:42.01,a:36.01,b:31.5,scope:'3스킬 총합'},
-      impact:{srp:34.28,ss:27.91,s:24.78,a:20.28,b:14.4,scope:'2·3옵 합계'}
+      signature:{srp:51.36,ss:45.96,s:41.36,a:35.47,b:30.82,scope:'3스킬 총합'},
+      gold:{srp:56.25,ss:49.96,s:45.04,a:38.72,b:33.19,scope:'3스킬 총합'},
+      national:{srp:53.42,ss:47.74,s:43.44,a:37.54,b:32.53,scope:'3스킬 총합'},
+      impact:{srp:35.10,ss:28.78,s:24.96,a:21.15,b:15.32,scope:'2·3옵 합계'}
     },
     batter_catcher:{
-      signature:{srp:50.88,ss:45.45,s:40.66,a:34.79,b:30.6,scope:'3스킬 총합'},
-      gold:{srp:56.24,ss:49.94,s:44.78,a:38.11,b:32.9,scope:'3스킬 총합'},
-      national:{srp:52.26,ss:46.91,s:42.55,a:36.46,b:31.93,scope:'3스킬 총합'},
-      impact:{srp:34.27,ss:27.91,s:24.78,a:20.04,b:14.65,scope:'2·3옵 합계'}
+      signature:{srp:51.10,ss:45.69,s:41.13,a:35.23,b:30.62,scope:'3스킬 총합'},
+      gold:{srp:56.02,ss:49.68,s:44.86,a:38.38,b:32.99,scope:'3스킬 총합'},
+      national:{srp:53.16,ss:47.59,s:43.24,a:37.29,b:32.31,scope:'3스킬 총합'},
+      impact:{srp:34.86,ss:28.36,s:24.93,a:20.97,b:15.18,scope:'2·3옵 합계'}
     },
     sp:{
-      signature:{srp:47.32,ss:42.13,s:38.28,a:33.615,b:28.955,scope:'3스킬 총합'},
-      gold:{srp:52.49,ss:46.5,s:41.96,a:36.68,b:31.35,scope:'3스킬 총합'},
-      national:{srp:51.32,ss:45.73,s:41.56,a:36.135,b:31.285,scope:'3스킬 총합'},
-      impact:{srp:31.53,ss:28,s:22.95,a:18.93,b:15.59,scope:'2·3옵 합계'}
+      signature:{srp:49.92,ss:44.71,s:39.97,a:34.63,b:29.80,scope:'3스킬 총합'},
+      gold:{srp:55.42,ss:49.34,s:44.05,a:37.61,b:32.21,scope:'3스킬 총합'},
+      national:{srp:53.06,ss:47.32,s:42.83,a:36.96,b:32.14,scope:'3스킬 총합'},
+      impact:{srp:33.28,ss:28.35,s:24.12,a:19.52,b:15.69,scope:'2·3옵 합계'}
     },
     rp:{
-      signature:{srp:51.96,ss:46.5,s:41.62,a:35.7,b:30.87,scope:'3스킬 총합'},
-      gold:{srp:57.15,ss:50.74,s:45.31,a:38.45,b:33.03,scope:'3스킬 총합'},
-      national:{srp:54.16,ss:48.36,s:43.73,a:37.57,b:32.61,scope:'3스킬 총합'},
-      impact:{srp:34.99,ss:29.335,s:25.61,a:19.91,b:16.14,scope:'2·3옵 합계'}
+      signature:{srp:52.46,ss:46.98,s:41.80,a:36.06,b:30.83,scope:'3스킬 총합'},
+      gold:{srp:57.67,ss:51.15,s:45.52,a:38.80,b:32.94,scope:'3스킬 총합'},
+      national:{srp:54.84,ss:48.89,s:44.16,a:38.05,b:32.92,scope:'3스킬 총합'},
+      impact:{srp:35.81,ss:29.87,s:25.63,a:20.23,b:15.99,scope:'2·3옵 합계'}
     },
     cp:{
-      signature:{srp:54.11,ss:47.76,s:43.14,a:36.71,b:31.76,scope:'3스킬 총합'},
-      gold:{srp:59.1,ss:51.99,s:46.72,a:39.48,b:33.91,scope:'3스킬 총합'},
-      national:{srp:55.7,ss:49.46,s:44.61,a:38.4,b:33.15,scope:'3스킬 총합'},
-      impact:{srp:37.31,ss:30.48,s:26.4,a:20.43,b:16.25,scope:'2·3옵 합계'}
+      signature:{srp:51.52,ss:46.19,s:41.22,a:35.45,b:30.44,scope:'3스킬 총합'},
+      gold:{srp:56.65,ss:50.54,s:44.83,a:38.22,b:32.54,scope:'3스킬 총합'},
+      national:{srp:54.17,ss:48.26,s:43.66,a:37.51,b:32.62,scope:'3스킬 총합'},
+      impact:{srp:33.95,ss:29.42,s:25.48,a:19.73,b:15.77,scope:'2·3옵 합계'}
     }
   };
   const gradeTargetKey=(target,batterType)=>target==='batter'
@@ -418,43 +406,50 @@
   };
 
 
-  // CPBV-LAB 업로드 점수표 기준 Lv5~Lv8 스킬점수.
-  // 타자/선발/중계/마무리별 조건값을 모두 보완하고, 조건 분기가 필요한 스킬은
-  // 시뮬레이터가 알고 있는 보직/카드 타입에 맞춰 대표 조건값을 적용한다.
-  const SKILL_SCORE_CONTEXTS={"batter":{"m_touch":[7.3,9.5,9.85,12.05],"m_precision":[20.7,24.59,28.48,32.37],"m_veteran_B":[9.41,11.88,13.62,15.35],"m_decisive":[8.75,11.28,11.81,14.34],"m_thief":[11.32,14.88,16.28,19.84],"m_focus_B":[8.69,11.03,12.03,14.38],"m_hero_B":[7.2,10.56,11.52,14.88],"m_contact":[7.92,10.56,13.2,15.84],"m_best_B":[9.6,12.0,16.8,21.6],"m_five":[7.4,12.95,12.95,16.65],"m_shout_B":[8.26,9.74,11.2,12.66],"m_journey_B":[15.28,19.92,24.56,29.2],"m_autumn_B":[12.65,14.9,17.15,19.4],"m_defense":[8.4,11.2,14.0,16.8],"m_switch":[21.9,25.65,30.2,35.3],"m_left":[16.8,18.52,20.37,22.09],"m_vanguard":[7.83,10.44,14.52,16.56],"m_nonfa_B":[11.1,12.95,14.8,16.65],"m_hidden":[3.7,5.55,5.55,7.4],"m_big_B":[19.0,20.4,24.2,25.6],"m_represent":[14.4,16.8,19.2,21.6],"m_top_B":[14.4,16.8,19.2,21.6],"m_over_B":[18.36,18.36,20.76,20.76],"m_work_B":[20.76,20.76,23.16,23.16],"m_early_B":[9.4,12.0,14.6,17.2],"m_rank_B":[11.15,13.15,15.15,17.15],"m_challenge_B":[12.0,14.4,16.8,19.2],"m_bottom":[5.1,5.95,6.8,7.65],"m_gambler_B":[8.75,9.9,11.05,12.2],"m_league_B":[0.0,0.0,0.0,0.0],"m_pinch":[5.78,6.93,8.09,9.24],"m_leadoff":[2.8,3.2,3.6,4.0],"m_home_B":[10.0,12.0,14.0,16.0],"m_spirit_B":[3.36,3.84,null,null],"m_fast":[0.0,0.0,0.0,0.0],"m_nuclear":[9.25,11.1,12.95,14.8],"m_aim":[8.0,9.0,10.0,11.0],"m_clutchb":[4.0,4.8,5.6,6.4],"m_high":[2.8,3.5,4.2,4.9],"m_upper":[4.2,4.9,5.6,6.3],"m_slow_B":[10.9,11.6,14.85,16.25],"m_machine":[13.5,15.75,18.0,20.25],"mi_hawk":[3.0,3.6,4.2,4.8],"mi_connect":[5.0,6.0,7.0,8.0],"mi_rbi":[4.22,4.87,5.57,6.26],"mi_rightpitch":[6.01,7.22,8.42,9.62],"mi_leftpitch":[3.24,3.89,4.53,5.18],"r_sweet":[2.45,2.8,3.15,3.85],"r_table":[4.06,4.87,5.68,6.5],"r_winning":[3.76,4.5,5.24,6.01],"r_comeback":[3.76,4.5,5.24,6.01],"r_first":[2.88,3.46,4.03,4.61],"a_bunt":[0.0,0.0,0.0,0.0],"a_breakingkiller":[2.73,3.22,3.8,4.29],"a_duel_b":[0.6,0.72,0.84,0.96],"a_fastkiller":[1.97,2.33,2.75,3.11],"a_pull":[2.0,2.4,2.8,3.2],"a_push":[2.0,2.4,2.8,3.2],"line":[13.13,19.03,null,null],"table":[14.97,22.9,null,null],"solve_B":[17.76,21.98,null,null],"win_B":[15.28,19.92,24.56,29.2],"golden_B":[17.04,24.72,null,null],"fight_B":[13.32,16.38,null,null],"eighth_B":[12.48,15.12,null,null],"ace_B":[12.0,14.4,null,null]},"sp":{"m_speed":[14.4,16.8,21.6,26.4],"m_winning":[14.23,18.39,22.55,26.7],"m_veteran_P":[7.32,9.05,10.45,11.84],"m_focus_P":[8.45,10.57,11.62,13.74],"m_winshot":[4.34,7.07,7.39,7.72],"m_hero_P":[9.6,13.44,14.88,18.72],"m_best_P":[9.6,12.0,16.8,21.6],"m_weather":[14.4,16.8,19.2,21.6],"m_shout_P":[7.74,9.15,10.56,11.96],"m_onetwo":[13.6,17.4,21.2,25.0],"m_journey_P":[16.07,20.51,24.94,29.38],"m_autumn_P":[13.35,15.75,18.15,20.55],"m_nonfa_P":[14.4,16.8,19.2,21.6],"m_tenacity":[8.47,11.03,13.87,17.34],"m_calm":[11.4,13.32,15.67,18.01],"m_leftdeath":[16.55,20.99,25.865,30.74],"m_big_P":[18.75,20.1,23.85,25.2],"m_fireball":[17.0,20.23,23.45,26.68],"m_top_P":[14.4,16.8,19.2,21.6],"m_over_P":[14.53,14.53,16.93,16.93],"m_work_P":[13.37,13.37,15.77,15.77],"m_emergency":[11.6,13.19,14.77,16.35],"m_early_P":[8.03,9.7,11.37,13.04],"m_rank_P":[14.4,16.8,19.2,21.6],"m_challenge_P":[12.0,14.4,16.8,19.2],"m_rising":[6.93,8.11,9.29,10.46],"m_gambler_P":[8.77,10.12,11.47,12.82],"m_league_P":[0.0,0.0,0.0,0.0],"m_first":[8.88,10.58,12.28,13.99],"m_iron":[16.8,19.2,19.2,19.2],"m_home_P":[12.0,14.4,16.8,19.2],"m_guardian":[1.21,1.41,1.61,1.81],"m_spirit_P":[10.75,12.29,null,null],"m_artist":[8.4,9.45,10.5,11.55],"m_cut":[1.1,1.28,1.46,1.64],"m_clutchp":[3.36,4.03,4.7,5.38],"m_support":[4.5,5.4,6.3,7.2],"m_untouch":[8.4,9.45,10.5,11.55],"m_ace":[12.0,14.4,16.8,19.2],"m_slow_P":[9.9,11.61,13.32,15.03],"mi_tempo":[3.84,4.61,5.38,6.14],"mi_crisis":[2.86,3.33,3.81,4.29],"mi_rightbat":[4.885,5.86,6.835,7.815],"mi_leftbat":[3.255,3.91,4.56,5.205],"r_confidence":[1.16,1.35,1.55,1.74],"r_dirty":[1.76,2.05,2.34,2.63],"r_intimidate":[0.33,0.4,0.46,0.53],"r_innings":[0.0,0.0,0.0,0.0],"r_calm":[6.75,8.1,9.45,10.8],"a_safe":[0.0,0.0,0.0,0.0],"a_duel_p":[0.48,0.58,0.67,0.77],"a_breaking":[2.44,2.92,3.45,3.9],"a_fast":[1.36,1.36,1.81,1.81],"order":[19.83,24.5,null,null],"escape":[19.9,24.5,null,null],"solve_P":[15.65,19.03,null,null],"win_P":[12.86,18.1,null,null],"golden_P":[17.04,24.72,null,null],"fight_P":[15.26,19.3,null,null],"eighth_P":[12.48,15.12,null,null],"ace_P":[12.0,14.4,null,null]},"rp":{"m_speed":[14.4,16.8,21.6,26.4],"m_winning":[14.23,18.39,22.55,26.7],"m_veteran_P":[7.32,9.05,10.45,11.84],"m_focus_P":[8.45,10.57,11.62,13.74],"m_winshot":[4.34,7.07,7.39,7.72],"m_hero_P":[6.24,9.41,10.18,13.34],"m_best_P":[9.6,12.0,16.8,21.6],"m_weather":[14.4,16.8,19.2,21.6],"m_shout_P":[10.54,12.35,14.15,15.96],"m_workhorse":[24.45,29.33,34.2,39.08],"m_journey_P":[16.07,20.51,24.94,29.38],"m_autumn_P":[13.35,15.75,18.15,20.55],"m_nonfa_P":[14.4,16.8,19.2,21.6],"m_calm":[11.4,13.32,15.67,18.01],"m_big_P":[18.75,20.1,23.85,25.2],"m_fireball":[17.0,20.23,23.45,26.68],"m_top_P":[14.4,16.8,19.2,21.6],"m_over_P":[11.52,11.52,13.92,13.92],"m_work_P":[17.06,17.06,19.46,19.46],"m_emergency":[13.16,15.05,16.93,18.82],"m_early_P":[8.58,10.39,12.2,14.0],"m_rank_P":[14.4,16.8,19.2,21.6],"m_challenge_P":[12.0,14.4,16.8,19.2],"m_rising":[9.98,11.77,13.55,15.34],"m_gambler_P":[8.77,10.12,11.47,12.82],"m_league_P":[0.0,0.0,0.0,0.0],"m_onepoint":[10.01,11.73,13.46,15.18],"m_iron":[16.8,19.2,19.2,19.2],"m_home_P":[12.0,14.4,16.8,19.2],"m_guardian":[10.94,12.77,14.59,16.42],"m_spirit_P":[13.61,15.55,null,null],"m_artist":[8.4,9.45,10.5,11.55],"m_cut":[6.29,7.32,8.38,9.41],"m_clutchp":[3.36,4.03,4.7,5.38],"m_support":[4.5,5.4,6.3,7.2],"m_untouch":[8.4,9.45,10.5,11.55],"m_ace":[12.0,14.4,16.8,19.2],"m_slow_P":[9.33,10.92,12.52,14.12],"mi_tempo":[3.84,4.61,5.38,6.14],"mi_crisis":[2.86,3.33,3.81,4.29],"mi_rightbat":[4.885,5.86,6.835,7.815],"mi_leftbat":[3.255,3.91,4.56,5.205],"r_confidence":[1.16,1.35,1.55,1.74],"r_dirty":[1.76,2.05,2.34,2.63],"r_intimidate":[1.91,2.3,2.68,3.06],"r_innings":[0.0,0.0,0.0,0.0],"r_calm":[6.75,8.1,9.45,10.8],"a_safe":[0.0,0.0,0.0,0.0],"a_duel_p":[0.48,0.58,0.67,0.77],"a_breaking":[2.44,2.92,3.45,3.9],"a_fast":[1.36,1.36,1.81,1.81],"order":[19.83,24.5,null,null],"escape":[19.9,24.5,null,null],"relief":[12.32,14.3,null,null],"solve_P":[15.65,19.03,null,null],"win_P":[12.86,18.1,null,null],"golden_P":[17.04,24.72,null,null],"fight_P":[15.26,19.3,null,null],"eighth_P":[12.48,15.12,null,null],"ace_P":[12.0,14.4,null,null]},"cp":{"m_speed":[14.4,16.8,21.6,26.4],"m_winning":[14.23,18.39,22.55,26.7],"m_veteran_P":[7.32,9.05,10.45,11.84],"m_focus_P":[8.45,10.57,11.62,13.74],"m_winshot":[4.34,7.07,7.39,7.72],"m_hero_P":[6.24,9.41,10.18,13.34],"m_best_P":[9.6,12.0,16.8,21.6],"m_weather":[14.4,16.8,19.2,21.6],"m_shout_P":[11.68,13.64,15.61,17.58],"m_workhorse":[24.45,29.33,34.2,39.08],"m_journey_P":[16.07,20.51,24.94,29.38],"m_autumn_P":[13.35,15.75,18.15,20.55],"m_firefighter":[22.91,25.31,32.14,38.98],"m_nonfa_P":[14.4,16.8,19.2,21.6],"m_calm":[11.4,13.32,15.67,18.01],"m_big_P":[18.75,20.1,23.85,25.2],"m_fireball":[17.0,20.23,23.45,26.68],"m_top_P":[14.4,16.8,19.2,21.6],"m_over_P":[9.5,9.5,11.9,11.9],"m_work_P":[13.68,13.68,16.08,16.08],"m_emergency":[6.59,7.28,7.89,8.51],"m_early_P":[9.07,11.0,12.93,14.86],"m_rank_P":[14.4,16.8,19.2,21.6],"m_challenge_P":[12.0,14.4,16.8,19.2],"m_gambler_P":[8.77,10.12,11.47,12.82],"m_league_P":[0.0,0.0,0.0,0.0],"m_onepoint":[10.85,12.67,14.48,16.3],"m_iron":[16.8,19.2,19.2,19.2],"m_home_P":[12.0,14.4,16.8,19.2],"m_guardian":[14.4,16.8,19.2,21.6],"m_spirit_P":[13.61,15.55,null,null],"m_artist":[8.4,9.45,10.5,11.55],"m_cut":[7.95,9.27,10.6,11.92],"m_clutchp":[3.36,4.03,4.7,5.38],"m_support":[4.5,5.4,6.3,7.2],"m_untouch":[8.4,9.45,10.5,11.55],"m_ace":[12.0,14.4,16.8,19.2],"m_slow_P":[9.33,10.92,12.52,14.12],"mi_tempo":[3.84,4.61,5.38,6.14],"mi_crisis":[2.86,3.33,3.81,4.29],"mi_rightbat":[4.885,5.86,6.835,7.815],"mi_leftbat":[3.255,3.91,4.56,5.205],"r_confidence":[1.16,1.35,1.55,1.74],"r_dirty":[1.76,2.05,2.34,2.63],"r_intimidate":[2.43,2.92,3.4,3.88],"r_innings":[0.0,0.0,0.0,0.0],"r_calm":[6.75,8.1,9.45,10.8],"a_safe":[0.0,0.0,0.0,0.0],"a_duel_p":[0.48,0.58,0.67,0.77],"a_breaking":[2.44,2.92,3.45,3.9],"a_fast":[1.36,1.36,1.81,1.81],"order":[19.83,24.5,null,null],"escape":[19.9,24.5,null,null],"relief":[12.32,14.3,null,null],"solve_P":[15.65,19.03,null,null],"win_P":[12.86,18.1,null,null],"golden_P":[17.04,24.72,null,null],"fight_P":[15.26,19.3,null,null],"eighth_P":[12.48,15.12,null,null],"ace_P":[12.0,14.4,null,null]}};
-
-  const scoreArrayForSkill=(id,target,card)=>{
-    // 카드 타입에 따라 값이 달라지는 기존 조건은 유지한다.
-    if(id==='m_challenge_B'&&card==='impact')return [13.85,16.25,null,null];
-    if(id==='m_challenge_P'&&card==='impact')return [13.80,16.20,null,null];
-    if(id==='m_spirit_B'){
-      if(card==='impact')return [10.08,11.52,null,null];
-      if(card==='gold')return [1.68,1.92,null,null];
-      if(card==='national')return [4.20,4.80,5.40,6.00];
-      return [3.36,3.84,null,null];
+  // v15.0: 사용자 제공 CPBV-LAB 스킬점수표의 Lv5~8 전체 데이터 사용.
+  const SKILL_SCORE_CARD_OVERRIDES={
+    impact:{
+      batter:{m_challenge_B:[13.85,16.25,null,null],m_spirit_B:[10.08,11.52,null,null]},
+      sp:{m_challenge_P:[13.80,16.20,null,null],m_spirit_P:[15.96,18.24,null,null]},
+      rp:{m_challenge_P:[13.80,16.20,null,null],m_spirit_P:[16.80,19.20,null,null]},
+      cp:{m_challenge_P:[13.80,16.20,null,null],m_spirit_P:[16.80,19.20,null,null]}
+    },
+    gold:{
+      batter:{m_spirit_B:[1.68,1.92,null,null]},
+      sp:{m_spirit_P:[8.06,9.22,null,null]},
+      rp:{m_spirit_P:[8.06,9.22,null,null]},
+      cp:{m_spirit_P:[8.06,9.22,null,null]}
+    },
+    national:{
+      batter:{m_spirit_B:[4.20,4.80,5.40,6.00]},
+      sp:{m_spirit_P:[4.20,4.80,5.40,6.00]},
+      rp:{m_spirit_P:[4.20,4.80,5.40,6.00]},
+      cp:{m_spirit_P:[4.20,4.80,5.40,6.00]}
+    },
+    signature:{
+      batter:{m_spirit_B:[3.36,3.84,null,null]},
+      sp:{m_spirit_P:[10.75,12.29,null,null]},
+      rp:{m_spirit_P:[13.61,15.55,null,null]},
+      cp:{m_spirit_P:[13.61,15.55,null,null]}
     }
-    if(id==='m_spirit_P'){
-      if(card==='impact')return target==='sp'?[15.96,18.24,null,null]:[16.80,19.20,null,null];
-      if(card==='gold')return [8.06,9.22,null,null];
-      if(card==='national')return [4.20,4.80,null,null];
-      return target==='sp'?[10.75,12.29,null,null]:[13.61,15.55,null,null];
-    }
-    return SKILL_SCORE_CONTEXTS[target]?.[id]||null;
   };
 
   const scoreForSkill=(x,target,card)=>{
     if(!x)return null;
-    const values=scoreArrayForSkill(x.id,target,card);
-    if(!values)return null;
-    const idx=Number(x.level)-5;
+    const level=Number(x.level);
+    const idx=level-5;
     if(idx<0||idx>3)return null;
-    const value=values[idx];
-    return value==null?null:Number(value);
+    const override=SKILL_SCORE_CARD_OVERRIDES?.[card]?.[target]?.[x.id];
+    const base=window.__KBO_SKILL_SCORE_DB__?.[target]?.[x.id];
+    const values=override||base;
+    if(!values)return null;
+    const v=values[idx];
+    return v==null?null:Number(v);
   };
 
   const gradeResultHtml=(rows,target,batterType,card)=>{
     const cut=gradeCutFor(target,batterType,card);
-    if(!cut) return `<div class="sim-score-warning">LIVE / LIVE 올스타는 각 스킬 점수는 표시되지만 카드별 등급컷은 아직 적용하지 않아요.</div>`;
+    if(!cut) return `<div class="sim-score-warning">LIVE / LIVE 올스타는 현재 자동 등급 판정 대상에서 제외돼요.</div>`;
 
     const scores=rows.map(x=>scoreForSkill(x,target,card));
     const useIndexes=card==='impact'?[1,2]:[0,1,2];
@@ -761,6 +756,17 @@
   }
 
   function action(name){
+    if(name==='googleAuth'){
+      const account=document.getElementById('cloudAccountBtn');
+      const login=document.getElementById('cloudLoginBtn');
+      if(account && !account.hidden){
+        enterApp();
+        setTimeout(()=>account.click(),120);
+      }else if(login){
+        login.click();
+      }
+      return;
+    }
     if(name==='normalRoll') return showNormalRoll();
     if(name==='advancedRoll') return showAdvancedRoll();
     if(name==='majorCalc') return showMajorCalc();
@@ -785,6 +791,37 @@
     const btn=e.target.closest('[data-home-action]');
     if(btn) action(btn.dataset.homeAction);
   });
+
+  const syncHomeGoogleAuth=()=>{
+    const b=document.getElementById('khomeGoogleLoginBtn');
+    if(!b)return;
+    const account=document.getElementById('cloudAccountBtn');
+    const login=document.getElementById('cloudLoginBtn');
+    const avatar=document.getElementById('cloudAccountAvatar');
+    const name=document.getElementById('cloudAccountName');
+    const signedIn=!!(account && !account.hidden);
+    b.classList.toggle('signed-in',signedIn);
+    if(signedIn){
+      const label=(name?.textContent||'Google 계정').trim();
+      const src=avatar?.getAttribute('src')||'';
+      b.innerHTML=(src?`<img src="${src}" alt="">`:'')+`<span>${label||'Google 계정'}</span>`;
+    }else{
+      b.textContent='Google 로그인';
+    }
+  };
+
+  const watchGoogleAuth=()=>{
+    syncHomeGoogleAuth();
+    const observer=new MutationObserver(syncHomeGoogleAuth);
+    ['cloudLoginBtn','cloudAccountBtn','cloudAccountName','cloudAccountAvatar'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)observer.observe(el,{attributes:true,childList:true,subtree:true});
+    });
+    setTimeout(syncHomeGoogleAuth,500);
+    setTimeout(syncHomeGoogleAuth,1500);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watchGoogleAuth,{once:true});
+  else watchGoogleAuth();
 
   const addHomeButton=()=>{
     const bar=document.querySelector('.toolbar');
