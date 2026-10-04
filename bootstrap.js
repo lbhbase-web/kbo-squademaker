@@ -19,7 +19,6 @@
         if(!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
         const data=await r.json();
         if(!Array.isArray(data)) throw new Error(`${url}: 선수 데이터 형식 오류`);
-        // 임팩트는 카드 연도가 없는 대신 모든 선택 연도 세트덱 효과를 받는다.
         data.forEach(p=>{if(String(p?.type||'').trim()==='임팩트')p.receivesAllYearEffects=true;});
         return data;
       }catch(err){
@@ -42,14 +41,21 @@
           skillStatPatch.src='./skill-stat-runtime-patch.js?v=14.2';
           skillStatPatch.onerror=()=>console.warn('스킬 능력치 미반영 패치를 불러오지 못했습니다.');
           document.body.appendChild(skillStatPatch);
+
           const logoPatch=document.createElement('script');
           logoPatch.src='./historic-logo-transparent.js?v=14.0';
           logoPatch.onerror=()=>console.warn('옛 구단 로고 투명 배경 패치를 불러오지 못했습니다.');
           document.body.appendChild(logoPatch);
+
           const photoPatch=document.createElement('script');
           photoPatch.src='./player-photo-runtime-patch.js?v=14.0';
           photoPatch.onerror=()=>console.warn('선수사진 런타임 패치를 불러오지 못했습니다.');
           document.body.appendChild(photoPatch);
+
+          const handednessPatch=document.createElement('script');
+          handednessPatch.src='./player-handedness-runtime-patch.js?v=14.10';
+          handednessPatch.onerror=()=>console.warn('선수 투구손 수정 패치를 불러오지 못했습니다.');
+          document.body.appendChild(handednessPatch);
         };
         document.body.appendChild(script);
       };
