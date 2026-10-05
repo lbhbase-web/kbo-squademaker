@@ -56,6 +56,11 @@
           handednessPatch.src='./player-handedness-runtime-patch.js?v=14.10';
           handednessPatch.onerror=()=>console.warn('선수 투구손 수정 패치를 불러오지 못했습니다.');
           document.body.appendChild(handednessPatch);
+
+          const positionTrainingChoicePatch=document.createElement('script');
+          positionTrainingChoicePatch.src='./position-training-choice-runtime-patch.js?v=15.2';
+          positionTrainingChoicePatch.onerror=()=>console.warn('포지션 특훈 5/15레벨 선택 패치를 불러오지 못했습니다.');
+          document.body.appendChild(positionTrainingChoicePatch);
         };
         document.body.appendChild(script);
       };

@@ -1721,11 +1721,11 @@ body{background:#fff!important;color:#17191c!important}
       <div>
        <div class="section-title">포지션 특훈 레벨</div>
        <div class="pt-final">
-        <div><b>타자 20레벨 최종 +42</b><small>파워 +10 · 정확 +6 · 선구 +6 · 인내 +5 · 주루 +7 · 수비 +8<br>기본 36 + Lv.5 파워 +3 + Lv.15 파워 +3</small></div>
+        <div><b>타자 20레벨 최종 +42</b><small>파워 +10 · 정확 +6 · 선구 +6 · 인내 +5 · 주루 +7 · 수비 +8<br>기본 36 + Lv.5 파워/정확 중 선택 +3 + Lv.15 파워/정확 중 선택 +3</small></div>
         <div><b>투수 20레벨 최종 +42</b><small>구속 +6 · 변화 +12 · 구위 +8 · 제구 +6 · 지구력 +6 · 수비 +4<br>기본 36 + Lv.5 변화 +3 + Lv.15 변화 +3</small></div>
        </div>
        <div id="positionTrainingGrid" class="position-train-grid"></div>
-       <div class="notice">모든 포지션 기본값은 20/20이야. 20레벨 최종 수치는 위 값 그대로 반영돼. 중간 레벨의 기본 36은 20레벨에 비례해 분배하고, 보너스 능력치는 정확히 2번만 획득해: 5레벨은 타자 파워 +3·투수 변화 +3, 15레벨은 타자 정확 +3·투수 구위 +3. 획득한 보너스는 이후 레벨에서도 유지돼. 10레벨과 20레벨 스킬 효과는 아직 계산에 넣지 않았어.</div>
+       <div class="notice">모든 포지션 기본값은 20/20이야. 20레벨 최종 수치는 위 값 그대로 반영돼. 중간 레벨의 기본 36은 20레벨에 비례해 분배하고, 보너스 능력치는 정확히 2번만 획득해: 5레벨과 15레벨에서 각각 타자는 파워/정확 중 하나를 선택해 +3, 투수는 기존 투수 보너스 선택 규칙을 적용해. 획득한 보너스는 이후 레벨에서도 유지돼. 10레벨과 20레벨 스킬 효과는 아직 계산에 넣지 않았어.</div>
       </div>
      </div>
     </div>
@@ -1904,10 +1904,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./skill-simulator-catalog.js?v=14.5"></script>
-<script src="./home-dashboard.js?v=14.9"></script>
-<script src="./bootstrap.js?v=14.2"></script>
-<script src="./player-hand-fix.js?v=15.0"></script>
+<script src="./bootstrap.js?v=15.2"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
