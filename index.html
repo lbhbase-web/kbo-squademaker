@@ -1591,6 +1591,50 @@ body{background:#fff!important;color:#17191c!important}
  .batting-card-ovr{font-size:13px}.batting-card-name{font-size:7px}.batting-skill-chip,.batting-skill-empty{font-size:6px}.batting-player-pool{gap:9px}
 }
 </style>
+<style id="v153-import-mobile-fix">
+/* v15.3: mobile player picker visibility + scroll */
+@media (max-width: 760px) {
+  body.view-mobile #playerPickerModal.modal.open {
+    display:flex!important;position:fixed!important;inset:0!important;
+    height:100dvh!important;max-height:100dvh!important;padding:0!important;
+    align-items:flex-end!important;overflow:hidden!important;z-index:12000!important;
+  }
+  body.view-mobile #playerPickerModal .picker-box {
+    display:flex!important;flex-direction:column!important;width:100%!important;
+    max-width:100%!important;height:min(94dvh,900px)!important;max-height:94dvh!important;
+    min-height:0!important;margin:0!important;overflow:hidden!important;
+    padding:0 0 calc(8px + env(safe-area-inset-bottom))!important;
+    border-radius:16px 16px 0 0!important;
+  }
+  body.view-mobile #playerPickerModal .picker-head {
+    flex:0 0 auto!important;position:sticky!important;top:0!important;z-index:20!important;
+    padding:10px 12px!important;
+  }
+  body.view-mobile #playerPickerModal .picker-body {
+    display:flex!important;flex:1 1 auto!important;flex-direction:column!important;
+    min-height:0!important;height:auto!important;overflow:hidden!important;
+  }
+  body.view-mobile #playerPickerModal .picker-sidebar {
+    flex:0 0 auto!important;max-height:48%!important;overflow-y:auto!important;
+    overscroll-behavior:contain!important;padding:10px 12px!important;
+  }
+  body.view-mobile #playerPickerModal .picker-results {
+    display:flex!important;flex:1 1 0!important;flex-direction:column!important;
+    min-height:0!important;overflow:hidden!important;padding:6px 10px!important;
+  }
+  body.view-mobile #playerPickerModal .picker-count-line {flex:0 0 auto!important}
+  body.view-mobile #playerPickerModal .picker-list,
+  body.view-mobile #playerPickerModal .picker-results .picker-list,
+  body.view-mobile #playerPickerModal .picker-simple-results .picker-list {
+    flex:1 1 auto!important;min-height:120px!important;height:auto!important;max-height:none!important;
+    overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body.view-mobile #playerPickerModal .player-pager {
+    flex:0 0 auto!important;position:sticky!important;bottom:0!important;background:#fff!important;z-index:5!important;
+  }
+}
+</style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="field-remove-black" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2126 .7152 .0722 0 0"/><feComponentTransfer><feFuncA type="linear" slope="20" intercept="-0.5"/></feComponentTransfer><feComposite in="SourceGraphic" operator="in"/></filter></defs></svg>
@@ -1904,7 +1948,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.2"></script>
+<script src="./bootstrap.js?v=15.3"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">

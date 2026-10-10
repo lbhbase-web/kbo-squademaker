@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=14.0';
-  const DATA_URLS=['./players.json?v=14.0','./data/players.json?v=14.0'];
+  const APP_URL='./app.js?v=15.3';
+  const DATA_URLS=['./players.json?v=15.3','./data/players.json?v=15.3'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -37,6 +37,14 @@
         script.src=APP_URL;
         script.onerror=()=>showError('앱 스크립트를 불러오지 못했습니다. app.js가 저장소 최상위에 있는지 확인해 주세요.');
         script.onload=()=>{
+          const positionChoicePatch=document.createElement('script');
+          positionChoicePatch.src='./position-training-choice-runtime-patch.js?v=15.2';
+          positionChoicePatch.onerror=()=>console.warn('포지션 특훈 선택 패치를 불러오지 못했습니다.');
+          document.body.appendChild(positionChoicePatch);
+          const importMobilePatch=document.createElement('script');
+          importMobilePatch.src='./lineup-import-mobile-runtime-patch.js?v=15.3';
+          importMobilePatch.onerror=()=>console.warn('라인업 가져오기/모바일 화면 패치를 불러오지 못했습니다.');
+          document.body.appendChild(importMobilePatch);
           const skillStatPatch=document.createElement('script');
           skillStatPatch.src='./skill-stat-runtime-patch.js?v=14.2';
           skillStatPatch.onerror=()=>console.warn('스킬 능력치 미반영 패치를 불러오지 못했습니다.');
@@ -56,11 +64,6 @@
           handednessPatch.src='./player-handedness-runtime-patch.js?v=14.10';
           handednessPatch.onerror=()=>console.warn('선수 투구손 수정 패치를 불러오지 못했습니다.');
           document.body.appendChild(handednessPatch);
-
-          const positionTrainingChoicePatch=document.createElement('script');
-          positionTrainingChoicePatch.src='./position-training-choice-runtime-patch.js?v=15.2';
-          positionTrainingChoicePatch.onerror=()=>console.warn('포지션 특훈 5/15레벨 선택 패치를 불러오지 못했습니다.');
-          document.body.appendChild(positionTrainingChoicePatch);
         };
         document.body.appendChild(script);
       };
