@@ -664,6 +664,7 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
  for(const [k] of statMeta(p)){
    if(!Number.isFinite(Number(p.stats?.[k])))continue;
    totalDelta+=
+     (isFa(p,g)?-3:0)+
      Number(wildcardBase[k]||0)+
      Number(specialMap[k]||0)+
      Number(train[k]||0)+
@@ -1431,12 +1432,17 @@ function skillControls(p,slot){
 function effectiveStats(p,slot=null,mode=currentMode,includeSkills=true){
  const g=getGrowth(p),wildcardBase=nationalWildcardBasePenaltyMap(p,g),specialMap=specialBonusMap(p,g),train=trainingBonuses(p,g),enhancement=enhancementBonusMap(p,g),awakening=awakeningBonusMap(p,g),posBonus=positionTrainingBonuses(p,slot,mode),bullpenBonus=bullpenTacticBonusMap(p,slot,mode),modeBonus=lineupModeBonus(p,mode),deckBonus=setdeckBonusMap(p,slot,mode),anti=antiSynergyStatus(mode);
  const skills=includeSkills?skillBonuses(p,slot,mode):{total:{}};
+ const faBasePenalty={};
+ const faApplied=isFa(p,g);
  const out={};
  for(const [k] of statMeta(p)){
   const v=p.stats?.[k];
-  out[k]=Number.isFinite(Number(v))?Number(v)+Number(wildcardBase[k]||0)+Number(specialMap[k]||0)+Number(train[k]||0)+Number(enhancement[k]||0)+Number(awakening[k]||0)+Number(posBonus[k]||0)+Number(bullpenBonus[k]||0)+modeBonus+Number(deckBonus[k]||0)+Number(anti.totalPenalty||0)+Number(skills.total[k]||0):null;
+  // FA 임팩트/시그니처는 이적 적용 후 기본 능력치 6개 각각 -3.
+  // 원본 선수 데이터는 건드리지 않고 최종 능력치 계산에서만 적용한다.
+  faBasePenalty[k]=faApplied?-3:0;
+  out[k]=Number.isFinite(Number(v))?Number(v)+faBasePenalty[k]+Number(wildcardBase[k]||0)+Number(specialMap[k]||0)+Number(train[k]||0)+Number(enhancement[k]||0)+Number(awakening[k]||0)+Number(posBonus[k]||0)+Number(bullpenBonus[k]||0)+modeBonus+Number(deckBonus[k]||0)+Number(anti.totalPenalty||0)+Number(skills.total[k]||0):null;
  }
- return {stats:out,skillBonus:skills.total,skillEffects:skills,wildcardBasePenalty:wildcardBase,specialBonus:specialMap,trainingBonus:train,enhancementBonus:enhancement,awakeningBonus:awakening,positionBonus:posBonus,bullpenTacticBonus:bullpenBonus,modeBonus,setdeckBonus:deckBonus,antiSynergyPenalty:anti.totalPenalty,antiSynergy:anti};
+ return {stats:out,skillBonus:skills.total,skillEffects:skills,wildcardBasePenalty:wildcardBase,faBasePenalty,specialBonus:specialMap,trainingBonus:train,enhancementBonus:enhancement,awakeningBonus:awakening,positionBonus:posBonus,bullpenTacticBonus:bullpenBonus,modeBonus,setdeckBonus:deckBonus,antiSynergyPenalty:anti.totalPenalty,antiSynergy:anti};
 }
 
 function ensureTrainingData(p,g=getGrowth(p)){
