@@ -132,3 +132,10 @@ KBO 공식 프로필 기반 조사 데이터를 사용해 확인 가능한 선�
 - Player names are rendered as clean white text with no black shadow/outline across card families.
 - Signature 5-star marks are rendered in vivid red-pink (#ff1744) with a thin white outline for visibility.
 - These two visual rules are applied in the card-rendering HTML as well as CSS fallbacks so prior CSS precedence does not block them.
+
+
+## v15.4 적용 메모
+
+- FA 임팩트/FA 시그니처 적용 시 기본 6개 능력치 각각 -3이 최종 능력치 및 OVR 계산에 반영됩니다. 원본 선수 데이터는 수정하지 않습니다.
+- 라인업 JSON 가져오기는 빈 파일, 이미지, ZIP/PDF, 잘못된 JSON에 대해 구체적인 안내를 표시합니다.
+- GitHub Pages 배포 시 ZIP 내부 `kbo-squademaker-main/` 폴더의 **내용물 전체**를 저장소 최상위에 업로드하세요. 기존 파일은 이름이 같은 파일을 교체하고, 나머지 파일은 추가합니다. 필수 파일은 삭제하지 마세요.
