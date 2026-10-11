@@ -649,7 +649,6 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
  if(!Number.isFinite(base))return null;
 
  const wildcardBase=nationalWildcardBasePenaltyMap(p,g);
- const faBase=faBasePenaltyMap(p,g);
  const specialMap=specialBonusMap(p,g);
  const train=trainingBonuses(p,g);
  const enhancement=enhancementBonusMap(p,g);
@@ -666,7 +665,6 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
    if(!Number.isFinite(Number(p.stats?.[k])))continue;
    totalDelta+=
      Number(wildcardBase[k]||0)+
-     Number(faBase[k]||0)+
      Number(specialMap[k]||0)+
      Number(train[k]||0)+
      Number(enhancement[k]||0)+
@@ -679,13 +677,6 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
  }
  // Match reference: floor the total six-stat growth contribution.
  return base+Math.floor(totalDelta/6);
-}
-function faBasePenaltyMap(p,g=getGrowth(p)){
- const out={};for(const [k] of statMeta(p))out[k]=0;
- // FA 적용 시에만 기본 6개 능력치를 각각 3 감소시킨다.
- // 이 값은 성장/각성 보너스와 별도로 최종 능력치에 한 번만 더해진다.
- if(isFa(p,g))for(const k of Object.keys(out))out[k]=-3;
- return out;
 }
 function nationalWildcardBasePenaltyMap(p,g=getGrowth(p)){
  const out={};for(const [k] of statMeta(p))out[k]=0;
@@ -814,7 +805,7 @@ function ensureLineupState(mode=currentMode){
  if(!L.positionTraining)L.positionTraining={};
  if(!L.positionTrainingChoices)L.positionTrainingChoices={};
  for(const s of ALL_SLOTS){
-   if(L.positionTraining[s]==null)L.positionTraining[s]=20;
+   if(L.positionTraining[s]==null)L.positionTraining[s]=0;
    if(!L.positionTrainingChoices[s])L.positionTrainingChoices[s]={};
    const role=PITCH.includes(s)?"pitcher":"batter";
    L.positionTrainingChoices[s]["5"]=normalizePositionBonusRoll(L.positionTrainingChoices[s]["5"],role,5);
@@ -837,7 +828,7 @@ function scaledPositionBase(baseMap,level){
 function original_positionTrainingBonuses(p,slot,mode=currentMode){
  const meta=statMeta(p),out={};for(const [k] of meta)out[k]=0;
  if(!slot)return out;
- const L=ensureLineupState(mode),level=Math.max(0,Math.min(20,Number(L.positionTraining[slot]??20)));
+ const L=ensureLineupState(mode),level=Math.max(0,Math.min(20,Number(L.positionTraining[slot]??0)));
  const pitcher=["SP","RP","CP"].includes(p.pos),role=pitcher?"pitcher":"batter";
  const base=positionBaseForSlot(slot,level,role);
  for(const k of Object.keys(base))if(k in out)out[k]=base[k];
@@ -1257,7 +1248,7 @@ function effectiveSkillLevel(p,i,slot,mode=currentMode){
  const x=playerSkills(p)[i];if(!x?.id)return 0;
  if(NATIONAL_SKILLS.some(d=>d.id===x.id))return Math.min(i===0?6:5,x.level);
  const L=ensureLineupState(mode);let n=x.level;
- if(slot&&L.slots[slot]===p.id)for(const m of [10,20])if(Number(L.positionTraining[slot]??20)>=m&&positionSkillRows(slot,m,mode).includes(x.id))n++;
+ if(slot&&L.slots[slot]===p.id)for(const m of [10,20])if(Number(L.positionTraining[slot]??0)>=m&&positionSkillRows(slot,m,mode).includes(x.id))n++;
  return Math.min(10,n);
 }
 function setPositionSkill(m,i,id){
@@ -1432,20 +1423,20 @@ function skillControls(p,slot){
  const labels=Object.fromEntries([...BAT_META,...PIT_META]),format=m=>Object.entries(m).filter(([,v])=>v).map(([k,v])=>`${labels[k]} ${v>0?'+':''}${v}`).join(' · ')||'없음';
  const tier=d=>d?.tier||'national',color=d=>SKILL_COLORS[tier(d)];
  const controls=rows.map((x,i)=>{const d=skillDefinition(x.id),n=effectiveSkillLevel(p,i,slot);return `<div class="skill-row" style="border-left:4px solid ${d?color(d):'#aaa'}"><label>${i+1}번 스킬 <select aria-label="${i+1}번 스킬" style="color:${d?color(d):'inherit'}" onchange="changeSkill(${i},'id',this.value)"><option value="">선택 안 함</option>${['national',...SKILL_TIER_ORDER].filter(t=>catalog.some(d=>tier(d)===t)).map(t=>`<optgroup label="${SKILL_TIER_NAMES[t]}">${catalog.filter(d=>tier(d)===t).map(d=>`<option style="color:${color(d)}" value="${d.id}" ${x.id===d.id?'selected':''} ${rows.some((r,j)=>j!==i&&r.id===d.id)?'disabled':''}>${d.name}</option>`).join('')}</optgroup>`).join('')}</select></label><label>기본 Lv <input aria-label="${i+1}번 기본 레벨" type="number" min="1" max="${skillCap(p,i)}" value="${x.level}" onchange="changeSkill(${i},'level',this.value)"></label><b style="color:${d?color(d):'inherit'}">최종 Lv ${n||'—'}${n>x.level?' (특훈 +'+(n-x.level)+')':''}</b></div>`}).join('');
- const position=slot?`<h4>포지션 특훈 스킬</h4>${[10,20].map(m=>{const row=positionSkillRows(slot,m),enabled=Number(L.positionTraining[slot]??20)>=m;return `<div class="skill-stage"><b>${m}레벨 ${enabled?'적용 중':'미달성 · 효과 미적용'}</b> <button onclick="randomPositionSkills(${m})">3개 랜덤</button><div class="skill-picks">${row.map((id,i)=>`<select aria-label="특훈 ${m}레벨 ${i+1}번" onchange="setPositionSkill(${m},${i},this.value)"><option value="">직접 선택</option>${positionSkillPool(slot).map(d=>`<option style="color:${SKILL_COLORS[d.tier]}" value="${d.id}" ${id===d.id?'selected':''} ${row.some((v,j)=>j!==i&&v===d.id)?'disabled':''}>[${SKILL_TIER_NAMES[d.tier]}] ${d.name}</option>`).join('')}</select>`).join('')}</div></div>`}).join('')}<small>각 단계의 3개 스킬이 보유 스킬과 일치하면 +1. 두 단계에 일치하면 +2. 국가대표 스킬은 제외. 3개 랜덤은 각 칸마다 메이저 10% · 마이너 30% · 루키 30% · 아마추어 30% 확률로 등급을 먼저 뽑고, 같은 스킬은 중복되지 않게 선택합니다.</small>`:'라인업에 배치하면 포지션 특훈 스킬을 설정할 수 있어.';
+ const position=slot?`<h4>포지션 특훈 스킬</h4>${[10,20].map(m=>{const row=positionSkillRows(slot,m),enabled=Number(L.positionTraining[slot]??0)>=m;return `<div class="skill-stage"><b>${m}레벨 ${enabled?'적용 중':'미달성 · 효과 미적용'}</b> <button onclick="randomPositionSkills(${m})">3개 랜덤</button><div class="skill-picks">${row.map((id,i)=>`<select aria-label="특훈 ${m}레벨 ${i+1}번" onchange="setPositionSkill(${m},${i},this.value)"><option value="">직접 선택</option>${positionSkillPool(slot).map(d=>`<option style="color:${SKILL_COLORS[d.tier]}" value="${d.id}" ${id===d.id?'selected':''} ${row.some((v,j)=>j!==i&&v===d.id)?'disabled':''}>[${SKILL_TIER_NAMES[d.tier]}] ${d.name}</option>`).join('')}</select>`).join('')}</div></div>`}).join('')}<small>각 단계의 3개 스킬이 보유 스킬과 일치하면 +1. 두 단계에 일치하면 +2. 국가대표 스킬은 제외. 3개 랜덤은 각 칸마다 메이저 10% · 마이너 30% · 루키 30% · 아마추어 30% 확률로 등급을 먼저 뽑고, 같은 스킬은 중복되지 않게 선택합니다.</small>`:'라인업에 배치하면 포지션 특훈 스킬을 설정할 수 있어.';
  const pitchSlots=Object.keys(L.slots).filter(sl=>skillPitcher(players.find(p=>p.id===L.slots[sl])||{}));
  const support=Object.values(L.slots).some(id=>{const p=players.find(p=>p.id===id);return p&&playerSkills(p).some(x=>x.id==='m_support')})?`<p><label>타선지원 효과 기준 투수 <select onchange="setSkillPitcher(this.value)">${pitchSlots.map(sl=>`<option value="${sl}" ${activeSkillPitcher()===sl?'selected':''}>${sl} · ${esc(players.find(p=>p.id===L.slots[sl]).name)}</option>`).join('')}</select></label></p>`:'';
  return `<section><h3>스킬</h3><p>${family(p)==='national'?'<span style="color:#c62828">● 국가대표</span> · ':''}<span style="color:#8e24aa">● 메이저</span> · <span style="color:#1565c0">● 마이너</span> · <span style="color:#238636">● 루키</span> · <span style="color:#6b7280">● 아마추어</span></p><small>국가대표 스킬은 국가대표 카드만 선택 가능하며 최대 6·5·5, 특훈 증가 없음. 기본 증가·타순·포지션·모드 효과를 계산합니다. 상대 감소 및 8회·주자 등 경기 중 조건은 제외합니다.</small>${controls}${position}${support}<p>본인 스킬: ${format(b.self)}<br>동료 효과: ${format(b.team)}<br><b>스킬 합계: ${format(b.total)}</b></p>${conditionalSkillPanel(p,slot,currentMode)}<small>${b.notes.map(esc).join('<br>')}</small></section>`;
 }
 function effectiveStats(p,slot=null,mode=currentMode,includeSkills=true){
- const g=getGrowth(p),wildcardBase=nationalWildcardBasePenaltyMap(p,g),faBase=faBasePenaltyMap(p,g),specialMap=specialBonusMap(p,g),train=trainingBonuses(p,g),enhancement=enhancementBonusMap(p,g),awakening=awakeningBonusMap(p,g),posBonus=positionTrainingBonuses(p,slot,mode),bullpenBonus=bullpenTacticBonusMap(p,slot,mode),modeBonus=lineupModeBonus(p,mode),deckBonus=setdeckBonusMap(p,slot,mode),anti=antiSynergyStatus(mode);
+ const g=getGrowth(p),wildcardBase=nationalWildcardBasePenaltyMap(p,g),specialMap=specialBonusMap(p,g),train=trainingBonuses(p,g),enhancement=enhancementBonusMap(p,g),awakening=awakeningBonusMap(p,g),posBonus=positionTrainingBonuses(p,slot,mode),bullpenBonus=bullpenTacticBonusMap(p,slot,mode),modeBonus=lineupModeBonus(p,mode),deckBonus=setdeckBonusMap(p,slot,mode),anti=antiSynergyStatus(mode);
  const skills=includeSkills?skillBonuses(p,slot,mode):{total:{}};
  const out={};
  for(const [k] of statMeta(p)){
   const v=p.stats?.[k];
-  out[k]=Number.isFinite(Number(v))?Number(v)+Number(wildcardBase[k]||0)+Number(faBase[k]||0)+Number(specialMap[k]||0)+Number(train[k]||0)+Number(enhancement[k]||0)+Number(awakening[k]||0)+Number(posBonus[k]||0)+Number(bullpenBonus[k]||0)+modeBonus+Number(deckBonus[k]||0)+Number(anti.totalPenalty||0)+Number(skills.total[k]||0):null;
+  out[k]=Number.isFinite(Number(v))?Number(v)+Number(wildcardBase[k]||0)+Number(specialMap[k]||0)+Number(train[k]||0)+Number(enhancement[k]||0)+Number(awakening[k]||0)+Number(posBonus[k]||0)+Number(bullpenBonus[k]||0)+modeBonus+Number(deckBonus[k]||0)+Number(anti.totalPenalty||0)+Number(skills.total[k]||0):null;
  }
- return {stats:out,skillBonus:skills.total,skillEffects:skills,wildcardBasePenalty:wildcardBase,faBasePenalty:faBase,specialBonus:specialMap,trainingBonus:train,enhancementBonus:enhancement,awakeningBonus:awakening,positionBonus:posBonus,bullpenTacticBonus:bullpenBonus,modeBonus,setdeckBonus:deckBonus,antiSynergyPenalty:anti.totalPenalty,antiSynergy:anti};
+ return {stats:out,skillBonus:skills.total,skillEffects:skills,wildcardBasePenalty:wildcardBase,specialBonus:specialMap,trainingBonus:train,enhancementBonus:enhancement,awakeningBonus:awakening,positionBonus:posBonus,bullpenTacticBonus:bullpenBonus,modeBonus,setdeckBonus:deckBonus,antiSynergyPenalty:anti.totalPenalty,antiSynergy:anti};
 }
 
 function ensureTrainingData(p,g=getGrowth(p)){
@@ -1618,8 +1609,7 @@ const PLAYER_PAGE_SIZE=100;
 let playerPage=1;
 function playerYearValue(p){return isYearlessImpact(p)?"없음":normalizeYearKey(p.year??"없음")}
 function baseStatsHTML(p){
- const faPenalty=faBasePenaltyMap(p,getGrowth(p));
- return `<div class="base-stats">${statMeta(p).map(([k,l])=>`<div class="base-stat"><small>${l}</small><b>${Number.isFinite(Number(p.stats?.[k]))?Number(p.stats[k])+Number(faPenalty[k]||0):"—"}</b></div>`).join("")}</div>`;
+ return `<div class="base-stats">${statMeta(p).map(([k,l])=>`<div class="base-stat"><small>${l}</small><b>${p.stats?.[k]??"—"}</b></div>`).join("")}</div>`;
 }
 function renderPlayerPager(total){
  const pages=Math.max(1,Math.ceil(total/PLAYER_PAGE_SIZE));
@@ -1890,7 +1880,7 @@ function selectedSetdeckEffects(mode=currentMode){
  return out;
 }
 function setPositionTraining(slot,delta){
- const L=lineup(),cur=Number(L.positionTraining[slot]??20);
+ const L=lineup(),cur=Number(L.positionTraining[slot]??0);
  L.positionTraining[slot]=Math.max(0,Math.min(20,cur+delta));
  renderSetdeckPosition();renderSquad();
 }
@@ -1925,7 +1915,7 @@ function renderSetdeckPosition(){
  }
 
  if($("positionTrainingGrid"))$("positionTrainingGrid").innerHTML=ALL_SLOTS.map(slot=>{
-   const lv=Number(L.positionTraining[slot]??20),role=PITCH.includes(slot)?"pitcher":"batter",total=positionTrainingTotal(lv,role,slot);
+   const lv=Number(L.positionTraining[slot]??0),role=PITCH.includes(slot)?"pitcher":"batter",total=positionTrainingTotal(lv,role,slot);
    const bonus5=role==="pitcher"?"변화 +3":"파워 +3",bonus15=role==="pitcher"?"구위 +3":"정확 +3";
    return `<div class="ptr"><b>${slot}</b><small>총합 +${total}</small>
     <div class="ptr-controls"><button onclick="setPositionTraining('${slot}',-1)">−</button><span>${lv}/20</span><button onclick="setPositionTraining('${slot}',1)">＋</button></div>
@@ -2339,6 +2329,7 @@ function fullGrowSlot(slot,event){
  ensureTrainingData(p,g);
  for(let lv=1;lv<=maxTraining(p);lv++)g.trainingAlloc[lv-1]=autoPickForLevel(p,lv);
  const L=lineup();
+ // 풀성장은 포지션 특훈도 최대 레벨(20)로 설정한다.
  L.positionTraining[slot]=20;
  activeLineupSlot=slot;
  saveAll();
@@ -2503,8 +2494,7 @@ function baseStatEntries(p){
  const meta=pitcher
    ? [["velocity","구속"],["break","변화"],["stuff","구위"],["control","제구"],["stamina","지구력"],["fielding","수비"]]
    : [["power","파워"],["contact","정확"],["eye","선구"],["patience","인내"],["baserun","주루"],["fielding","수비"]];
- const faPenalty=faBasePenaltyMap(p,getGrowth(p));
- return meta.map(([k,label])=>({key:k,label,value:Number.isFinite(Number(p.stats?.[k]))?Number(p.stats[k])+Number(faPenalty[k]||0):"—"}));
+ return meta.map(([k,label])=>({key:k,label,value:Number.isFinite(Number(p.stats?.[k]))?Number(p.stats[k]):"—"}));
 }
 function baseStatsInlineHTML(p){
  return baseStatEntries(p).map(x=>`<span><b>${x.label}:</b> ${x.value}</span>`).join("");
@@ -2993,7 +2983,7 @@ function renderGrowAdvanced(){
   ${slot?`<div class="grow-slot-summary">
     <div><small>현재 배치</small><b>${slot}</b></div>
     <div><small>최종 OVR</small><b>${effectiveCardOvr(p,g,slot,currentMode)??"—"}</b></div>
-    <div><small>포지션 특훈</small><b>${lineup().positionTraining[slot]??20}/20 · +${positionTrainingTotal(lineup().positionTraining[slot]??20,PITCH.includes(slot)?"pitcher":"batter",slot,currentMode)}</b></div>
+    <div><small>포지션 특훈</small><b>${lineup().positionTraining[slot]??0}/20 · +${positionTrainingTotal(lineup().positionTraining[slot]??0,PITCH.includes(slot)?"pitcher":"batter",slot,currentMode)}</b></div>
    </div>`:""}
   <div class="base-growth-stats-box">
    <div class="meta" style="margin-bottom:5px">기본 능력치</div>
@@ -3104,7 +3094,7 @@ function renderGrow(){
  ${handednessControlHTML(p)}
  <section><h3>훈련</h3><div class="reference-controls">${level('training',g.training,maxTraining(p))}<span>훈련 총합: ${sum(es.trainingBonus)}/${3*g.training}</span><span>${g.trainingMode==='manual'?'수동 배분':'자동 배분'}</span></div><div class="reference-allocation">${detailRows(p,es.trainingBonus,'training')}</div></section>
  <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div></section>
- <section><h3>포지션 특훈</h3><div class="reference-controls">${slot?level('position',lineup().positionTraining[slot]??20,20):'라인업에 배치하면 적용돼.'}<span>적용 총합: ${sum(es.positionBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.positionBonus||{},'position')}</div></section>
+ <section><h3>포지션 특훈</h3><div class="reference-controls">${slot?level('position',lineup().positionTraining[slot]??0,20):'라인업에 배치하면 적용돼.'}<span>적용 총합: ${sum(es.positionBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.positionBonus||{},'position')}</div></section>
  ${slot&&/^RP[1-6]$/.test(slot)?`<section><h3>불펜 전술</h3><div class="reference-controls"><span>${bullpenRole(slot)}</span><span>전술 능력치 총합: +${sum(es.bullpenTacticBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.bullpenTacticBonus||{},'bullpen')}</div></section>`:''}
  ${skillControls(p,slot)}
  <details class="reference-extra"><summary>강화·각성</summary>${quickEnhanceHTML(p,g)}${quickAwakeningHTML(p,g)}</details>
@@ -3216,7 +3206,7 @@ function currentText(){
    lines.push(`${n}번 (${orderGroup(n)}): ${p?`${p.name} / ${pos} / ${effectiveTeam(p)}`:"-"}`);
  }
  lines.push("","포지션 특훈",...ALL_SLOTS.map(s=>{
-   const role=PITCH.includes(s)?"pitcher":"batter",lv=L.positionTraining[s]??20;
+   const role=PITCH.includes(s)?"pitcher":"batter",lv=L.positionTraining[s]??0;
    const r5=getPositionBonusRoll(s,5),r15=getPositionBonusRoll(s,15);
    return `${s}: ${lv}/20 (총합 +${positionTrainingTotal(lv,role,s)}) / Lv5 ${POSITION_BONUS_LABELS[r5.key]}+${r5.amount} / Lv15 ${POSITION_BONUS_LABELS[r15.key]}+${r15.amount}`;
  }));
@@ -3270,29 +3260,13 @@ function importLineupData(raw){
  return names.size;
 }
 async function importLineupFile(input){
- const file=input?.files?.[0];if(!file)return;
+ const file=input.files?.[0];if(!file)return;
  try{
-   if(!file.size)throw Error('선택한 파일이 비어 있어. 라인업 내보내기로 생성한 JSON 파일을 선택해 줘.');
-   const head=new Uint8Array(await file.slice(0,16).arrayBuffer());
-   const jpeg=head.length>=3&&head[0]===0xFF&&head[1]===0xD8&&head[2]===0xFF;
-   const png=head.length>=8&&head[0]===0x89&&head[1]===0x50&&head[2]===0x4E&&head[3]===0x47;
-   const zip=head.length>=4&&head[0]===0x50&&head[1]===0x4B&&head[2]===0x03&&head[3]===0x04;
-   const pdf=head.length>=4&&head[0]===0x25&&head[1]===0x50&&head[2]===0x44&&head[3]===0x46;
-   if(jpeg||png)throw Error('선택한 파일은 사진(JPEG/PNG)이야. 사진은 라인업 JSON으로 가져올 수 없어. 내보내기에서 생성한 .json 파일을 선택해 줘.');
-   if(zip)throw Error('선택한 파일은 ZIP 압축 파일이야. 압축을 풀고 안의 라인업 .json 파일을 선택해 줘.');
-   if(pdf)throw Error('선택한 파일은 PDF야. 라인업 내보내기로 생성한 .json 파일을 선택해 줘.');
-   const text=await file.text();
-   if(!text.trim())throw Error('파일 내용이 비어 있어. 올바른 라인업 JSON 파일인지 확인해 줘.');
-   let raw;
-   try{raw=JSON.parse(text.replace(/^\uFEFF/,''));}
-   catch(parseError){
-     throw Error('파일 내용을 JSON으로 읽을 수 없어. 파일 확장자만 .json으로 바꾼 파일이나 사진/텍스트 파일이 아닌지 확인하고, 내보내기로 생성한 원본 JSON을 선택해 줘. ('+parseError.message+')');
-   }
-   const count=importLineupData(raw);
+   const count=importLineupData(JSON.parse((await file.text()).replace(/^\uFEFF/,'')));
    $('preferredTeam').value=preferredTeam;refreshCustomSearch();renderTabs();renderAll();closeExport();
    toast(count+'명 라인업과 육성 설정을 가져왔어.');
- }catch(e){alert('가져오기 실패: '+(e?.message||'파일을 읽을 수 없어.'));}
- finally{if(input)input.value='';}
+ }catch(e){alert('가져오기 실패: '+e.message);}
+ finally{input.value='';}
 }
 
 function exportCurrentJSON(){download(`v26-${currentMode}-lineup.json`,JSON.stringify(lineupPayload(currentMode),null,2),"application/json")}
