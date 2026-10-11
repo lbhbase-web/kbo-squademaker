@@ -2500,7 +2500,8 @@ function baseStatEntries(p){
  const meta=pitcher
    ? [["velocity","구속"],["break","변화"],["stuff","구위"],["control","제구"],["stamina","지구력"],["fielding","수비"]]
    : [["power","파워"],["contact","정확"],["eye","선구"],["patience","인내"],["baserun","주루"],["fielding","수비"]];
- return meta.map(([k,label])=>({key:k,label,value:Number.isFinite(Number(p.stats?.[k]))?Number(p.stats[k]):"—"}));
+ const faPenalty=isFa(p,getGrowth(p))?-3:0;
+ return meta.map(([k,label])=>({key:k,label,value:Number.isFinite(Number(p.stats?.[k]))?Number(p.stats[k])+faPenalty:"—"}));
 }
 function baseStatsInlineHTML(p){
  return baseStatEntries(p).map(x=>`<span><b>${x.label}:</b> ${x.value}</span>`).join("");
@@ -2992,7 +2993,7 @@ function renderGrowAdvanced(){
     <div><small>포지션 특훈</small><b>${lineup().positionTraining[slot]??0}/20 · +${positionTrainingTotal(lineup().positionTraining[slot]??0,PITCH.includes(slot)?"pitcher":"batter",slot,currentMode)}</b></div>
    </div>`:""}
   <div class="base-growth-stats-box">
-   <div class="meta" style="margin-bottom:5px">기본 능력치</div>
+   <div class="meta" style="margin-bottom:5px">기본 능력치${fa?" (FA 감소 반영)":""}</div>
    <div class="base-picker-stats">${baseStatsInlineHTML(p)}</div>
   </div>
   <div class="growth-quick-selectors">
