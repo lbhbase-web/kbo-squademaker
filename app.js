@@ -2392,20 +2392,29 @@ function fillReferenceDummy(){
 }
 
 function impactSubtypeLogoFile(p){
- if(family(p)!=="impact")return "";
- const raw=String(p.series||p.name||"").trim().toLowerCase().replace(/[·・]/g," ").replace(/\s+/g," ");
+ const subtype=String(p?.impactSeries||p?.series||p?.subtype||p?.name||"").trim().toLowerCase()
+  .replace(/[·・]/g," ").replace(/[()（）]/g," ").replace(/\s+/g," ");
+ if(!subtype || family(p)!=="impact")return "";
  const rules=[
-  [/2025\s*top\s*3|2025 top3/,"top3_2025"],[/좌완 에이스/,"left_ace"],[/빅게임 헌터|빅게임헌터/,"big_game_hunter"],[/비fa 계약|비fa계약/,"non_fa_contract"],
-  [/좌타 해결사|좌타해결사/,"left_bat_clutch"],[/스위치 히터|스위치히터/,"switch_hitter"],[/소방수/,"fireman"],[/슬로우 스타터|슬로우스타터/,"slow_starter"],
-  [/철완/,"iron_arm"],[/우완 에이스/,"right_ace"],[/fa 선수|fa선수/,"fa_player"],[/캡틴/,"captain"],[/이벤트/,"event"],[/라이징 스타|라이징스타/,"rising_star"],
-  [/해외파/,"overseas"],[/여름사나이|여름 사나이/,"summer_man"],[/가을사나이|가을 사나이/,"autumn_man"],[/저니맨/,"journeyman"],[/마당쇠/,"workhorse"],[/원투펀치/,"one_two_punch"],
-  [/호타준족/,"five_tool"],[/분위기메이커/,"mood_maker"],[/전천후/,"versatile"],[/베스트 포지션/,"best_position"],[/난세의 영웅/,"hero_chaos"],[/돌격대장/,"charge_leader"],[/구종 마스터/,"pitch_master"],[/안경 에이스/,"glasses_ace"]
+  [/2025\s*top\s*3|2025 top3/,"top3_2025"],
+  [/좌완\s*에이스/,"left_ace"], [/빅게임\s*헌터/,"big_game_hunter"],
+  [/비fa\s*계약|비fa계약/,"non_fa_contract"], [/좌타\s*해결사/,"left_bat_clutch"],
+  [/스위치\s*히터/,"switch_hitter"], [/소방수/,"fireman"], [/슬로우\s*스타터/,"slow_starter"],
+  [/철완/,"iron_arm"], [/우완\s*에이스/,"right_ace"], [/fa\s*선수/,"fa_player"],
+  [/캡틴/,"captain"], [/이벤트/,"event"], [/라이징\s*스타/,"rising_star"],
+  [/해외파/,"overseas"], [/여름\s*사나이/,"summer_man"], [/가을\s*사나이/,"autumn_man"],
+  [/저니맨/,"journeyman"], [/마당쇠/,"workhorse"], [/원투\s*펀치/,"one_two_punch"],
+  [/호타준족|5툴\s*선수|5툴\s*플레이어/,"five_tool"], [/분위기\s*메이커/,"mood_maker"],
+  [/전천후/,"versatile"], [/베스트\s*포지션/,"best_position"], [/난세의\s*영웅/,"hero_chaos"],
+  [/돌격대장/,"charge_leader"], [/구종\s*마스터/,"pitch_master"], [/안경\s*에이스/,"glasses_ace"]
  ];
- const found=rules.find(([re])=>re.test(raw));return found?found[1]:"";
+ const found=rules.find(([re])=>re.test(subtype));
+ return found?found[1]:"";
 }
 function impactSubtypeLogoHTML(p){
  const file=impactSubtypeLogoFile(p);if(!file)return "";
- return `<img class="lc-subtype-logo" src="./impact-logos/${file}.png" alt="${esc(p.series||"임팩트")} 로고" loading="lazy" onerror="this.hidden=true">`;
+ const label=String(p?.impactSeries||p?.series||"임팩트");
+ return `<img class="lc-subtype-logo" src="./impact-logos/${file}.png?v=15.4.3" alt="${esc(label)} 로고" loading="eager" decoding="async" onerror="this.classList.add('lc-subtype-logo-missing');this.removeAttribute('src')">`;
 }
 function lineupCompactCardHTML(p,slot,label){
  const g=getGrowth(p),growth=gameGrowthText(p,g),series=gameCardSeriesText(p,g);
