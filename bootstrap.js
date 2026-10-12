@@ -1,5 +1,5 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.5-embedded-impact-logo';
+  const APP_URL='./app.js?v=15.4.6-impact-logo-natural-v2';
   const DATA_URLS=['./players.json?v=15.3','./data/players.json?v=15.3'];
 
   const showError=(msg)=>{
