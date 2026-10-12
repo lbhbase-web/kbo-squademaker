@@ -1949,7 +1949,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.4.4-embedded-impact-logo"></script>
+<script src="./bootstrap.js?v=15.4.5-natural-impact-logo"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
@@ -1980,6 +1980,17 @@ body{background:#fff!important;color:#17191c!important}
 .reference-card>.game-player-card{width:72px!important;height:105px!important;min-height:0!important}
 @media(min-width:601px){.reference-card{width:78px!important;min-width:78px!important;height:114px!important;flex-basis:78px!important}.reference-card>.game-player-card{width:78px!important;height:114px!important}}
 </style>
+
+<style id="impact-subtype-logo-natural-v2">
+/* Keep the original subtype emblem as a small, integrated badge instead of a separate text tile. */
+.lineup-card-shell{position:relative!important}
+.lineup-card-shell .lc-series{position:absolute!important;right:3px!important;bottom:20px!important;left:auto!important;top:auto!important;width:27px!important;height:27px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important;padding:2px!important;margin:0!important;box-sizing:border-box!important;border-radius:50%!important;background:rgba(255,255,255,.94)!important;border:1px solid rgba(25,35,48,.38)!important;box-shadow:0 1px 3px rgba(0,0,0,.28)!important;z-index:18!important}
+.lineup-card-shell .lc-subtype-logo{display:block!important;position:static!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;flex:1 1 auto!important;object-fit:contain!important;background:transparent!important;border:0!important;border-radius:50%!important;padding:0!important;filter:none!important;opacity:1!important;visibility:visible!important}
+.lineup-card-shell .lc-bottom{position:absolute!important;left:0!important;right:0!important;bottom:0!important;padding:8px 2px 2px!important}
+.lineup-card-shell .lc-name{position:relative!important;z-index:19!important;padding-right:15px!important}
+.lineup-card-shell .lc-series-fallback{position:absolute!important;left:3px!important;bottom:21px!important;max-width:calc(100% - 34px)!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:5px!important;line-height:1!important;font-weight:900!important;color:#fff!important;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000!important;z-index:18!important}
+</style>
+
 </body>
 </html>
 
