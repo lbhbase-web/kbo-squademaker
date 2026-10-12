@@ -849,7 +849,11 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-series{font-size:6px!important}
 .lineup-card-shell .lc-label{display:none!important}
 
-.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));opacity:0;visibility:hidden;pointer-events:none;transform:translateY(3px);transition:opacity .12s,transform .12s,visibility .12s}
+.lineup-card-wrap.actions-visible .lineup-quick-actions{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.lineup-card-shell.actions-selected{outline:2px solid #65d9ff;outline-offset:1px}
+.lineup-card-shell .lc-remove{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s,visibility .12s}
+.lineup-card-wrap.actions-visible .lineup-card-shell .lc-remove{opacity:1;visibility:visible;pointer-events:auto}
 .lineup-quick-actions button{width:23px;height:23px;border:1px solid #bbb;background:#fff;color:#222;padding:0;font-size:12px;display:grid;place-items:center;cursor:pointer;border-radius:2px}
 .lineup-quick-actions .fullgrow{font-size:16px;font-weight:900}
 .lineup-quick-actions button:hover{background:#eee}
@@ -1948,7 +1952,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.4.2"></script>
+<script src="./bootstrap.js?v=15.4.2-actions"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
@@ -1998,46 +2002,5 @@ body{background:#fff!important;color:#17191c!important}
 .choice-grid-trigger > span,
 .year-grid-trigger > span {
   color:#7b8492 !important;
-}
-</style>
-
-
-<style id="impact-series-emblem-v154">
-/* Impact series emblems: unique badge marks by card series, styled to match the lime game card. */
-.game-impact-badge{
- position:absolute;left:7px;right:7px;bottom:31px;z-index:9;
- display:flex;align-items:center;justify-content:center;gap:5px;
- min-height:25px;padding:3px 6px;border:1px solid rgba(255,255,255,.68);
- border-radius:5px;background:linear-gradient(90deg,rgba(20,30,4,.72),rgba(20,30,4,.42));
- box-shadow:0 2px 5px rgba(0,0,0,.35),inset 0 0 0 1px rgba(0,0,0,.16);
- color:#fff8cf;font-size:9px;font-weight:1000;line-height:1;
- text-shadow:0 1px 2px rgba(0,0,0,.9);white-space:nowrap;overflow:hidden
-}
-.game-impact-badge b{
- flex:0 0 20px;width:20px;height:20px;display:grid;place-items:center;
- border:1px solid rgba(255,255,255,.8);border-radius:50%;
- background:var(--impact-badge-bg);color:#fff;font-size:10px;font-weight:1000;
- text-shadow:0 1px 2px rgba(0,0,0,.8);box-shadow:0 1px 3px rgba(0,0,0,.4)
-}
-.game-impact-badge>span{overflow:hidden;text-overflow:ellipsis}
-.game-impact-badge.fa-impact-badge{border-color:#ffe6a0;color:#fff1a7}
-.game-impact-badge.fa-impact-badge::after{
- content:"FA";position:absolute;top:-1px;right:0;padding:2px 3px;
- border-radius:0 4px 0 4px;background:#8e251e;color:#fff;font-size:7px;letter-spacing:.2px
-}
-.lc-impact-badge{
- display:inline-flex;align-items:center;justify-content:center;gap:2px;
- max-width:100%;vertical-align:middle;margin:0 auto 1px;
-}
-.lc-impact-badge b{
- width:13px;height:13px;display:inline-grid;place-items:center;
- border:1px solid rgba(255,255,255,.85);border-radius:50%;
- background:var(--impact-badge-bg);color:#fff;font-size:7px;line-height:1;
- text-shadow:0 1px 1px rgba(0,0,0,.8)
-}
-.lc-impact-badge.fa-impact-badge b{outline:1px solid #ffe6a0}
-@media(max-width:520px){
- .game-impact-badge{left:4px;right:4px;bottom:29px;min-height:22px;gap:3px;padding:2px 3px;font-size:8px}
- .game-impact-badge b{width:17px;height:17px;flex-basis:17px;font-size:9px}
 }
 </style>
