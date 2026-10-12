@@ -2391,18 +2391,34 @@ function fillReferenceDummy(){
  toast(added?`빈 자리 ${added}칸에만 더미 데이터를 채웠어.`:"채울 빈 자리가 없어.");
 }
 
+function impactSubtypeLogoFile(p){
+ if(family(p)!=="impact")return "";
+ const raw=String(p.series||p.name||"").trim().toLowerCase().replace(/[·・]/g," ").replace(/\s+/g," ");
+ const rules=[
+  [/2025\s*top\s*3|2025 top3/,"top3_2025"],[/좌완 에이스/,"left_ace"],[/빅게임 헌터|빅게임헌터/,"big_game_hunter"],[/비fa 계약|비fa계약/,"non_fa_contract"],
+  [/좌타 해결사|좌타해결사/,"left_bat_clutch"],[/스위치 히터|스위치히터/,"switch_hitter"],[/소방수/,"fireman"],[/슬로우 스타터|슬로우스타터/,"slow_starter"],
+  [/철완/,"iron_arm"],[/우완 에이스/,"right_ace"],[/fa 선수|fa선수/,"fa_player"],[/캡틴/,"captain"],[/이벤트/,"event"],[/라이징 스타|라이징스타/,"rising_star"],
+  [/해외파/,"overseas"],[/여름사나이|여름 사나이/,"summer_man"],[/가을사나이|가을 사나이/,"autumn_man"],[/저니맨/,"journeyman"],[/마당쇠/,"workhorse"],[/원투펀치/,"one_two_punch"],
+  [/호타준족/,"five_tool"],[/분위기메이커/,"mood_maker"],[/전천후/,"versatile"],[/베스트 포지션/,"best_position"],[/난세의 영웅/,"hero_chaos"],[/돌격대장/,"charge_leader"],[/구종 마스터/,"pitch_master"],[/안경 에이스/,"glasses_ace"]
+ ];
+ const found=rules.find(([re])=>re.test(raw));return found?found[1]:"";
+}
+function impactSubtypeLogoHTML(p){
+ const file=impactSubtypeLogoFile(p);if(!file)return "";
+ return `<img class="lc-subtype-logo" src="./impact-logos/${file}.png" alt="${esc(p.series||"임팩트")} 로고" loading="lazy" onerror="this.hidden=true">`;
+}
 function lineupCompactCardHTML(p,slot,label){
  const g=getGrowth(p),growth=gameGrowthText(p,g),series=gameCardSeriesText(p,g);
- const actionsVisible=activeLineupSlot===slot;
- return `<div class="lineup-card-wrap ${actionsVisible?"actions-visible":""}">
+ return `<div class="lineup-card-wrap">
    ${lineupQuickActionsHTML(slot,p)}
-   <div class="lineup-card-shell ${cardBackgroundClass(p,g)} ${actionsVisible?"actions-selected":""}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 카드 선택 및 메뉴 표시" aria-pressed="${actionsVisible?"true":"false"}" onclick="toggleLineupCardActions('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLineupCardActions('${slot}',event)}">
+   <div class="lineup-card-shell ${cardBackgroundClass(p,g)}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 상세 열기" onclick="openGrowForSlot('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openGrowForSlot('${slot}',event)}">
     ${gameStarHTML(p,true)}
     <div class="lc-ovr">${effectiveCardOvr(p,g,slot,currentMode)??"—"}</div>
     <div class="lc-growth">${growth.enhance}${growth.awake&&g.enhance===10?growth.awake:""}</div>
     ${teamLogoHTML(historicCardTeam(p),true,isFa(p))}
     <div class="lc-pos">${esc(p.pos)}</div>
     ${gamePhotoHTML(p,true)}
+    ${impactSubtypeLogoHTML(p)}
     <div class="lc-bottom">${series?`<div class="lc-series">${esc(series)}</div>`:""}<div class="lc-name">${gameCardNameHTML(p)}</div></div>
     <span class="lc-label">${esc(label)}</span>
     <button class="lc-remove" onclick="event.stopPropagation();removeSlot('${slot}')">×</button>
