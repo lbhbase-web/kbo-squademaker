@@ -2246,12 +2246,99 @@ function gameStarHTML(p,compact=false){
 }
 function gameCardSeriesText(p,g=getGrowth(p)){
  const f=family(p);
+ // FA 표시를 임팩트 일반 분기보다 먼저 처리해야 FA 임팩트에도 이적 표식이 나타난다.
+ if(f==="impact"&&isFa(p,g))return `FA ${p.series||"임팩트"}`;
+ if(f==="signature"&&isFa(p,g))return "FA 시그니처";
  if(f==="impact")return p.series&&p.series!=="임팩트"?p.series:"임팩트";
  if(f==="national"&&nationalVariant(p,g)==="wildcard")return "국가대표 와일드카드";
- if(f==="signature"&&isFa(p,g))return "FA 시그니처";
- if(f==="impact"&&isFa(p,g))return `FA ${p.series||"임팩트"}`;
  if(f==="season")return "SEASON";
  return "";
+}
+const IMPACT_SERIES_MARKS={
+ "프랜차이즈":["F","linear-gradient(135deg,#f7d56c,#9d6a14)"],
+ "외국인":["✦","linear-gradient(135deg,#70d9ff,#2251a5)"],
+ "추억의 선수":["◈","linear-gradient(135deg,#d9c5a1,#78614b)"],
+ "WAR-상위":["W","linear-gradient(135deg,#fff16a,#bd5b13)"],
+ "주력 선수":["➤","linear-gradient(135deg,#b7f56d,#287d3c)"],
+ "주력선수":["➤","linear-gradient(135deg,#b7f56d,#287d3c)"],
+ "중간 계투":["Ⅱ","linear-gradient(135deg,#85c9ff,#3555a7)"],
+ "중간계투":["Ⅱ","linear-gradient(135deg,#85c9ff,#3555a7)"],
+ "키 플레이어":["K","linear-gradient(135deg,#ffe58a,#bc4d18)"],
+ "키플레이어":["K","linear-gradient(135deg,#ffe58a,#bc4d18)"],
+ "신인왕":["R","linear-gradient(135deg,#d6f6ff,#4d88d9)"],
+ "홈런타자":["H","linear-gradient(135deg,#ffb35a,#a91d27)"],
+ "교타자":["C","linear-gradient(135deg,#a9f0c5,#20785c)"],
+ "필승계투":["Ⅴ","linear-gradient(135deg,#f6e27a,#a16a20)"],
+ "마무리":["Ⅸ","linear-gradient(135deg,#ff7f7f,#831f3d)"],
+ "도루왕":["↗","linear-gradient(135deg,#c4ff80,#3a7d21)"],
+ "키스톤":["◇","linear-gradient(135deg,#a9e4ff,#315f9f)"],
+ "안방마님":["♜","linear-gradient(135deg,#d4c4ff,#59408f)"],
+ "원클럽맨":["1","linear-gradient(135deg,#f8e5a3,#936a29)"],
+ "철완":["⚙","linear-gradient(135deg,#d8e5f4,#4d657e)"],
+ "우완 에이스":["R","linear-gradient(135deg,#9ccfff,#2453a5)"],
+ "좌완 에이스":["L","linear-gradient(135deg,#9ccfff,#2453a5)"],
+ "FA선수":["FA","linear-gradient(135deg,#f9df72,#a95e11)"],
+ "캡틴":["C","linear-gradient(135deg,#fff0a8,#8e6a1e)"],
+ "이벤트":["★","linear-gradient(135deg,#ffb1e7,#8c3a9f)"],
+ "라이징 스타":["↗","linear-gradient(135deg,#b7f2ff,#3377c5)"],
+ "라이징스타":["↗","linear-gradient(135deg,#b7f2ff,#3377c5)"],
+ "해외파":["✈","linear-gradient(135deg,#a7d9ff,#2e5eaa)"],
+ "여름사나이":["☀","linear-gradient(135deg,#fff078,#e27a1b)"],
+ "가을사나이":["🍁","linear-gradient(135deg,#ffc27a,#963d25)"],
+ "저니맨":["↔","linear-gradient(135deg,#c4c9d8,#525e79)"],
+ "마당쇠":["⚒","linear-gradient(135deg,#d6bd9a,#66503c)"],
+ "원투펀치":["ⅠⅡ","linear-gradient(135deg,#c0e3ff,#365a9c)"],
+ "호타준족":["⚡","linear-gradient(135deg,#fff17b,#c66b18)"],
+ "분위기메이커":["♪","linear-gradient(135deg,#ffb8dd,#8c4ab5)"],
+ "전천후":["∞","linear-gradient(135deg,#d6d7ff,#5759a7)"],
+ "베스트 포지션":["★","linear-gradient(135deg,#fff3a6,#a97b27)"],
+ "베스트포지션":["★","linear-gradient(135deg,#fff3a6,#a97b27)"],
+ "난세의 영웅":["✦","linear-gradient(135deg,#ffcb91,#9c392c)"],
+ "난세의영웅":["✦","linear-gradient(135deg,#ffcb91,#9c392c)"],
+ "돌격대장":["➤","linear-gradient(135deg,#ffb27d,#a6382c)"],
+ "구종 마스터":["✣","linear-gradient(135deg,#b8d9ff,#374fa1)"],
+ "구종마스터":["✣","linear-gradient(135deg,#b8d9ff,#374fa1)"],
+ "안경 에이스":["◎","linear-gradient(135deg,#d7eaff,#536b9f)"],
+ "안경에이스":["◎","linear-gradient(135deg,#d7eaff,#536b9f)"],
+ "마성의 주자":["♠","linear-gradient(135deg,#d5c5ff,#6541a3)"],
+ "마성의주자":["♠","linear-gradient(135deg,#d5c5ff,#6541a3)"],
+ "끝내기":["✹","linear-gradient(135deg,#fff0a6,#c24b27)"],
+ "백전노장":["Ⅴ","linear-gradient(135deg,#e8d7b4,#716044)"],
+ "느림의 미학":["⌛","linear-gradient(135deg,#c8d2e1,#5d7189)"],
+ "느림의미학":["⌛","linear-gradient(135deg,#c8d2e1,#5d7189)"],
+ "대표타자":["B","linear-gradient(135deg,#ffd66d,#b44c20)"],
+ "파이어볼러":["🔥","linear-gradient(135deg,#ffb06b,#b32627)"],
+ "5툴 선수":["5","linear-gradient(135deg,#d2f7a1,#367a44)"],
+ "5툴선수":["5","linear-gradient(135deg,#d2f7a1,#367a44)"],
+ "거포":["H","linear-gradient(135deg,#ffad71,#a52632)"],
+ "얼리 스타터":["Ⅰ","linear-gradient(135deg,#bde3ff,#3c6da9)"],
+ "얼리스타터":["Ⅰ","linear-gradient(135deg,#bde3ff,#3c6da9)"],
+ "구조대":["✚","linear-gradient(135deg,#ffc4c4,#a62b3b)"],
+ "베테랑":["V","linear-gradient(135deg,#e9d9b6,#766147)"],
+ "대체 외인":["✈","linear-gradient(135deg,#a7d9ff,#2e5eaa)"],
+ "대체외인":["✈","linear-gradient(135deg,#a7d9ff,#2e5eaa)"],
+ "2025 TOP3":["3","linear-gradient(135deg,#fff6a8,#ba8420)"],
+ "TOP3":["3","linear-gradient(135deg,#fff6a8,#ba8420)"],
+ "최강야구":["M","linear-gradient(135deg,#d3d9e8,#39445b)"],
+ "좌완에이스":["L","linear-gradient(135deg,#9ccfff,#2453a5)"],
+ "좌타 해결사":["L","linear-gradient(135deg,#ffd2a1,#a94e29)"],
+ "빅게임 헌터":["⚔","linear-gradient(135deg,#ffcf9b,#9d332d)"],
+ "빅게임헌터":["⚔","linear-gradient(135deg,#ffcf9b,#9d332d)"],
+ "비FA계약":["契","linear-gradient(135deg,#bde9ff,#3c6d9f)"],
+ "좌타해결사":["L","linear-gradient(135deg,#ffd2a1,#a94e29)"],
+ "스위치 히터":["⇄","linear-gradient(135deg,#d6c7ff,#6350a6)"],
+ "스위치히터":["⇄","linear-gradient(135deg,#d6c7ff,#6350a6)"],
+ "소방수":["✚","linear-gradient(135deg,#ffb9b9,#a21e32)"],
+ "슬로우 스타터":["Ⅱ","linear-gradient(135deg,#c4d3e5,#526a87)"],
+ "슬로우스타터":["Ⅱ","linear-gradient(135deg,#c4d3e5,#526a87)"]
+};
+function impactSeriesBadgeHTML(p,compact=false){
+ if(family(p)!=="impact")return "";
+ const rawLabel=String(p.series||"임팩트").trim();
+ const label=isFa(p)?"FA · "+rawLabel:rawLabel;
+ const spec=IMPACT_SERIES_MARKS[rawLabel]||["✦","linear-gradient(135deg,#e9ef9c,#627d17)"];
+ const mark=spec[0],background=spec[1];
+ return `<span class="${compact?"lc-impact-badge":"game-impact-badge"}${isFa(p)?" fa-impact-badge":""}" style="--impact-badge-bg:${background}" title="${esc(label)}"><b>${esc(mark)}</b>${compact?"":`<span>${esc(label)}</span>`}</span>`;
 }
 function gameCardNameHTML(p){
  const f=family(p),year=displayYear(p);
@@ -2296,7 +2383,7 @@ function gamePlayerCardHTML(p,{disabled=false,current=false,slot=""}={}){
    <div class="game-card-pos">${esc(p.pos)}</div>
    ${gamePhotoHTML(p)}
    ${disabled?`<div class="game-card-duplicate">이미 라인업에 있음</div>`:""}
-   ${series?`<div class="game-card-series">${esc(series)}</div>`:""}
+   ${family(p)==="impact"?impactSeriesBadgeHTML(p):series?`<div class="game-card-series">${esc(series)}</div>`:""}
    <div class="game-card-bottom"><div class="game-card-name">${gameCardNameHTML(p)}</div></div>
    <button class="game-card-grow" onclick="event.stopPropagation();openGrow('${p.id}')" title="육성">⚙</button>
  </div>`;
@@ -2767,7 +2854,7 @@ function battingOrderMiniCard(p,pos,n,selectable=false){
     ${teamLogoHTML(historicCardTeam(p),true,isFa(p))}
     <span class="batting-card-pos">${esc(p.pos)}</span>
     ${gamePhotoHTML(p,true)}
-    <span class="batting-card-bottom">${series?`<span class="batting-card-series">${esc(series)}</span>`:""}<span class="batting-card-name">${gameCardNameHTML(p)}</span></span>
+    <span class="batting-card-bottom">${family(p)==="impact"?impactSeriesBadgeHTML(p,true):series?`<span class="batting-card-series">${esc(series)}</span>`:""}<span class="batting-card-name">${gameCardNameHTML(p)}</span></span>
    </span>
    ${selectable?`<span class="batting-current-order">${Number(lineup().order[pos]||0)||"-"}번</span>`:""}
    ${battingOrderSkillHTML(p,pos)}
