@@ -849,7 +849,8 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-series{font-size:6px!important}
 .lineup-card-shell .lc-label{display:none!important}
 
-.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s ease}
+.lineup-card-wrap:hover .lineup-quick-actions,.lineup-card-wrap:focus-within .lineup-quick-actions{opacity:1;visibility:visible;pointer-events:auto}
 .lineup-quick-actions button{width:23px;height:23px;border:1px solid #bbb;background:#fff;color:#222;padding:0;font-size:12px;display:grid;place-items:center;cursor:pointer;border-radius:2px}
 .lineup-quick-actions .fullgrow{font-size:16px;font-weight:900}
 .lineup-quick-actions button:hover{background:#eee}
@@ -1948,7 +1949,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.4.3-impact-logo-display"></script>
+<script src="./bootstrap.js?v=15.4.4-embedded-impact-logo"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
@@ -1971,8 +1972,10 @@ body{background:#fff!important;color:#17191c!important}
 
 <style id="impact-subtype-logo-style">
 /* Original subtype emblems, cropped from the user's supplied emblem sheets. */
-.lineup-card-shell .lc-subtype-logo{position:absolute!important;right:4px!important;bottom:22px!important;width:34px!important;height:34px!important;object-fit:contain!important;z-index:30!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))!important;background:rgba(255,255,255,.9);border-radius:5px;padding:1px;box-sizing:border-box}.lineup-card-shell .lc-subtype-logo-missing{display:none!important}
-.lineup-card-shell .lc-series{padding-right:25px;box-sizing:border-box;text-align:left;padding-left:3px}
+.lineup-card-shell .lc-series{display:flex!important;align-items:center!important;gap:2px!important;padding:0 2px!important;box-sizing:border-box;text-align:left!important;white-space:nowrap!important;overflow:hidden!important}
+.lineup-card-shell .lc-subtype-logo{position:static!important;display:inline-block!important;flex:0 0 20px!important;width:20px!important;height:20px!important;object-fit:contain!important;z-index:30!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;background:#fff!important;border-radius:4px!important;padding:1px!important;box-sizing:border-box!important;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))!important}
+.lineup-card-shell .lc-series span{overflow:hidden!important;text-overflow:ellipsis!important;min-width:0!important}
+.lineup-card-shell .lc-subtype-logo-missing{display:none!important}
 .reference-card{width:72px!important;min-width:72px!important;height:105px!important;flex:0 0 72px!important}
 .reference-card>.game-player-card{width:72px!important;height:105px!important;min-height:0!important}
 @media(min-width:601px){.reference-card{width:78px!important;min-width:78px!important;height:114px!important;flex-basis:78px!important}.reference-card>.game-player-card{width:78px!important;height:114px!important}}
