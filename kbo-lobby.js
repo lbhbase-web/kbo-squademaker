@@ -5,8 +5,9 @@
   const lobby = $('kboFeatureLobby');
   const cpbvView = $('kboCpbvView');
   const scoreView = $('kboScoreView');
+  const simView = $('kboSkillSimView');
   const frame = $('kboCpbvFrame');
-  if (!lobby || !cpbvView || !scoreView || !frame) return;
+  if (!lobby || !cpbvView || !scoreView || !simView || !frame) return;
 
   const CPBV_URL = 'https://www.cpbv-lab.com/';
   const TOOLS = {
@@ -16,11 +17,11 @@
     },
     'impact-roll': {
       title: '일스변 시뮬',
-      subtitle: '일반 스킬 변경 시뮬레이터를 원본 사이트에서 이용해.'
+      subtitle: '아마추어 30% · 루키 40% · 마이너 23% · 메이저 7% 확률을 적용해.'
     },
     'advanced-roll': {
       title: '고스변 시뮬',
-      subtitle: '고급 스킬 변경 시뮬레이터와 목표 등급 자동 롤을 원본 사이트에서 이용해.'
+      subtitle: '1옵 메이저 확정 · 2옵/3옵 확률 추첨 · 중복 스킬 방지.'
     }
   };
 
@@ -32,12 +33,14 @@
     const state = history.state;
     if (state && state.kboLobbyView === 'squad') return { mode: 'squad' };
     if (state && state.kboLobbyView === 'score') return { mode: 'score' };
+    if (state && state.kboLobbyView === 'sim') return { mode: 'sim', tool: state.kboLobbyTool || 'impact-roll' };
     if (state && state.kboLobbyView === 'cpbv') {
       return { mode: 'cpbv', tool: state.kboLobbyTool || 'skill-score' };
     }
     const hash = (location.hash || '').replace(/^#/, '');
     if (hash === 'squadmaker') return { mode: 'squad' };
     if (hash === 'skill-score') return { mode: 'score' };
+    if (hash.startsWith('sim-')) return { mode: 'sim', tool: hash.slice(4) || 'impact-roll' };
     if (hash.startsWith('cpbv-')) return { mode: 'cpbv', tool: hash.slice(5) || 'skill-score' };
     return { mode: 'home' };
   }
@@ -53,6 +56,10 @@
       state.kboLobbyView = 'score';
       if (push) history.pushState(state, '', `${url}#skill-score`);
       else history.replaceState(state, '', `${url}#skill-score`);
+    } else if (mode === 'sim') {
+      state.kboLobbyTool = tool || 'impact-roll';
+      if (push) history.pushState(state, '', `${url}#sim-${encodeURIComponent(state.kboLobbyTool)}`);
+      else history.replaceState(state, '', `${url}#sim-${encodeURIComponent(state.kboLobbyTool)}`);
     } else if (mode === 'cpbv') {
       state.kboLobbyTool = tool || 'skill-score';
       if (push) history.pushState(state, '', `${url}#cpbv-${encodeURIComponent(state.kboLobbyTool)}`);
@@ -68,6 +75,7 @@
     lobby.hidden = false;
     cpbvView.hidden = true;
     scoreView.hidden = true;
+    simView.hidden = true;
     document.body.classList.remove('kbo-lobby-dismissed', 'kbo-cpbv-open');
     document.title = 'KBO LAB · 컴투스프로야구 V26 도구 모음';
     syncLoginLabel();
@@ -78,6 +86,7 @@
     lobby.hidden = true;
     cpbvView.hidden = true;
     scoreView.hidden = true;
+    simView.hidden = true;
     document.body.classList.add('kbo-lobby-dismissed');
     document.body.classList.remove('kbo-cpbv-open');
     if (!(history.state && history.state.kboLobbyView === 'squad')) {
@@ -90,6 +99,7 @@
     lobby.hidden = true;
     cpbvView.hidden = true;
     scoreView.hidden = false;
+    simView.hidden = true;
     document.body.classList.remove('kbo-lobby-dismissed', 'kbo-cpbv-open');
     document.title = '스킬 점수 계산기 · KBO LAB';
     if (push && !(history.state && history.state.kboLobbyView === 'score')) {
@@ -100,7 +110,28 @@
     }
   }
 
+  function openSimulator(tool, push = true) {
+    const advanced = tool === 'advanced' || tool === 'advanced-roll';
+    const canonicalTool = advanced ? 'advanced-roll' : 'impact-roll';
+    currentMode = 'sim';
+    currentTool = canonicalTool;
+    lobby.hidden = true;
+    cpbvView.hidden = true;
+    scoreView.hidden = true;
+    simView.hidden = false;
+    document.body.classList.remove('kbo-lobby-dismissed', 'kbo-cpbv-open');
+    document.title = `${advanced ? '고스변' : '일스변'} 시뮬 · KBO LAB`;
+    if (push && !(history.state && history.state.kboLobbyView === 'sim' && history.state.kboLobbyTool === canonicalTool)) {
+      setHistory('sim', canonicalTool, true);
+    }
+    if (window.KBOSkillSimulator && typeof window.KBOSkillSimulator.activate === 'function') {
+      window.KBOSkillSimulator.activate(advanced ? 'advanced' : 'general');
+    }
+  }
+
   function openCpbv(tool) {
+    if (tool === 'impact-roll') { openSimulator('general', true); return; }
+    if (tool === 'advanced-roll') { openSimulator('advanced', true); return; }
     if (tool === 'skill-score') {
       openScoreCalculator(true);
       return;
@@ -111,6 +142,7 @@
     lobby.hidden = true;
     cpbvView.hidden = false;
     scoreView.hidden = true;
+    simView.hidden = true;
     document.body.classList.add('kbo-cpbv-open');
     document.body.classList.remove('kbo-lobby-dismissed');
     $('kboCpbvTitle').textContent = item.title;
@@ -127,7 +159,7 @@
 
   function returnHome() {
     // Returning from an app/tool state restores the previous in-page lobby entry.
-    if (history.state && ['squad', 'cpbv', 'score'].includes(history.state.kboLobbyView)) {
+    if (history.state && ['squad', 'cpbv', 'score', 'sim'].includes(history.state.kboLobbyView)) {
       history.back();
       return;
     }
@@ -141,13 +173,20 @@
       enterSquad();
     } else if (target.mode === 'score') {
       openScoreCalculator(false);
+    } else if (target.mode === 'sim') {
+      openSimulator(target.tool, false);
     } else if (target.mode === 'cpbv') {
+      if (target.tool === 'impact-roll' || target.tool === 'advanced-roll') {
+        openSimulator(target.tool, false);
+        return;
+      }
       // Avoid writing another history entry while handling popstate.
       currentTool = target.tool;
       currentMode = 'cpbv';
       lobby.hidden = true;
       cpbvView.hidden = false;
       scoreView.hidden = true;
+      simView.hidden = true;
       document.body.classList.add('kbo-cpbv-open');
       document.body.classList.remove('kbo-lobby-dismissed');
       const item = TOOLS[currentTool] || TOOLS['skill-score'];
@@ -163,12 +202,16 @@
   $('kboHomeButton')?.addEventListener('click', returnHome);
   $('kboCpbvHome')?.addEventListener('click', returnHome);
   $('kboScoreHome')?.addEventListener('click', returnHome);
+  $('kboSimHome')?.addEventListener('click', returnHome);
   $('kboCpbvOpenExternal')?.addEventListener('click', () => {
     window.open(CPBV_URL, '_blank', 'noopener,noreferrer');
   });
 
   document.querySelectorAll('[data-cpbv-open]').forEach((button) => {
     button.addEventListener('click', () => openCpbv(button.getAttribute('data-cpbv-open')));
+  });
+  document.querySelectorAll('[data-sim-open]').forEach((button) => {
+    button.addEventListener('click', () => openSimulator(button.getAttribute('data-sim-open'), true));
   });
 
   function syncLoginLabel() {
@@ -219,10 +262,19 @@
     enterSquad();
   } else if (initialHash === 'skill-score') {
     openScoreCalculator(false);
+  } else if (initialHash.startsWith('sim-')) {
+    const tool = decodeURIComponent(initialHash.slice(4));
+    setHistory('sim', tool, true);
+    openSimulator(tool, false);
   } else if (initialHash.startsWith('cpbv-')) {
     const tool = decodeURIComponent(initialHash.slice(5));
-    setHistory('cpbv', tool, true);
-    openCpbv(tool);
+    if (tool === 'impact-roll' || tool === 'advanced-roll') {
+      setHistory('sim', tool, true);
+      openSimulator(tool, false);
+    } else {
+      setHistory('cpbv', tool, true);
+      openCpbv(tool);
+    }
   } else if (initialMode.mode === 'squad') {
     enterSquad();
   } else if (initialMode.mode === 'cpbv') {
