@@ -61,6 +61,50 @@
   let currentSkills = [null, null, null];
   let loaded = false;
   let loadPromise = null;
+  let scoreRows = [];
+  let scoreRowsPromise = null;
+
+  function normalizeScoreName(value) {
+    return String(value || '').replace(/\([^)]*\)/g, '').replace(/[☆★]/g, '').replace(/\s+/g, '').replace(/[·ㆍ]/g, '').toLocaleLowerCase('ko-KR');
+  }
+  function parseScoreCSV(text) {
+    const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(line => line.trim());
+    if (!lines.length) return [];
+    const parseLine = line => { const cells=[]; let cell='', quoted=false; for(let i=0;i<line.length;i++){const ch=line[i]; if(ch==='"'){if(quoted&&line[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(ch===','&&!quoted){cells.push(cell);cell='';}else cell+=ch;}cells.push(cell);return cells;};
+    const headers=parseLine(lines[0]).map(x=>x.trim());
+    return lines.slice(1).map(line=>{const vals=parseLine(line), row={};headers.forEach((key,i)=>row[key]=(vals[i]||'').trim());return {target:row['대상'],name:row['스킬명'],normalized:normalizeScoreName(row['스킬명']),points:Object.fromEntries([5,6,7,8,9,10].map(level=>[level,row[`Lv${level}`]===''||!Number.isFinite(Number(row[`Lv${level}`]))?null:Number(row[`Lv${level}`])]))};}).filter(r=>r.name&&r.target);
+  }
+  function loadScoreRows() {
+    if (scoreRows.length) return Promise.resolve(scoreRows);
+    if (!scoreRowsPromise) scoreRowsPromise=fetch('./skill-score-photo-rows.csv').then(r=>{if(!r.ok)throw new Error('스킬 점수표 CSV를 불러오지 못했어.');return r.text();}).then(text=>{scoreRows=parseScoreCSV(text);return scoreRows;}).catch(err=>{scoreRowsPromise=null;throw err;});
+    return scoreRowsPromise;
+  }
+  function scoreTarget() { return roleSelect.value === 'hitter' ? '타자' : '투수'; }
+  function findScoreRow(skill) {
+    if (!skill) return null;
+    const key=normalizeScoreName(skill.name), target=scoreTarget();
+    const matches=scoreRows.filter(row=>row.target===target && row.normalized===key);
+    if (!matches.length) {
+      // CSV labels may append role/card conditions in parentheses; use a conservative prefix match only if unique.
+      const loose=scoreRows.filter(row=>row.target===target && (row.normalized.startsWith(key)||key.startsWith(row.normalized)));
+      return loose.length===1?loose[0]:null;
+    }
+    if(matches.length===1)return matches[0];
+    const roleWord={starter:'선발',middle:'중계',closer:'마무리',hitter:''}[roleSelect.value]||'';
+    return matches.find(row=>roleWord && row.name.includes(roleWord))||matches[0];
+  }
+  function renderScoreSummary() {
+    const totalEl=$('kboSimTotalScore'), helpEl=$('kboSimScoreHelp');
+    let total=0, counted=0, missing=[];
+    currentSkills.forEach((skill,index)=>{
+      const scoreEl=$(`kboSimScore${index+1}`), level=Number($(`kboSimLevel${index+1}`).value);
+      const row=findScoreRow(skill), value=row?.points[level];
+      if (skill && Number.isFinite(value)) { scoreEl.textContent=`Lv.${level} 점수: ${value.toFixed(2)}`; total+=value; counted++; }
+      else { scoreEl.textContent=skill?'점수표 없음':'점수: —'; if(skill) missing.push(skill.name); }
+    });
+    totalEl.textContent=counted===3?`총점: ${total.toFixed(2)}`:(counted?`부분 합계: ${total.toFixed(2)}`:'총점: —');
+    helpEl.textContent=counted===3?'세 스킬의 선택 레벨 점수를 합산했어. 등급은 카드 유형·조합 분포에 따라 달라질 수 있어.':(missing.length?`점수표에서 찾지 못한 스킬: ${missing.join(', ')}. 해당 스킬의 점수 자료가 필요해.`:'스킬과 레벨을 선택하면 점수를 계산해.');
+  }
 
   function roleAllowed(skill, role) {
     if (skill.role === 'B') return role === 'hitter';
@@ -77,6 +121,27 @@
   }
   function canLockFirst() {
     return simulatorMode === 'general' && ['impact', 'allstar'].includes(cardTypeSelect.value);
+  }
+
+  // In-game level limits: Live All-Star can reach Lv.10; ordinary, Impact, Signature, and Gold Glove cards cap at Lv.8.
+  // National Team cards and National Team skills cap at Lv.6.
+  function maxAllowedLevel(skill) {
+    if (cardTypeSelect.value === 'national' || skill?.tier === 'national') return 6;
+    if (cardTypeSelect.value === 'allstar') return 10;
+    return 8;
+  }
+
+  function configureLevelSelectors() {
+    [1, 2, 3].forEach(index => {
+      const select = $(`kboSimLevel${index}`);
+      if (!select) return;
+      const skill = currentSkills[index - 1];
+      const max = maxAllowedLevel(skill);
+      const old = Number(select.value) || 6;
+      select.innerHTML = Array.from({length: max - 4}, (_, i) => i + 5)
+        .map(level => `<option value="${level}">Lv.${level}</option>`).join('');
+      select.value = String(Math.min(old, max));
+    });
   }
 
   function visiblePool() {
@@ -198,6 +263,7 @@
     }
     currentSkills = next;
     renderSlots();
+    renderScoreSummary();
     const tiers = currentSkills.map((skill) => skill ? `${skill.name} (${TIER_NAMES[skill.tier]})` : '미선택');
     status.textContent = `변경 결과: ${tiers.join(' · ')}`;
   }
@@ -206,10 +272,10 @@
     const prior = cardTypeSelect.value;
     const options = simulatorMode === 'general'
       ? [
-          ['normal', '일반 카드'], ['impact', '임팩트'], ['allstar', '라이브 올스타']
+          ['normal', '일반 카드'], ['impact', '임팩트'], ['signature', '시그니처'], ['goldglove', '골든글러브'], ['allstar', '라이브 올스타']
         ]
       : [
-          ['normal', '일반 카드'], ['national', '국가대표 카드']
+          ['normal', '일반 카드'], ['signature', '시그니처'], ['goldglove', '골든글러브'], ['national', '국가대표 카드']
         ];
     cardTypeSelect.innerHTML = options.map(([value, label]) =>
       `<option value="${value}">${label}</option>`).join('');
@@ -252,6 +318,7 @@
         slot.tier.textContent = actual ? `${TIER_NAMES[actual.tier]} · 확정` : '메이저 확정';
       }
     });
+    configureLevelSelectors();
   }
 
   function resetForRoleOrCard() {
@@ -259,6 +326,7 @@
     configureCardTypes();
     makeInitialRoll();
     renderSlots();
+    renderScoreSummary();
     updateProbabilityNote();
     status.textContent = '새 조합을 만들었어. 각 스킬 칸에서 현재 보유 스킬을 직접 선택한 뒤 변경을 실행해도 돼.';
   }
@@ -276,7 +344,9 @@
       makeInitialRoll();
       renderSlots();
       updateProbabilityNote();
-      status.textContent = '확률 규칙을 적용했어. 스킬을 직접 선택하거나 변경 실행을 눌러줘.';
+      await loadScoreRows();
+      renderScoreSummary();
+      status.textContent = '확률 규칙과 스킬 점수 계산을 적용했어. 스킬을 직접 선택하거나 변경 실행을 눌러줘.';
     } catch (error) {
       status.textContent = `스킬 목록을 불러오지 못했어: ${error.message} 사이트 루트에 major-skills.json과 lower-skills.json이 있는지 확인해줘.`;
     }
@@ -294,6 +364,8 @@
         status.textContent = '같은 스킬은 중복 선택할 수 없어.';
       }
       renderSlots();
+      configureLevelSelectors();
+      renderScoreSummary();
     });
   });
 
@@ -307,11 +379,13 @@
     if (lockFirst.checked && currentSkills[0]) status.textContent = `1옵 ${currentSkills[0].name}을 잠갔어. 다음 변경에서 2옵·3옵만 바뀌어.`;
     else status.textContent = '1옵 잠금이 해제됐어.';
   });
+  [1,2,3].forEach(index => $(`kboSimLevel${index}`)?.addEventListener('change', renderScoreSummary));
   $('kboSimRoll')?.addEventListener('click', reroll);
   $('kboSimFresh')?.addEventListener('click', () => {
     if (!loaded) return;
     makeInitialRoll();
     renderSlots();
+    renderScoreSummary();
     status.textContent = '새로운 초기 조합을 뽑았어.';
   });
 

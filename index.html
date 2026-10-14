@@ -2266,10 +2266,11 @@ body{background:#fff!important;color:#17191c!important}
   </section>
   <section id="kboSimProbabilities" class="kbo-sim-probabilities" aria-label="적용 확률"></section>
   <section class="kbo-sim-slots" aria-label="스킬 옵션">
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel1">1옵</strong><span id="kboSimTier1" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill1">스킬</label><select id="kboSimSkill1"><option value="">스킬 목록 불러오는 중…</option></select></article>
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel2">2옵</strong><span id="kboSimTier2" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill2">스킬</label><select id="kboSimSkill2"><option value="">스킬 목록 불러오는 중…</option></select></article>
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel3">3옵</strong><span id="kboSimTier3" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill3">스킬</label><select id="kboSimSkill3"><option value="">스킬 목록 불러오는 중…</option></select></article>
+   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel1">1옵</strong><span id="kboSimTier1" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill1">스킬</label><select id="kboSimSkill1"><option value="">스킬 목록 불러오는 중…</option></select><label for="kboSimLevel1" class="kbo-sim-level-label">스킬 레벨</label><select id="kboSimLevel1" class="kbo-sim-level"><option value="5">Lv.5</option><option value="6" selected>Lv.6</option><option value="7">Lv.7</option><option value="8">Lv.8</option><option value="9">Lv.9</option><option value="10">Lv.10</option></select><p class="kbo-sim-single-score" id="kboSimScore1">점수: —</p></article>
+   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel2">2옵</strong><span id="kboSimTier2" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill2">스킬</label><select id="kboSimSkill2"><option value="">스킬 목록 불러오는 중…</option></select><label for="kboSimLevel2" class="kbo-sim-level-label">스킬 레벨</label><select id="kboSimLevel2" class="kbo-sim-level"><option value="5">Lv.5</option><option value="6" selected>Lv.6</option><option value="7">Lv.7</option><option value="8">Lv.8</option><option value="9">Lv.9</option><option value="10">Lv.10</option></select><p class="kbo-sim-single-score" id="kboSimScore2">점수: —</p></article>
+   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel3">3옵</strong><span id="kboSimTier3" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill3">스킬</label><select id="kboSimSkill3"><option value="">스킬 목록 불러오는 중…</option></select><label for="kboSimLevel3" class="kbo-sim-level-label">스킬 레벨</label><select id="kboSimLevel3" class="kbo-sim-level"><option value="5">Lv.5</option><option value="6" selected>Lv.6</option><option value="7">Lv.7</option><option value="8">Lv.8</option><option value="9">Lv.9</option><option value="10">Lv.10</option></select><p class="kbo-sim-single-score" id="kboSimScore3">점수: —</p></article>
   </section>
+  <section id="kboSimScoreSummary" class="kbo-sim-score-summary" aria-live="polite"><span>현재 조합 스킬 점수</span><strong id="kboSimTotalScore">총점: —</strong><small id="kboSimScoreHelp">스킬과 레벨을 선택하면 점수를 계산해.</small></section>
   <div class="kbo-sim-actions"><button id="kboSimRoll" type="button">스킬 변경 실행</button><button id="kboSimFresh" type="button">초기 조합 다시 뽑기</button></div>
   <p id="kboSimStatus" class="kbo-sim-status" role="status" aria-live="polite">스킬 목록을 불러오는 중이야.</p>
   <p class="kbo-sim-footnote">등급 확률은 지정된 값으로 적용돼. 각 등급 안에서 어떤 스킬이 나올지에 대한 별도 확률 데이터는 제공되지 않아, 해당 역할에서 선택 가능한 스킬을 균등 추첨해. 스킬 종류는 중복되지 않게 처리해.</p>
@@ -2279,6 +2280,12 @@ body{background:#fff!important;color:#17191c!important}
 <script src="./kbo-skill-score.js?v=1.0.0"></script>
 <script src="./kbo-skill-simulator.js?v=1.0.0"></script>
 <script src="./kbo-lobby.js?v=2.2.0"></script>
+
+<style id="kbo-sim-score-styles">
+.kbo-sim-level-label{display:block;margin-top:12px!important}.kbo-sim-slot .kbo-sim-level{margin-top:0}.kbo-sim-single-score{margin:10px 0 0;color:#5b45c5;font-size:12px;font-weight:900}.kbo-sim-score-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding:16px;border:1px solid #d8d4fb;border-radius:14px;background:linear-gradient(110deg,#f7f5ff,#fff);color:#39435c}.kbo-sim-score-summary>span{font-size:13px;font-weight:800}.kbo-sim-score-summary>strong{font-size:23px;color:#4938bb}.kbo-sim-score-summary>small{width:100%;font-size:11px;color:#718096;line-height:1.6}
+@media(max-width:700px){.kbo-sim-score-summary>strong{font-size:20px}}
+</style>
+
 </body>
 </html>
 
