@@ -1739,6 +1739,13 @@ body{background:#fff!important;color:#17191c!important}
 .kbo-score-grade{font-size:24px!important;letter-spacing:.3px}
 .kbo-score-grade.grade-c{color:#64748b}.kbo-score-grade.grade-b{color:#2879df}.kbo-score-grade.grade-a{color:#159a61}
 .kbo-score-grade.grade-s{color:#e4a21b}.kbo-score-grade.grade-ss{color:#e24d4d}.kbo-score-grade.grade-srp{color:#8b47dd}
+.kbo-score-distribution{margin-top:16px;border:1px solid #e6edf5;border-radius:14px;overflow:hidden}
+.kbo-score-distribution-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 13px;background:#f7f9fc}
+.kbo-score-distribution-head h3{margin:0;font-size:14px}.kbo-score-distribution-head span{font-size:11px;color:#78869a}
+.kbo-score-distribution table{width:100%;border-collapse:collapse;font-size:12px}
+.kbo-score-distribution th,.kbo-score-distribution td{padding:9px 12px;text-align:left;border-top:1px solid #edf1f6}
+.kbo-score-distribution th{width:54px;font-weight:900}.kbo-score-distribution td:last-child{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kbo-score-cutoff{color:#26364f}
 .kbo-score-note{margin:13px 0 0;color:#768397;font-size:11px;line-height:1.7}
 .kbo-score-status{color:#c2410c;font-size:12px;margin-top:10px}
 @media(max-width:780px){.kbo-score-slot-grid{grid-template-columns:1fr}.kbo-score-slot{padding:14px}.kbo-score-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -1837,7 +1844,11 @@ body{background:#fff!important;color:#17191c!important}
     <div class="kbo-score-metric"><span>기대 시도 횟수</span><strong id="kboScoreAttempts">—</strong></div>
    </div>
    <div id="kboScoreStatus" class="kbo-score-status" role="status" aria-live="polite"></div>
-   <p class="kbo-score-note">점수는 제공된 스킬 점수표의 레벨별 값을 합산합니다. 골든글러브는 기준 조합 6-6-6, 그 외 카드는 6-5-5를 기준으로 가능한 조합의 상위 비율을 참고 계산합니다. 공개 표에는 일부 레벨 값이 비어 있어 해당 레벨은 선택할 수 없습니다. 스킬 출현 가중치 및 일부 카드별 제한을 모두 확보하지 못해 등급·확률·기대 횟수는 CPBV LAB 원본과 완전히 일치하지 않을 수 있습니다. 임팩트 카드의 1번 스킬 점수는 총점에서 제외합니다.</p>
+   <section class="kbo-score-distribution" aria-label="등급별 점수 분포 기준">
+    <div class="kbo-score-distribution-head"><h3>등급별 기준 점수</h3><span id="kboScoreDistributionCount">조합 분포 계산 중</span></div>
+    <table><thead><tr><th scope="col">등급</th><th scope="col">상위 확률 기준</th><th scope="col">분포상 점수 컷</th></tr></thead><tbody id="kboScoreDistributionRows"><tr><td colspan="3">점수 분포 계산 중…</td></tr></tbody></table>
+   </section>
+   <p class="kbo-score-note">점수 컷은 현재 선택한 역할·카드 타입과 점수표에 등록된 스킬로 가능한 서로 다른 스킬 조합을 열거해 계산합니다. 골든글러브는 6-6-6, 그 외 카드는 6-5-5 기준이며 임팩트는 2개 스킬 점수로 비교합니다. 동점 조합은 같은 점수로 처리합니다. 스킬 출현 가중치와 일부 카드별 제한을 모두 확보하지 못해 CPBV LAB 원본의 등급 분포와 완전히 일치한다고 보장할 수 없는 참고값입니다.</p>
   </div>
  </main>
 </div>

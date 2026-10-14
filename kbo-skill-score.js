@@ -150,6 +150,68 @@
     return Number.isFinite(score) ? score : null;
   }
 
+  function lowerBound(values, target) {
+    let lo = 0, hi = values.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (values[mid] >= target - 1e-9) hi = mid;
+      else lo = mid + 1;
+    }
+    return lo;
+  }
+
+  function cutoffForRate(values, maxRate) {
+    if (!values.length) return null;
+    // Find the lowest attainable total whose empirical upper-tail rate is at
+    // or below the requested percentile. Duplicate totals are treated as ties.
+    const unique = [];
+    for (const value of values) {
+      if (!unique.length || Math.abs(value - unique[unique.length - 1]) > 1e-9) unique.push(value);
+    }
+    let lo = 0, hi = unique.length - 1, answer = null;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      const rate = (values.length - lowerBound(values, unique[mid])) / values.length;
+      if (rate <= maxRate + 1e-12) {
+        answer = unique[mid];
+        hi = mid - 1;
+      } else lo = mid + 1;
+    }
+    return answer;
+  }
+
+  function updateDistributionTable() {
+    const body = $('kboScoreDistributionRows');
+    const countEl = $('kboScoreDistributionCount');
+    if (!body || !countEl) return;
+    const values = distributionForCurrentCondition();
+    body.innerHTML = '';
+    countEl.textContent = values.length ? `${values.length.toLocaleString('ko-KR')}개 조합 기준` : '비교 가능한 조합 없음';
+    const rows = [
+      { label: 'SR+', rate: 0.001, text: '상위 0.1% 이내', cls: 'grade-srp' },
+      { label: 'SS', rate: 0.005, text: '상위 0.5% 이내', cls: 'grade-ss' },
+      { label: 'S', rate: 0.015, text: '상위 1.5% 이내', cls: 'grade-s' },
+      { label: 'A', rate: 0.05, text: '상위 5% 이내', cls: 'grade-a' },
+      { label: 'B', rate: 0.12, text: '상위 12% 이내', cls: 'grade-b' },
+      { label: 'C', rate: null, text: '상위 12% 초과', cls: 'grade-c' }
+    ];
+    rows.forEach(item => {
+      const tr = document.createElement('tr');
+      const grade = document.createElement('th');
+      grade.scope = 'row'; grade.textContent = item.label; grade.className = item.cls;
+      const condition = document.createElement('td'); condition.textContent = item.text;
+      const score = document.createElement('td'); score.className = 'kbo-score-cutoff';
+      if (item.rate === null) {
+        const bCutoff = cutoffForRate(values, 0.12);
+        score.textContent = bCutoff === null ? '—' : `${formatScore(bCutoff)} 미만`;
+      } else {
+        const cutoff = cutoffForRate(values, item.rate);
+        score.textContent = cutoff === null ? '표본상 기준 없음' : `${formatScore(cutoff)} 이상`;
+      }
+      tr.append(grade, condition, score); body.appendChild(tr);
+    });
+  }
+
   function distributionForCurrentCondition() {
     const role = roleEl.value;
     const type = cardTypeEl.value;
@@ -202,12 +264,7 @@
   function upperProbability(total) {
     const values = distributionForCurrentCondition();
     if (!values.length || !Number.isFinite(total)) return null;
-    let lo = 0, hi = values.length;
-    while (lo < hi) {
-      const mid = (lo + hi) >> 1;
-      if (values[mid] >= total - 1e-9) hi = mid;
-      else lo = mid + 1;
-    }
+    const lo = lowerBound(values, total);
     // A finite sample with no equal-or-higher baseline combination is reported
     // as the minimum observable probability rather than a false zero chance.
     const count = Math.max(1, values.length - lo);
@@ -231,6 +288,7 @@
     const rateEl = $('kboScoreRate');
     const attemptsEl = $('kboScoreAttempts');
     const statusEl = $('kboScoreStatus');
+    updateDistributionTable();
     const isImpact = cardTypeEl.value === 'impact';
     const neededSlots = isImpact ? [2, 3] : [1, 2, 3];
     const scored = neededSlots.every(slot => getSlotScore(slot) !== null);
