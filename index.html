@@ -1636,6 +1636,29 @@ body{background:#fff!important;color:#17191c!important}
   }
 }
 </style>
+
+<style id="kbo-feature-lobby-style">
+#kboFeatureLobby{position:fixed;inset:0;z-index:100000;background:radial-gradient(ellipse at 50% -15%,#e7f0ff 0%,#f5f8fc 48%,#edf2f8 100%);color:#172338;overflow:auto;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;padding:clamp(16px,4vw,42px);box-sizing:border-box}
+#kboFeatureLobby[hidden]{display:none!important}
+.kbo-lobby-inner{width:min(880px,100%);margin:0 auto}
+.kbo-lobby-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:0 0 26px}
+.kbo-lobby-brand{display:flex;align-items:center;gap:12px}
+.kbo-lobby-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:#1f70d1;color:#fff;font-size:23px;font-weight:900;box-shadow:0 8px 20px #246bc12b}
+.kbo-lobby-brand h1{font-size:clamp(23px,4vw,32px);line-height:1.1;margin:0;letter-spacing:-.8px}
+.kbo-lobby-brand p{margin:5px 0 0;color:#728097;font-size:13px}
+.kbo-lobby-login{border:0;border-radius:12px;background:#fff;color:#28364b;padding:11px 15px;font-weight:800;box-shadow:0 3px 14px #213b5b12;cursor:pointer;white-space:nowrap}
+.kbo-lobby-heading{margin:0 0 15px;font-size:19px;letter-spacing:-.3px}
+.kbo-lobby-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.kbo-lobby-card{appearance:none;display:flex;align-items:flex-start;gap:15px;text-align:left;min-height:136px;padding:22px;border:1px solid #e0e7f0;border-radius:20px;background:rgba(255,255,255,.94);color:#172338;box-shadow:0 8px 25px #1b35520a;cursor:pointer;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;font:inherit}
+.kbo-lobby-card:hover{transform:translateY(-2px);border-color:#9bc4f5;box-shadow:0 12px 28px #1b355216}
+.kbo-lobby-icon{flex:0 0 48px;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:#eaf3ff;color:#287bd7;font-size:23px;font-weight:900}
+.kbo-lobby-card strong{display:block;font-size:17px;margin:1px 0 7px;letter-spacing:-.35px}
+.kbo-lobby-card small{display:block;font-size:12px;line-height:1.55;color:#7a879a}
+.kbo-lobby-card .kbo-lobby-tag{display:inline-block;margin-top:10px;font-size:10px;font-weight:800;color:#3976b9;background:#edf5ff;border-radius:999px;padding:4px 8px}
+.kbo-lobby-foot{margin:18px 2px 0;color:#8490a1;font-size:11px;line-height:1.6}
+@media(max-width:560px){#kboFeatureLobby{padding:20px 15px}.kbo-lobby-top{align-items:flex-start}.kbo-lobby-login{padding:10px 11px;font-size:12px}.kbo-lobby-mark{width:42px;height:42px}.kbo-lobby-grid{gap:10px}.kbo-lobby-card{display:block;min-height:155px;padding:15px;border-radius:16px}.kbo-lobby-icon{width:42px;height:42px;margin-bottom:12px}.kbo-lobby-card strong{font-size:15px}.kbo-lobby-card small{font-size:11px}}
+</style>
+
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="field-remove-black" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2126 .7152 .0722 0 0"/><feComponentTransfer><feFuncA type="linear" slope="20" intercept="-0.5"/></feComponentTransfer><feComposite in="SourceGraphic" operator="in"/></filter></defs></svg>
@@ -1947,9 +1970,39 @@ body{background:#fff!important;color:#17191c!important}
  <section><h3>내 커스텀 선수</h3><div class="custom-actions"><button onclick="openCustomCards()">새 선수</button><button onclick="exportCustomCards()">백업 내보내기</button><label>백업 불러오기<input type="file" accept=".json,application/json" onchange="importCustomCards(this)"></label></div><div id="customList"></div></section>
 </dialog>
 
+
+<div id="kboFeatureLobby" aria-label="KBO 도구 선택 메인 화면">
+ <div class="kbo-lobby-inner">
+  <header class="kbo-lobby-top">
+   <div class="kbo-lobby-brand">
+    <div class="kbo-lobby-mark" aria-hidden="true">K</div>
+    <div><h1>KBO LAB</h1><p>컴투스프로야구 V26 도구 모음</p></div>
+   </div>
+   <button id="kboLobbyLogin" class="kbo-lobby-login" type="button">◉ Google 로그인</button>
+  </header>
+  <h2 class="kbo-lobby-heading">무엇을 이용할까요?</h2>
+  <div class="kbo-lobby-grid">
+   <button class="kbo-lobby-card" type="button" data-cpbv-link>
+    <span class="kbo-lobby-icon" aria-hidden="true">▦</span><span><strong>스킬 점수 계산기</strong><small>스킬 총점 · 등급 · 상위 확률 · 기대 시도 횟수</small><span class="kbo-lobby-tag">SKILL SCORE</span></span>
+   </button>
+   <button class="kbo-lobby-card" type="button" data-cpbv-link>
+    <span class="kbo-lobby-icon" aria-hidden="true">↻</span><span><strong>일스변 시뮬</strong><small>일반 스킬 변경 결과를 미리 확인</small><span class="kbo-lobby-tag">IMPACT ROLL</span></span>
+   </button>
+   <button class="kbo-lobby-card" type="button" data-cpbv-link>
+    <span class="kbo-lobby-icon" aria-hidden="true">⌁</span><span><strong>고스변 시뮬</strong><small>고급 스킬 변경 및 목표 등급 시뮬레이션</small><span class="kbo-lobby-tag">ADVANCED ROLL</span></span>
+   </button>
+   <button id="kboLobbySquad" class="kbo-lobby-card" type="button">
+    <span class="kbo-lobby-icon" aria-hidden="true">♟</span><span><strong>스쿼드메이커</strong><small>선수 카드 · 라인업 · 능력치 관리</small><span class="kbo-lobby-tag">OPEN SQUADMAKER</span></span>
+   </button>
+  </div>
+  <p class="kbo-lobby-foot">계산기와 시뮬레이터는 CPBV LAB으로 연결됩니다. 스쿼드메이커는 기존 기능을 그대로 사용합니다.</p>
+ </div>
+</div>
+
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.4.5-natural-impact-logo"></script>
+<script src="./bootstrap.js?v=15.4.6-lobby"></script>
+<script src="./kbo-lobby.js?v=1.0.0"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
