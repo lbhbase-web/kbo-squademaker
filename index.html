@@ -1712,8 +1712,8 @@ body{background:#fff!important;color:#17191c!important}
  font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;box-sizing:border-box
 }
 .kbo-score-content{width:min(1180px,100%);margin:0 auto;padding:clamp(14px,3vw,30px);box-sizing:border-box}
-.kbo-score-rolebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}
-.kbo-score-field{display:flex;flex-direction:column;gap:7px;font-weight:800;font-size:13px;color:#46566d}
+.kbo-score-rolebar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.kbo-score-field{display:flex;flex-direction:column;gap:7px;font-weight:800;font-size:13px;color:#46566d}.kbo-score-field[hidden]{display:none!important}
 .kbo-score-field select,.kbo-score-slot select{
  width:100%;min-width:0;min-height:42px;border:1px solid #d9e3ef;border-radius:12px;background:#fff;color:#172338;
  padding:9px 11px;font:inherit;font-weight:600;box-sizing:border-box
@@ -1732,7 +1732,7 @@ body{background:#fff!important;color:#17191c!important}
 .kbo-score-results-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
 .kbo-score-results-top h2{margin:0;font-size:18px}
 .kbo-score-total{font-size:clamp(30px,6vw,42px);font-weight:900;letter-spacing:-1px;color:#1767bd;font-variant-numeric:tabular-nums}
-.kbo-score-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.kbo-score-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
 .kbo-score-metric{border:1px solid #e6edf5;border-radius:13px;padding:12px;background:#fbfcfe}
 .kbo-score-metric span{display:block;color:#78869a;font-size:11px;font-weight:700}
 .kbo-score-metric strong{display:block;margin-top:5px;font-size:18px;font-weight:900;font-variant-numeric:tabular-nums}
@@ -1748,40 +1748,8 @@ body{background:#fff!important;color:#17191c!important}
 .kbo-score-cutoff{color:#26364f}
 .kbo-score-note{margin:13px 0 0;color:#768397;font-size:11px;line-height:1.7}
 .kbo-score-status{color:#c2410c;font-size:12px;margin-top:10px}
-@media(max-width:780px){.kbo-score-slot-grid{grid-template-columns:1fr}.kbo-score-slot{padding:14px}.kbo-score-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:780px){.kbo-score-slot-grid{grid-template-columns:1fr}.kbo-score-slot{padding:14px}.kbo-score-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.kbo-score-rolebar{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:500px){.kbo-score-rolebar{grid-template-columns:1fr}.kbo-score-content{padding:12px}.kbo-score-results{padding:14px}.kbo-score-metric{padding:9px}.kbo-score-metric strong{font-size:15px}.kbo-score-grade{font-size:21px!important}}
-</style>
-
-
-<style id="kbo-skill-sim-style">
-#kboSkillSimView[hidden]{display:none!important}
-#kboSkillSimView{position:fixed;inset:0;z-index:100003;overflow:auto;background:#f5f8fc;color:#172338;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;box-sizing:border-box}
-.kbo-sim-content{max-width:1040px;margin:0 auto;padding:24px 20px 44px;color:#18253a}
-.kbo-sim-controls{display:grid;grid-template-columns:1fr 1fr minmax(190px,.8fr);gap:12px;align-items:stretch;margin-bottom:16px}
-.kbo-sim-controls>label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:800;color:#536176}
-.kbo-sim-controls select,.kbo-sim-slot select{width:100%;min-width:0;min-height:44px;border:1px solid #d6dfeb;border-radius:11px;background:#fff;color:#1b2b45;padding:9px 11px;font:inherit;font-size:14px;box-sizing:border-box}
-.kbo-sim-lock{display:flex!important;flex-direction:row!important;align-items:center;gap:10px!important;border:1px solid #d6dfeb;border-radius:12px;padding:10px 12px;box-sizing:border-box;background:#fff}
-.kbo-sim-lock input{width:20px;height:20px;accent-color:#5746d8;flex:0 0 auto}
-.kbo-sim-lock span{display:flex;flex-direction:column;gap:3px;color:#24324b}
-.kbo-sim-lock small{font-size:10px;font-weight:600;color:#8792a4}
-.kbo-sim-lock.is-disabled{opacity:.52;background:#f4f6f9}
-.kbo-sim-probabilities{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px 15px;border:1px solid #dbe3f0;border-radius:14px;background:#f6f8fc;margin-bottom:18px}
-.kbo-sim-probabilities>b{width:100%;font-size:13px;color:#263652;margin-bottom:2px}
-.kbo-sim-probabilities>span{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d9e0ed;border-radius:999px;padding:6px 10px;background:#fff;color:#34435b;font-size:12px;font-weight:800}
-.kbo-sim-probabilities>p{width:100%;margin:4px 0 0;color:#6c7b90;font-size:11px;line-height:1.65}
-.kbo-sim-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.kbo-sim-slot{min-width:0;border:1px solid #e0e6ef;border-radius:15px;padding:15px;background:#fff;box-shadow:0 4px 15px rgba(20,40,75,.04)}
-.kbo-sim-slot-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:15px}
-.kbo-sim-slot-head>strong{font-size:17px;color:#17243a}
-.kbo-sim-tier{display:inline-flex;align-items:center;justify-content:center;min-height:25px;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:900;white-space:nowrap}
-.kbo-sim-slot>label{display:block;margin-bottom:6px;font-size:11px;font-weight:800;color:#64738a}
-.kbo-sim-actions{display:flex;gap:10px;margin-top:16px}
-.kbo-sim-actions button{min-height:45px;border:1px solid #4335b5;border-radius:11px;background:#5142d6;color:#fff;font-weight:900;padding:10px 18px;cursor:pointer}
-.kbo-sim-actions button+button{border-color:#d1d9e7;background:#fff;color:#35435b}
-.kbo-sim-status{min-height:22px;margin:15px 0 0;color:#3a4b65;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
-.kbo-sim-footnote{margin:15px 0 0;padding:12px 14px;border-left:3px solid #a7b2c4;background:#f7f9fc;color:#6a788d;font-size:11px;line-height:1.8}
-.kbo-sim-brand-mark{font-size:11px;font-weight:900;letter-spacing:.12em;color:#7c8da6}
-@media(max-width:700px){.kbo-sim-content{padding:15px 12px 30px}.kbo-sim-controls{grid-template-columns:1fr 1fr}.kbo-sim-controls>label:first-child{grid-column:span 1}.kbo-sim-lock{grid-column:span 2}.kbo-sim-slots{grid-template-columns:1fr}.kbo-sim-slot{padding:13px}.kbo-sim-actions{flex-direction:column}.kbo-sim-actions button{width:100%}.kbo-sim-probabilities{gap:6px;padding:12px}.kbo-sim-probabilities>span{font-size:11px;padding:6px 8px}}
 </style>
 
 </head>
@@ -1801,17 +1769,17 @@ body{background:#fff!important;color:#17191c!important}
    <button class="kbo-lobby-card" type="button" data-cpbv-open="skill-score">
     <span class="kbo-lobby-icon" aria-hidden="true">▦</span><span><strong>스킬 점수 계산기</strong><small>스킬별 점수 · 총점 · 등급 · 상위 확률 · 기대 시도 횟수</small><span class="kbo-lobby-tag">SKILL SCORE</span></span>
    </button>
-   <button class="kbo-lobby-card" type="button" data-sim-open="general">
+   <button class="kbo-lobby-card" type="button" data-cpbv-open="impact-roll">
     <span class="kbo-lobby-icon" aria-hidden="true">↻</span><span><strong>일스변 시뮬</strong><small>일반 스킬 변경 결과와 목표 조합 확인</small><span class="kbo-lobby-tag">IMPACT ROLL</span></span>
    </button>
-   <button class="kbo-lobby-card" type="button" data-sim-open="advanced">
+   <button class="kbo-lobby-card" type="button" data-cpbv-open="advanced-roll">
     <span class="kbo-lobby-icon" aria-hidden="true">⌁</span><span><strong>고스변 시뮬</strong><small>고급 스킬 변경 및 목표 등급 시뮬레이션</small><span class="kbo-lobby-tag">ADVANCED ROLL</span></span>
    </button>
    <button id="kboLobbySquad" class="kbo-lobby-card" type="button">
     <span class="kbo-lobby-icon" aria-hidden="true">♟</span><span><strong>스쿼드메이커</strong><small>기존 선수 카드 · 라인업 · 능력치 관리</small><span class="kbo-lobby-tag">OPEN SQUADMAKER</span></span>
    </button>
   </div>
-  <p class="kbo-lobby-foot">스킬 점수 계산기는 제공된 점수표 기준으로 계산하고, 일스변·고스변은 설정한 등급별 확률로 시뮬레이션합니다. 스쿼드메이커와 Google 로그인은 기존 기능을 사용합니다.</p>
+  <p class="kbo-lobby-foot">스킬 계산기와 시뮬레이터는 CPBV LAB의 원본 도구를 열어 계산 기준과 결과를 유지합니다. 스쿼드메이커와 Google 로그인은 기존 기능을 사용합니다.</p>
  </div>
 </div>
 <div id="kboCpbvView" hidden aria-label="CPBV LAB 도구">
@@ -1850,6 +1818,12 @@ body{background:#fff!important;color:#17191c!important}
      <option value="impact">임팩트</option>
     </select>
    </label>
+   <label id="kboScoreHitterPositionWrap" class="kbo-score-field">타자 포지션
+    <select id="kboScoreHitterPosition">
+     <option value="fielder">야수</option>
+     <option value="catcher">포수</option>
+    </select>
+   </label>
   </div>
   <div id="kboScoreSlots" class="kbo-score-slot-grid">
    <section class="kbo-score-slot" data-slot="1">
@@ -1871,16 +1845,21 @@ body{background:#fff!important;color:#17191c!important}
   <div class="kbo-score-results">
    <div class="kbo-score-results-top"><h2>계산 결과</h2><div>총점 <span id="kboScoreTotal" class="kbo-score-total">—</span></div></div>
    <div class="kbo-score-metrics">
-    <div class="kbo-score-metric"><span>참고 등급</span><strong id="kboScoreGrade" class="kbo-score-grade">—</strong></div>
-    <div class="kbo-score-metric"><span>상위 확률(참고)</span><strong id="kboScoreRate">—</strong></div>
-    <div class="kbo-score-metric"><span>기대 시도 횟수</span><strong id="kboScoreAttempts">—</strong></div>
+    <div class="kbo-score-metric"><span>분포 등급(추정)</span><strong id="kboScoreGrade" class="kbo-score-grade">—</strong></div>
+    <div class="kbo-score-metric"><span>엑셀 기준 등급</span><strong id="kboScoreExcelGrade" class="kbo-score-grade">—</strong></div>
+    <div class="kbo-score-metric"><span>상위 확률(추정)</span><strong id="kboScoreRate">—</strong></div>
+    <div class="kbo-score-metric"><span>기대 시도 횟수(추정)</span><strong id="kboScoreAttempts">—</strong></div>
    </div>
    <div id="kboScoreStatus" class="kbo-score-status" role="status" aria-live="polite"></div>
    <section class="kbo-score-distribution" aria-label="등급별 점수 분포 기준">
     <div class="kbo-score-distribution-head"><h3>등급별 기준 점수</h3><span id="kboScoreDistributionCount">조합 분포 계산 중</span></div>
     <table><thead><tr><th scope="col">등급</th><th scope="col">상위 확률 기준</th><th scope="col">분포상 점수 컷</th></tr></thead><tbody id="kboScoreDistributionRows"><tr><td colspan="3">점수 분포 계산 중…</td></tr></tbody></table>
    </section>
-   <p class="kbo-score-note">점수 컷은 현재 선택한 역할·카드 타입과 점수표에 등록된 스킬로 가능한 서로 다른 스킬 조합을 열거해 계산합니다. 골든글러브는 6-6-6, 그 외 카드는 6-5-5 기준이며 임팩트는 2개 스킬 점수로 비교합니다. 동점 조합은 같은 점수로 처리합니다. 스킬 출현 가중치와 일부 카드별 제한을 모두 확보하지 못해 CPBV LAB 원본의 등급 분포와 완전히 일치한다고 보장할 수 없는 참고값입니다.</p>
+   <section class="kbo-score-distribution" aria-label="엑셀 카드별 등급 컷">
+    <div class="kbo-score-distribution-head"><h3>엑셀 기준 등급 컷 (고스변 기준)</h3><span id="kboScoreExcelCutoffContext">카드 조건 선택 중</span></div>
+    <table><thead><tr><th scope="col">등급</th><th scope="col">상위 확률 기준</th><th scope="col">엑셀 점수 컷</th></tr></thead><tbody id="kboScoreExcelCutoffRows"><tr><td colspan="3">카드 조건 확인 중…</td></tr></tbody></table>
+   </section>
+   <p class="kbo-score-note">엑셀 기준은 사용자가 제공한 ‘KBO 스킬점수 등급컷 SRplus 계산’ 파일의 ‘카드별 점수 컷’ 시트를 반영했습니다. 타자는 야수/포수로 나뉘며, 임팩트는 2·3옵션 합계만 판정합니다. 올스타·라이브/일반 시즌의 고정 점수 컷은 자료에 없어 기준 미제공으로 표시합니다. 위의 분포 등급·상위 확률은 현재 점수표에서 가능한 조합을 열거한 별도의 추정치입니다.</p>
   </div>
  </main>
 </div>
@@ -2239,53 +2218,8 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-series-fallback{position:absolute!important;left:3px!important;bottom:21px!important;max-width:calc(100% - 34px)!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:5px!important;line-height:1!important;font-weight:900!important;color:#fff!important;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000!important;z-index:18!important}
 </style>
 
-
-<div id="kboSkillSimView" hidden aria-label="스킬 변경 시뮬레이터">
- <header class="kbo-cpbv-header">
-  <button id="kboSimHome" type="button">← 메인 메뉴</button>
-  <div class="kbo-cpbv-title"><strong id="kboSimTitle">일스변 시뮬</strong><small id="kboSimSubtitle">등급 확률에 따른 스킬 변경 시뮬레이터</small></div>
-  <span class="kbo-sim-brand-mark">KBO LAB</span>
- </header>
- <main class="kbo-sim-content">
-  <section class="kbo-sim-controls" aria-label="시뮬레이터 설정">
-   <label>선수 역할
-    <select id="kboSimRole">
-     <option value="hitter">타자</option>
-     <option value="starter">투수 · 선발</option>
-     <option value="middle">투수 · 중계</option>
-     <option value="closer">투수 · 마무리</option>
-    </select>
-   </label>
-   <label>카드 유형
-    <select id="kboSimCardType"><option value="normal">일반 카드</option></select>
-   </label>
-   <label id="kboSimLockWrap" class="kbo-sim-lock is-disabled">
-    <input id="kboSimLockFirst" type="checkbox" disabled>
-    <span><b>1옵 잠금</b><small id="kboSimLockHelp">임팩트·라이브 올스타 전용</small></span>
-   </label>
-  </section>
-  <section id="kboSimProbabilities" class="kbo-sim-probabilities" aria-label="적용 확률"></section>
-  <section class="kbo-sim-slots" aria-label="스킬 옵션">
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel1">1옵</strong><span id="kboSimTier1" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill1">스킬</label><select id="kboSimSkill1"><option value="">스킬 목록 불러오는 중…</option></select><label for="kboSimLevel1" class="kbo-sim-level-label">스킬 레벨</label><select id="kboSimLevel1" class="kbo-sim-level"><option value="5">Lv.5</option><option value="6" selected>Lv.6</option><option value="7">Lv.7</option><option value="8">Lv.8</option><option value="9">Lv.9</option><option value="10">Lv.10</option></select><p class="kbo-sim-single-score" id="kboSimScore1">점수: —</p></article>
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel2">2옵</strong><span id="kboSimTier2" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill2">스킬</label><select id="kboSimSkill2"><option value="">스킬 목록 불러오는 중…</option></select><label for="kboSimLevel2" class="kbo-sim-level-label">스킬 레벨</label><select id="kboSimLevel2" class="kbo-sim-level"><option value="5">Lv.5</option><option value="6" selected>Lv.6</option><option value="7">Lv.7</option><option value="8">Lv.8</option><option value="9">Lv.9</option><option value="10">Lv.10</option></select><p class="kbo-sim-single-score" id="kboSimScore2">점수: —</p></article>
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel3">3옵</strong><span id="kboSimTier3" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill3">스킬</label><select id="kboSimSkill3"><option value="">스킬 목록 불러오는 중…</option></select><label for="kboSimLevel3" class="kbo-sim-level-label">스킬 레벨</label><select id="kboSimLevel3" class="kbo-sim-level"><option value="5">Lv.5</option><option value="6" selected>Lv.6</option><option value="7">Lv.7</option><option value="8">Lv.8</option><option value="9">Lv.9</option><option value="10">Lv.10</option></select><p class="kbo-sim-single-score" id="kboSimScore3">점수: —</p></article>
-  </section>
-  <section id="kboSimScoreSummary" class="kbo-sim-score-summary" aria-live="polite"><span>현재 조합 스킬 점수</span><strong id="kboSimTotalScore">총점: —</strong><small id="kboSimScoreHelp">스킬과 레벨을 선택하면 점수를 계산해.</small></section>
-  <div class="kbo-sim-actions"><button id="kboSimRoll" type="button">스킬 변경 실행</button><button id="kboSimFresh" type="button">초기 조합 다시 뽑기</button></div>
-  <p id="kboSimStatus" class="kbo-sim-status" role="status" aria-live="polite">스킬 목록을 불러오는 중이야.</p>
-  <p class="kbo-sim-footnote">등급 확률은 지정된 값으로 적용돼. 각 등급 안에서 어떤 스킬이 나올지에 대한 별도 확률 데이터는 제공되지 않아, 해당 역할에서 선택 가능한 스킬을 균등 추첨해. 스킬 종류는 중복되지 않게 처리해.</p>
- </main>
-</div>
-
-<script src="./kbo-skill-score.js?v=1.0.0"></script>
-<script src="./kbo-skill-simulator.js?v=1.0.0"></script>
-<script src="./kbo-lobby.js?v=2.2.0"></script>
-
-<style id="kbo-sim-score-styles">
-.kbo-sim-level-label{display:block;margin-top:12px!important}.kbo-sim-slot .kbo-sim-level{margin-top:0}.kbo-sim-single-score{margin:10px 0 0;color:#5b45c5;font-size:12px;font-weight:900}.kbo-sim-score-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding:16px;border:1px solid #d8d4fb;border-radius:14px;background:linear-gradient(110deg,#f7f5ff,#fff);color:#39435c}.kbo-sim-score-summary>span{font-size:13px;font-weight:800}.kbo-sim-score-summary>strong{font-size:23px;color:#4938bb}.kbo-sim-score-summary>small{width:100%;font-size:11px;color:#718096;line-height:1.6}
-@media(max-width:700px){.kbo-sim-score-summary>strong{font-size:20px}}
-</style>
-
+<script src="./kbo-skill-score.js?v=20261015-excel-cutoffs"></script>
+<script src="./kbo-lobby.js?v=2.1.0"></script>
 </body>
 </html>
 

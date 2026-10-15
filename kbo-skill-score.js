@@ -111,6 +111,126 @@
     return ['C', 'grade-c'];
   }
 
+  // Fixed thresholds transcribed from the user-provided workbook's
+  // "카드별 점수 컷" sheet. Values are reference cutoffs for the 고스변 assumptions.
+  const EXCEL_SCORE_CUTOFFS = {
+    hitter: {
+      fielder: {
+        signature: [51.36, 45.96, 41.36, 35.47, 30.82],
+        gold:      [56.25, 49.96, 45.04, 38.72, 33.19],
+        national:  [53.42, 47.74, 43.44, 37.54, 32.53],
+        impact:    [35.10, 28.78, 24.96, 21.15, 15.32]
+      },
+      catcher: {
+        signature: [51.10, 45.69, 41.13, 35.23, 30.62],
+        gold:      [56.02, 49.68, 44.86, 38.38, 32.99],
+        national:  [53.16, 47.59, 43.24, 37.29, 32.31],
+        impact:    [34.86, 28.36, 24.93, 20.97, 15.18]
+      }
+    },
+    starter: {
+      signature: [49.92, 44.71, 39.97, 34.63, 29.80],
+      gold:      [55.42, 49.34, 44.05, 37.61, 32.21],
+      national:  [53.06, 47.32, 42.83, 36.96, 32.14],
+      impact:    [33.28, 28.35, 24.12, 19.52, 15.69]
+    },
+    middle: {
+      signature: [52.46, 46.98, 41.80, 36.06, 30.83],
+      gold:      [57.67, 51.15, 45.52, 38.80, 32.94],
+      national:  [54.84, 48.89, 44.16, 38.05, 32.92],
+      impact:    [35.81, 29.87, 25.63, 20.23, 15.99]
+    },
+    closer: {
+      signature: [51.52, 46.19, 41.22, 35.45, 30.44],
+      gold:      [56.65, 50.54, 44.83, 38.22, 32.54],
+      national:  [54.17, 48.26, 43.66, 37.51, 32.62],
+      impact:    [33.95, 29.42, 25.48, 19.73, 15.77]
+    }
+  };
+  const EXCEL_GRADE_ROWS = [
+    { label: 'SR+', rate: '상위 0.1% 기준', cls: 'grade-srp' },
+    { label: 'SS', rate: '상위 0.5% 기준', cls: 'grade-ss' },
+    { label: 'S', rate: '상위 1.5% 기준', cls: 'grade-s' },
+    { label: 'A', rate: '상위 5% 기준', cls: 'grade-a' },
+    { label: 'B', rate: '상위 12% 기준', cls: 'grade-b' }
+  ];
+  const ROLE_LABELS = { hitter: '타자', starter: '선발', middle: '중계', closer: '마무리' };
+  const CARD_LABELS = { normal: '기타·라이브·올스타', signature: '시그니처', gold: '골든글러브', national: '국가대표', impact: '임팩트' };
+  const hitterPositionEl = $('kboScoreHitterPosition');
+  const hitterPositionWrap = $('kboScoreHitterPositionWrap');
+
+  function getExcelCutoffs() {
+    const role = roleEl.value;
+    const type = cardTypeEl.value;
+    const position = hitterPositionEl ? hitterPositionEl.value : 'fielder';
+    const cutsByRole = EXCEL_SCORE_CUTOFFS[role];
+    if (!cutsByRole || type === 'normal') return null;
+    return role === 'hitter' ? (cutsByRole[position] && cutsByRole[position][type]) || null : cutsByRole[type] || null;
+  }
+
+  function gradeForExcelCutoff(total) {
+    const cuts = getExcelCutoffs();
+    if (!cuts || !Number.isFinite(total)) return null;
+    const labels = [['SR+', 'grade-srp'], ['SS', 'grade-ss'], ['S', 'grade-s'], ['A', 'grade-a'], ['B', 'grade-b']];
+    for (let i = 0; i < cuts.length; i++) {
+      if (total + 1e-9 >= cuts[i]) return labels[i];
+    }
+    return ['C', 'grade-c'];
+  }
+
+  function updateExcelCutoffTable(total = null, scored = false) {
+    const body = $('kboScoreExcelCutoffRows');
+    const context = $('kboScoreExcelCutoffContext');
+    const gradeEl = $('kboScoreExcelGrade');
+    if (!body || !context || !gradeEl) return;
+
+    const role = roleEl.value;
+    const type = cardTypeEl.value;
+    const position = hitterPositionEl ? hitterPositionEl.value : 'fielder';
+    const roleLabel = role === 'hitter' ? `타자(${position === 'catcher' ? '포수' : '야수'})` : `투수·${ROLE_LABELS[role] || role}`;
+    context.textContent = `${roleLabel} / ${CARD_LABELS[type] || type}`;
+    body.innerHTML = '';
+    const cuts = getExcelCutoffs();
+    if (!cuts) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 3;
+      td.textContent = '이 카드 조건의 고정 점수 컷은 엑셀에 제공되지 않았습니다.';
+      tr.appendChild(td); body.appendChild(tr);
+      gradeEl.textContent = '기준 미제공';
+      gradeEl.className = 'kbo-score-grade';
+      return;
+    }
+
+    EXCEL_GRADE_ROWS.forEach((item, i) => {
+      const tr = document.createElement('tr');
+      const grade = document.createElement('th');
+      grade.scope = 'row'; grade.textContent = item.label; grade.className = item.cls;
+      const rate = document.createElement('td'); rate.textContent = item.rate;
+      const score = document.createElement('td'); score.className = 'kbo-score-cutoff';
+      score.textContent = `≥ ${cuts[i].toFixed(2)}`;
+      tr.append(grade, rate, score); body.appendChild(tr);
+    });
+    const cTr = document.createElement('tr');
+    const cGrade = document.createElement('th'); cGrade.scope = 'row'; cGrade.textContent = 'C'; cGrade.className = 'grade-c';
+    const cRate = document.createElement('td'); cRate.textContent = 'B 컷 미만';
+    const cScore = document.createElement('td'); cScore.className = 'kbo-score-cutoff'; cScore.textContent = `< ${cuts[4].toFixed(2)}`;
+    cTr.append(cGrade, cRate, cScore); body.appendChild(cTr);
+
+    if (!scored) {
+      gradeEl.textContent = '—';
+      gradeEl.className = 'kbo-score-grade';
+      return;
+    }
+    const gradeInfo = gradeForExcelCutoff(total);
+    gradeEl.textContent = gradeInfo ? gradeInfo[0] : '기준 미제공';
+    gradeEl.className = `kbo-score-grade${gradeInfo ? ` ${gradeInfo[1]}` : ''}`;
+  }
+
+  function updateHitterPositionVisibility() {
+    if (hitterPositionWrap) hitterPositionWrap.hidden = roleEl.value !== 'hitter';
+  }
+
   function levelSelectFor(slot) {
     return $(`kboScoreLevel${slot}`);
   }
@@ -292,6 +412,7 @@
     const isImpact = cardTypeEl.value === 'impact';
     const neededSlots = isImpact ? [2, 3] : [1, 2, 3];
     const scored = neededSlots.every(slot => getSlotScore(slot) !== null);
+    updateExcelCutoffTable(sum, scored);
     if (!scored) {
       totalEl.textContent = '—';
       gradeEl.textContent = '—';
@@ -369,12 +490,17 @@
     try {
       await ensureData();
       if (!wired) {
-        roleEl.addEventListener('change', () => { distributionCache.clear(); populateSkillSelects(); });
+        roleEl.addEventListener('change', () => {
+          distributionCache.clear();
+          updateHitterPositionVisibility();
+          populateSkillSelects();
+        });
         cardTypeEl.addEventListener('change', () => {
           distributionCache.clear();
           setDefaultLevels();
           populateSkillSelects();
         });
+        hitterPositionEl?.addEventListener('change', updateResult);
         for (let slot = 1; slot <= 3; slot++) {
           skillSelectFor(slot).addEventListener('change', () => {
             updateLevelOptions(slot);
@@ -384,6 +510,7 @@
         }
         wired = true;
       }
+      updateHitterPositionVisibility();
       populateSkillSelects();
       statusEl.textContent = '';
     } catch (error) {
