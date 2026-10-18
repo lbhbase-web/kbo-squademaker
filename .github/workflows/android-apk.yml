@@ -1,0 +1,76 @@
+
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Prepare offline web app
+        run: |
+          mkdir -p www
+          rsync -a --exclude='.git' --exclude='.github' --exclude='android' --exclude='node_modules' --exclude='www' ./ www/
+
+          cat > package.json <<'EOF'
+          {
+            "name": "kbo-squademaker-android",
+            "version": "1.0.0",
+            "private": true,
+            "dependencies": {
+              "@capacitor/android": "^7.4.3",
+              "@capacitor/core": "^7.4.3"
+            },
+            "devDependencies": {
+              "@capacitor/cli": "^7.4.3"
+            }
+          }
+          EOF
+
+          cat > capacitor.config.json <<'EOF'
+          {
+            "appId": "com.lbhbase.kbosquademaker",
+            "appName": "KBO 스쿼드메이커",
+            "webDir": "www",
+            "server": {
+              "androidScheme": "https"
+            }
+          }
+          EOF
+
+          npm install
+          npx cap add android
+          npx cap sync android
+
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: KBO-SquadMaker-Android-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
