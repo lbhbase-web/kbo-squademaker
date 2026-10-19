@@ -2318,9 +2318,31 @@ function quickChangePlayer(slot,event){
 function openGrowForSlot(slot,event){
  if(event)event.stopPropagation();
  const id=lineup().slots[slot];if(!id)return;
- currentGrowSlot=slot;
- openGrow(id,slot);
+ openPlayerManage(id,slot);
 }
+
+let playerManageId=null;
+let playerManageSlot=null;
+function openPlayerManage(id,slot=null){
+ const p=players.find(x=>String(x.id)===String(id));if(!p)return;
+ playerManageId=p.id;playerManageSlot=slot;
+ const title=document.getElementById("playerManageName");
+ const sub=document.getElementById("playerManageSub");
+ if(title)title.textContent=p.name||"선수 관리";
+ if(sub)sub.textContent=`${p.team||"구단 미상"} · ${p.series||p.type||"카드"}${p.year?` · ${p.year}년`:""}`;
+ const change=document.getElementById("playerManageChange");
+ if(change)change.style.display=slot?"":"none";
+ const modal=document.getElementById("playerManageModal");
+ if(modal){modal.classList.add("open");modal.style.display="flex";modal.setAttribute("aria-hidden","false");}
+}
+function closePlayerManage(){
+ const modal=document.getElementById("playerManageModal");
+ if(modal){modal.classList.remove("open");modal.style.display="none";modal.setAttribute("aria-hidden","true");}
+ playerManageId=null;playerManageSlot=null;
+}
+function playerManageDetails(){const id=playerManageId,slot=playerManageSlot;closePlayerManage();if(id)openGrow(id,slot);}
+function playerManageChange(){const slot=playerManageSlot;closePlayerManage();if(slot)openPlayerPicker(slot);}
+
 function fullGrowSlot(slot,event){
  if(event)event.stopPropagation();
  const id=lineup().slots[slot],p=players.find(x=>x.id===id);if(!p)return;

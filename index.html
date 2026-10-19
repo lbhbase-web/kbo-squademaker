@@ -2129,6 +2129,18 @@ body{background:#fff!important;color:#17191c!important}
  </div>
 </div>
 
+<div id="playerManageModal" class="modal" style="z-index:12000;align-items:center;justify-content:center" aria-hidden="true" onclick="if(event.target===this)closePlayerManage()">
+ <div class="modal-box" style="width:min(430px,94vw);max-height:88vh;overflow:auto;border-radius:16px;padding:20px;background:var(--panel-bg,#fff);color:var(--text-color,#111)">
+  <div class="mhead" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px"><h2 style="margin:0">선수 관리</h2><button class="btn" onclick="closePlayerManage()">닫기</button></div>
+  <div style="padding:10px 0 16px"><strong id="playerManageName" style="font-size:20px">선수</strong><div id="playerManageSub" style="opacity:.72;font-size:13px;margin-top:4px"></div></div>
+  <div style="display:grid;gap:10px">
+   <button class="btn primary" onclick="playerManageDetails()">선수 상세 정보 · 육성</button>
+   <button id="playerManageChange" class="btn" onclick="playerManageChange()">선수 교체</button>
+   <button class="btn" onclick="closePlayerManage()">취소</button>
+  </div>
+ </div>
+</div>
+
 <div id="growModal" class="modal" onclick="if(event.target===this)closeGrow()">
  <div class="modal-box">
   <div class="mhead"><h2 id="growTitle">선수 육성</h2><button class="btn" onclick="closeGrow()">닫기</button></div>
