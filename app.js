@@ -2462,7 +2462,7 @@ function impactSubtypeLogoHTML(p){
 }
 function lineupCompactCardHTML(p,slot,label){
  const g=getGrowth(p),growth=gameGrowthText(p,g),series=gameCardSeriesText(p,g);
- return `<div class="lineup-card-wrap">
+ return `<div class="lineup-card-wrap${activeLineupSlot === slot ? ' actions-open' : ''}">
    ${lineupQuickActionsHTML(slot,p)}
    <div class="lineup-card-shell ${cardBackgroundClass(p,g)}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 상세 열기" onclick="toggleLineupCardActions('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLineupCardActions('${slot}',event)}">
     ${gameStarHTML(p,true)}
