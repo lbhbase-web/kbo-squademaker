@@ -2318,31 +2318,9 @@ function quickChangePlayer(slot,event){
 function openGrowForSlot(slot,event){
  if(event)event.stopPropagation();
  const id=lineup().slots[slot];if(!id)return;
- openPlayerManage(id,slot);
+ currentGrowSlot=slot;
+ openGrow(id,slot);
 }
-
-let playerManageId=null;
-let playerManageSlot=null;
-function openPlayerManage(id,slot=null){
- const p=players.find(x=>String(x.id)===String(id));if(!p)return;
- playerManageId=p.id;playerManageSlot=slot;
- const title=document.getElementById("playerManageName");
- const sub=document.getElementById("playerManageSub");
- if(title)title.textContent=p.name||"선수 관리";
- if(sub)sub.textContent=`${p.team||"구단 미상"} · ${p.series||p.type||"카드"}${p.year?` · ${p.year}년`:""}`;
- const change=document.getElementById("playerManageChange");
- if(change)change.style.display=slot?"":"none";
- const modal=document.getElementById("playerManageModal");
- if(modal){modal.classList.add("open");modal.style.display="flex";modal.setAttribute("aria-hidden","false");}
-}
-function closePlayerManage(){
- const modal=document.getElementById("playerManageModal");
- if(modal){modal.classList.remove("open");modal.style.display="none";modal.setAttribute("aria-hidden","true");}
- playerManageId=null;playerManageSlot=null;
-}
-function playerManageDetails(){const id=playerManageId,slot=playerManageSlot;closePlayerManage();if(id)openGrow(id,slot);}
-function playerManageChange(){const slot=playerManageSlot;closePlayerManage();if(slot)openPlayerPicker(slot);}
-
 function fullGrowSlot(slot,event){
  if(event)event.stopPropagation();
  const id=lineup().slots[slot],p=players.find(x=>x.id===id);if(!p)return;
@@ -2367,11 +2345,12 @@ function fullGrowSlot(slot,event){
  if(shell){shell.classList.add("fullgrow-flash");setTimeout(()=>shell.classList.remove("fullgrow-flash"),400)}
 }
 function lineupQuickActionsHTML(slot,p){
- // Keep growth and substitution controls reachable without a hidden selection step.
- return `<div class="lineup-quick-actions">
-   <button class="fullgrow" title="풀성장" onclick="fullGrowSlot('${slot}',event)">↗</button>
-   <button title="육성 상세" onclick="openGrowForSlot('${slot}',event)">👤</button>
-   <button title="선수 교체" onclick="quickChangePlayer('${slot}',event)">⇄</button>
+ // 선수 카드를 누르면 상세창을 바로 열지 않고, 카드 위 관리 버튼을 표시한다.
+ return `<div class="lineup-quick-actions" aria-label="${esc(p.name)} 선수 관리 메뉴">
+   <button title="선수 능력치·상세" aria-label="선수 능력치·상세" onclick="openGrowForSlot('${slot}',event)">↗</button>
+   <button title="선수 관리" aria-label="선수 관리" onclick="openGrowForSlot('${slot}',event)">♟</button>
+   <button title="선수 교체" aria-label="선수 교체" onclick="quickChangePlayer('${slot}',event)">⚙</button>
+   <button class="remove-action" title="라인업에서 제거" aria-label="라인업에서 제거" onclick="event.stopPropagation();removeSlot('${slot}')">▤</button>
   </div>`;
 }
 function toggleRefPanel(id){
@@ -2471,9 +2450,9 @@ function impactSubtypeLogoHTML(p){
 }
 function lineupCompactCardHTML(p,slot,label){
  const g=getGrowth(p),growth=gameGrowthText(p,g),series=gameCardSeriesText(p,g);
- return `<div class="lineup-card-wrap">
+ return `<div class="lineup-card-wrap" data-lineup-actions="${slot}">
    ${lineupQuickActionsHTML(slot,p)}
-   <div class="lineup-card-shell ${cardBackgroundClass(p,g)}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 상세 열기" onclick="openGrowForSlot('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openGrowForSlot('${slot}',event)}">
+   <div class="lineup-card-shell ${cardBackgroundClass(p,g)}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 관리 메뉴 열기" onclick="toggleLineupCardActions('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLineupCardActions('${slot}',event)}">
     ${gameStarHTML(p,true)}
     <div class="lc-ovr">${effectiveCardOvr(p,g,slot,currentMode)??"—"}</div>
     <div class="lc-growth">${growth.enhance}${growth.awake&&g.enhance===10?growth.awake:""}</div>

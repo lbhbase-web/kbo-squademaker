@@ -850,11 +850,12 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-series{font-size:6px!important}
 .lineup-card-shell .lc-label{display:none!important}
 
-.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s ease}
-.lineup-card-wrap:hover .lineup-quick-actions,.lineup-card-wrap:focus-within .lineup-quick-actions{opacity:1;visibility:visible;pointer-events:auto}
-.lineup-quick-actions button{width:23px;height:23px;border:1px solid #bbb;background:#fff;color:#222;padding:0;font-size:12px;display:grid;place-items:center;cursor:pointer;border-radius:2px}
-.lineup-quick-actions .fullgrow{font-size:16px;font-weight:900}
-.lineup-quick-actions button:hover{background:#eee}
+.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));opacity:1;visibility:visible;pointer-events:auto}
+.lineup-card-wrap{position:relative}
+.lineup-quick-actions button{width:25px;height:25px;border:1px solid #bbb;background:#fff;color:#222;padding:0;font-size:14px;font-weight:800;display:grid;place-items:center;cursor:pointer;border-radius:2px}
+.lineup-quick-actions .remove-action{background:#fff;color:#444}
+.lineup-quick-actions button:hover{background:#eee;transform:translateY(-1px)}
+@media(max-width:700px){.lineup-quick-actions{top:-25px;left:0;gap:2px}.lineup-quick-actions button{width:24px;height:24px;font-size:13px}}
 .fullgrow-flash{animation:fullgrowFlash .35s ease}
 @keyframes fullgrowFlash{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
 
@@ -2125,18 +2126,6 @@ body{background:#fff!important;color:#17191c!important}
     <div id="pickerPlayers" class="picker-list"></div>
     <div id="pickerPager" class="player-pager"></div>
    </section>
-  </div>
- </div>
-</div>
-
-<div id="playerManageModal" class="modal" style="z-index:12000;align-items:center;justify-content:center" aria-hidden="true" onclick="if(event.target===this)closePlayerManage()">
- <div class="modal-box" style="width:min(430px,94vw);max-height:88vh;overflow:auto;border-radius:16px;padding:20px;background:var(--panel-bg,#fff);color:var(--text-color,#111)">
-  <div class="mhead" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px"><h2 style="margin:0">선수 관리</h2><button class="btn" onclick="closePlayerManage()">닫기</button></div>
-  <div style="padding:10px 0 16px"><strong id="playerManageName" style="font-size:20px">선수</strong><div id="playerManageSub" style="opacity:.72;font-size:13px;margin-top:4px"></div></div>
-  <div style="display:grid;gap:10px">
-   <button class="btn primary" onclick="playerManageDetails()">선수 상세 정보 · 육성</button>
-   <button id="playerManageChange" class="btn" onclick="playerManageChange()">선수 교체</button>
-   <button class="btn" onclick="closePlayerManage()">취소</button>
   </div>
  </div>
 </div>
