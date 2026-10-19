@@ -2310,6 +2310,16 @@ function toggleLineupCardActions(slot,event){
  activeLineupSlot=activeLineupSlot===slot?null:slot;
  renderSquad();
 }
+// 관리 버튼이 열린 상태에서 다른 카드나 빈 공간을 누르면 선택을 해제한다.
+if(!window.__lineupActionDismissBound){
+ window.__lineupActionDismissBound=true;
+ document.addEventListener("click",function(event){
+  if(activeLineupSlot===null)return;
+  if(event.target.closest(".lineup-card-wrap"))return;
+  activeLineupSlot=null;
+  renderSquad();
+ });
+}
 function quickChangePlayer(slot,event){
  if(event)event.stopPropagation();
  activeLineupSlot=null;
