@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <link rel="stylesheet" href="./responsive-mobile.css?v=1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="only light">
@@ -850,12 +849,11 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-series{font-size:6px!important}
 .lineup-card-shell .lc-label{display:none!important}
 
-.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));opacity:0;visibility:hidden;pointer-events:none;transform:translateY(3px);transition:opacity .12s ease,transform .12s ease,visibility .12s ease}.lineup-quick-actions.is-active{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
-.lineup-card-wrap{position:relative}
-.lineup-quick-actions button{width:25px;height:25px;border:1px solid #bbb;background:#fff;color:#222;padding:0;font-size:14px;font-weight:800;display:grid;place-items:center;cursor:pointer;border-radius:2px}
-.lineup-quick-actions .remove-action{background:#fff;color:#444}
-.lineup-quick-actions button:hover{background:#eee;transform:translateY(-1px)}
-@media(max-width:700px){.lineup-quick-actions{top:-25px;left:0;gap:2px}.lineup-quick-actions button{width:24px;height:24px;font-size:13px}}
+.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s ease}
+.lineup-card-wrap:hover .lineup-quick-actions,.lineup-card-wrap:focus-within .lineup-quick-actions{opacity:1;visibility:visible;pointer-events:auto}
+.lineup-quick-actions button{width:23px;height:23px;border:1px solid #bbb;background:#fff;color:#222;padding:0;font-size:12px;display:grid;place-items:center;cursor:pointer;border-radius:2px}
+.lineup-quick-actions .fullgrow{font-size:16px;font-weight:900}
+.lineup-quick-actions button:hover{background:#eee}
 .fullgrow-flash{animation:fullgrowFlash .35s ease}
 @keyframes fullgrowFlash{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
 
@@ -1338,6 +1336,14 @@ body{background:#fff!important;color:#17191c!important}
 #choiceGridBackdrop .choice-grid .choice-cell{white-space:normal;line-height:1.25;min-height:52px;padding:8px 6px;font-size:12px}
 #preferredTeamPickerBtn{white-space:normal;line-height:1.25;max-width:300px}
 
+
+/* Player quick actions: touch-friendly explicit selection; close on outside tap. */
+.lineup-card-wrap .lineup-quick-actions{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.lineup-card-wrap.actions-open .lineup-quick-actions{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
+.lineup-card-wrap:hover .lineup-quick-actions,.lineup-card-wrap:focus-within .lineup-quick-actions{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.lineup-card-wrap.actions-open:hover .lineup-quick-actions,.lineup-card-wrap.actions-open:focus-within .lineup-quick-actions{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
+.lineup-quick-actions button{font-family:Arial,sans-serif;font-weight:700}
+
 </style>
 <style>
 #growModal .modal{width:min(760px,96vw)}
@@ -1638,264 +1644,8 @@ body{background:#fff!important;color:#17191c!important}
   }
 }
 </style>
-<style id="kbo-feature-lobby-v2">
-/* KBO feature lobby + CPBV embedded tools */
-#kboFeatureLobby{
- position:fixed;inset:0;z-index:100000;overflow:auto;
- background:radial-gradient(ellipse at 50% -15%,#e7f0ff 0%,#f5f8fc 48%,#edf2f8 100%);
- color:#172338;padding:clamp(16px,4vw,42px);
- font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;box-sizing:border-box
-}
-#kboFeatureLobby[hidden],#kboCpbvView[hidden]{display:none!important}
-.kbo-lobby-inner{width:min(880px,100%);margin:0 auto}
-.kbo-lobby-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:0 0 26px}
-.kbo-lobby-brand{display:flex;align-items:center;gap:12px}
-.kbo-lobby-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:#1f70d1;color:#fff;font-size:23px;font-weight:900;box-shadow:0 8px 20px #246bc12b}
-.kbo-lobby-brand h1{font-size:clamp(23px,4vw,32px);line-height:1.1;margin:0;letter-spacing:-.8px}
-.kbo-lobby-brand p{margin:5px 0 0;color:#728097;font-size:13px}
-.kbo-lobby-login,.kbo-cpbv-header button,.kbo-lobby-open-external{
- border:1px solid #dce5f0;border-radius:12px;background:#fff;color:#28364b;
- padding:11px 15px;font-weight:800;box-shadow:0 3px 14px #213b5b12;cursor:pointer;white-space:nowrap
-}
-.kbo-lobby-login{display:flex;align-items:center;gap:8px}
-.kbo-lobby-login .kbo-google-mark{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;color:#4285f4;font-weight:900;background:#f2f6ff}
-.kbo-lobby-heading{margin:0 0 15px;font-size:19px;letter-spacing:-.3px}
-.kbo-lobby-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.kbo-lobby-card{
- appearance:none;display:flex;align-items:flex-start;gap:15px;text-align:left;min-height:136px;padding:22px;
- border:1px solid #e0e7f0;border-radius:20px;background:rgba(255,255,255,.96);color:#172338;
- box-shadow:0 8px 25px #1b35520a;cursor:pointer;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;font:inherit;width:100%
-}
-.kbo-lobby-card:hover{transform:translateY(-2px);border-color:#9bc4f5;box-shadow:0 12px 28px #1b355216}
-.kbo-lobby-icon{flex:0 0 48px;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:#eaf3ff;color:#287bd7;font-size:23px;font-weight:900}
-.kbo-lobby-card strong{display:block;font-size:17px;margin:1px 0 7px;letter-spacing:-.35px}
-.kbo-lobby-card small{display:block;font-size:12px;line-height:1.55;color:#7a879a}
-.kbo-lobby-tag{display:inline-block;margin-top:10px;font-size:10px;font-weight:800;color:#3976b9;background:#edf5ff;border-radius:999px;padding:4px 8px}
-.kbo-lobby-foot{margin:18px 2px 0;color:#8490a1;font-size:11px;line-height:1.6}
-#kboCpbvView{
- position:fixed;inset:0;z-index:100001;background:#f5f8fc;color:#172338;
- display:flex;flex-direction:column;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif
-}
-.kbo-cpbv-header{
- flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;
- border-bottom:1px solid #dfe7f0;box-shadow:0 2px 10px #1723380a
-}
-.kbo-cpbv-title{min-width:0;flex:1}
-.kbo-cpbv-title strong{display:block;font-size:15px;line-height:1.3}
-.kbo-cpbv-title small{display:block;margin-top:3px;color:#718096;font-size:11px;line-height:1.4}
-.kbo-cpbv-frame-wrap{position:relative;flex:1 1 auto;min-height:0;background:#fff}
-#kboCpbvFrame{border:0;display:block;width:100%;height:100%;background:#fff}
-.kbo-cpbv-fallback{position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:#fff;border:1px solid #dce5f0;border-radius:12px;box-shadow:0 4px 18px #17233812;font-size:12px;color:#5d6a7e}
-.kbo-cpbv-fallback a{flex:0 0 auto;color:#226fc2;font-weight:800;text-decoration:none}
-#kboHomeButton{white-space:nowrap}
-@media(max-width:560px){
- #kboFeatureLobby{padding:20px 15px}
- .kbo-lobby-top{align-items:flex-start;margin-bottom:22px}
- .kbo-lobby-login{padding:10px 11px;font-size:12px}
- .kbo-lobby-mark{width:42px;height:42px}
- .kbo-lobby-grid{gap:10px}
- .kbo-lobby-card{display:block;min-height:150px;padding:15px;border-radius:16px}
- .kbo-lobby-icon{width:42px;height:42px;margin-bottom:12px}
- .kbo-lobby-card strong{font-size:15px}
- .kbo-lobby-card small{font-size:11px}
- .kbo-cpbv-header{padding:8px;gap:6px}
- .kbo-cpbv-header button{padding:9px 10px;font-size:12px}
- .kbo-cpbv-title strong{font-size:13px}
- .kbo-cpbv-title small{font-size:10px}
- .kbo-cpbv-fallback{font-size:11px;align-items:flex-start}
-}
-@media(prefers-reduced-motion:reduce){.kbo-lobby-card{transition:none}}
-</style>
-
-<style id="kbo-native-skill-score-v1">
-#kboScoreView[hidden]{display:none!important}
-#kboScoreView{
- position:fixed;inset:0;z-index:100002;overflow:auto;background:#f5f8fc;color:#172338;
- font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;box-sizing:border-box
-}
-.kbo-score-content{width:min(1180px,100%);margin:0 auto;padding:clamp(14px,3vw,30px);box-sizing:border-box}
-.kbo-score-rolebar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
-.kbo-score-field{display:flex;flex-direction:column;gap:7px;font-weight:800;font-size:13px;color:#46566d}.kbo-score-field[hidden]{display:none!important}
-.kbo-score-field select,.kbo-score-slot select{
- width:100%;min-width:0;min-height:42px;border:1px solid #d9e3ef;border-radius:12px;background:#fff;color:#172338;
- padding:9px 11px;font:inherit;font-weight:600;box-sizing:border-box
-}
-.kbo-score-slot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.kbo-score-slot{min-width:0;border:1px solid #e1e8f1;border-radius:18px;background:#fff;padding:16px;box-shadow:0 6px 18px #203a5a08}
-.kbo-score-slot-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
-.kbo-score-slot-head strong{font-size:15px}
-.kbo-score-pill{border-radius:999px;background:#f0f4f8;color:#59677a;padding:5px 8px;font-size:11px;font-weight:800;white-space:nowrap}
-.kbo-score-slot label{display:block;margin:12px 0 6px;color:#64748b;font-size:12px;font-weight:800}
-.kbo-score-slot .kbo-score-skill{min-height:46px}
-.kbo-score-lvrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,.65fr);gap:8px;align-items:end}
-.kbo-score-live{margin-top:13px;border-radius:11px;background:#f5f8fc;padding:10px 12px;font-size:13px;color:#59677a}
-.kbo-score-live b{color:#1767bd;font-size:18px;font-variant-numeric:tabular-nums}
-.kbo-score-results{margin-top:18px;border:1px solid #d8e5f4;border-radius:20px;background:#fff;padding:18px;box-shadow:0 8px 24px #1d41610c}
-.kbo-score-results-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
-.kbo-score-results-top h2{margin:0;font-size:18px}
-.kbo-score-total{font-size:clamp(30px,6vw,42px);font-weight:900;letter-spacing:-1px;color:#1767bd;font-variant-numeric:tabular-nums}
-.kbo-score-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
-.kbo-score-metric{border:1px solid #e6edf5;border-radius:13px;padding:12px;background:#fbfcfe}
-.kbo-score-metric span{display:block;color:#78869a;font-size:11px;font-weight:700}
-.kbo-score-metric strong{display:block;margin-top:5px;font-size:18px;font-weight:900;font-variant-numeric:tabular-nums}
-.kbo-score-grade{font-size:24px!important;letter-spacing:.3px}
-.kbo-score-grade.grade-c{color:#64748b}.kbo-score-grade.grade-b{color:#2879df}.kbo-score-grade.grade-a{color:#159a61}
-.kbo-score-grade.grade-s{color:#e4a21b}.kbo-score-grade.grade-ss{color:#e24d4d}.kbo-score-grade.grade-srp{color:#8b47dd}
-.kbo-score-distribution{margin-top:16px;border:1px solid #e6edf5;border-radius:14px;overflow:hidden}
-.kbo-score-distribution-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 13px;background:#f7f9fc}
-.kbo-score-distribution-head h3{margin:0;font-size:14px}.kbo-score-distribution-head span{font-size:11px;color:#78869a}
-.kbo-score-distribution table{width:100%;border-collapse:collapse;font-size:12px}
-.kbo-score-distribution th,.kbo-score-distribution td{padding:9px 12px;text-align:left;border-top:1px solid #edf1f6}
-.kbo-score-distribution th{width:54px;font-weight:900}.kbo-score-distribution td:last-child{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
-.kbo-score-cutoff{color:#26364f}
-.kbo-score-note{margin:13px 0 0;color:#768397;font-size:11px;line-height:1.7}
-.kbo-score-status{color:#c2410c;font-size:12px;margin-top:10px}
-@media(max-width:780px){.kbo-score-slot-grid{grid-template-columns:1fr}.kbo-score-slot{padding:14px}.kbo-score-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.kbo-score-rolebar{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:500px){.kbo-score-rolebar{grid-template-columns:1fr}.kbo-score-content{padding:12px}.kbo-score-results{padding:14px}.kbo-score-metric{padding:9px}.kbo-score-metric strong{font-size:15px}.kbo-score-grade{font-size:21px!important}}
-</style>
-
-
-<style id="kbo-skill-sim-style">
-#kboSkillSimView[hidden]{display:none!important}
-#kboSkillSimView{position:fixed;inset:0;z-index:100003;overflow:auto;background:#f5f8fc;color:#172338;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;box-sizing:border-box}
-.kbo-sim-content{max-width:1040px;margin:0 auto;padding:24px 20px 44px;color:#18253a}
-.kbo-sim-controls{display:grid;grid-template-columns:1fr 1fr minmax(190px,.8fr);gap:12px;align-items:stretch;margin-bottom:16px}
-.kbo-sim-controls>label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:800;color:#536176}
-.kbo-sim-controls select,.kbo-sim-slot select{width:100%;min-width:0;min-height:44px;border:1px solid #d6dfeb;border-radius:11px;background:#fff;color:#1b2b45;padding:9px 11px;font:inherit;font-size:14px;box-sizing:border-box}
-.kbo-sim-lock{display:flex!important;flex-direction:row!important;align-items:center;gap:10px!important;border:1px solid #d6dfeb;border-radius:12px;padding:10px 12px;box-sizing:border-box;background:#fff}
-.kbo-sim-lock input{width:20px;height:20px;accent-color:#5746d8;flex:0 0 auto}
-.kbo-sim-lock span{display:flex;flex-direction:column;gap:3px;color:#24324b}
-.kbo-sim-lock small{font-size:10px;font-weight:600;color:#8792a4}
-.kbo-sim-lock.is-disabled{opacity:.52;background:#f4f6f9}
-.kbo-sim-probabilities{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px 15px;border:1px solid #dbe3f0;border-radius:14px;background:#f6f8fc;margin-bottom:18px}
-.kbo-sim-probabilities>b{width:100%;font-size:13px;color:#263652;margin-bottom:2px}
-.kbo-sim-probabilities>span{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d9e0ed;border-radius:999px;padding:6px 10px;background:#fff;color:#34435b;font-size:12px;font-weight:800}
-.kbo-sim-probabilities>p{width:100%;margin:4px 0 0;color:#6c7b90;font-size:11px;line-height:1.65}
-.kbo-sim-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.kbo-sim-slot{min-width:0;border:1px solid #e0e6ef;border-radius:15px;padding:15px;background:#fff;box-shadow:0 4px 15px rgba(20,40,75,.04)}
-.kbo-sim-slot-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:15px}
-.kbo-sim-slot-head>strong{font-size:17px;color:#17243a}
-.kbo-sim-tier{display:inline-flex;align-items:center;justify-content:center;min-height:25px;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:900;white-space:nowrap}
-.kbo-sim-slot>label{display:block;margin-bottom:6px;font-size:11px;font-weight:800;color:#64738a}
-.kbo-sim-actions{display:flex;gap:10px;margin-top:16px}
-.kbo-sim-actions button{min-height:45px;border:1px solid #4335b5;border-radius:11px;background:#5142d6;color:#fff;font-weight:900;padding:10px 18px;cursor:pointer}
-.kbo-sim-actions button+button{border-color:#d1d9e7;background:#fff;color:#35435b}
-.kbo-sim-status{min-height:22px;margin:15px 0 0;color:#3a4b65;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
-.kbo-sim-footnote{margin:15px 0 0;padding:12px 14px;border-left:3px solid #a7b2c4;background:#f7f9fc;color:#6a788d;font-size:11px;line-height:1.8}
-.kbo-sim-brand-mark{font-size:11px;font-weight:900;letter-spacing:.12em;color:#7c8da6}
-@media(max-width:700px){.kbo-sim-content{padding:15px 12px 30px}.kbo-sim-controls{grid-template-columns:1fr 1fr}.kbo-sim-controls>label:first-child{grid-column:span 1}.kbo-sim-lock{grid-column:span 2}.kbo-sim-slots{grid-template-columns:1fr}.kbo-sim-slot{padding:13px}.kbo-sim-actions{flex-direction:column}.kbo-sim-actions button{width:100%}.kbo-sim-probabilities{gap:6px;padding:12px}.kbo-sim-probabilities>span{font-size:11px;padding:6px 8px}}
-</style>
-
 </head>
 <body>
-
-<div id="kboFeatureLobby" aria-label="KBO 도구 선택 메인 화면">
- <div class="kbo-lobby-inner">
-  <header class="kbo-lobby-top">
-   <div class="kbo-lobby-brand">
-    <div class="kbo-lobby-mark" aria-hidden="true">K</div>
-    <div><h1>KBO LAB</h1><p>컴투스프로야구 V26 도구 모음</p></div>
-   </div>
-   <button id="kboLobbyLogin" class="kbo-lobby-login" type="button"><span class="kbo-google-mark">G</span><span id="kboLobbyLoginLabel">Google 로그인</span></button>
-  </header>
-  <h2 class="kbo-lobby-heading">무엇을 이용할까요?</h2>
-  <div class="kbo-lobby-grid">
-   <button class="kbo-lobby-card" type="button" data-cpbv-open="skill-score">
-    <span class="kbo-lobby-icon" aria-hidden="true">▦</span><span><strong>스킬 점수 계산기</strong><small>스킬별 점수 · 총점 · 등급 · 상위 확률 · 기대 시도 횟수</small><span class="kbo-lobby-tag">SKILL SCORE</span></span>
-   </button>
-   <button class="kbo-lobby-card" type="button" data-sim-open="general">
-    <span class="kbo-lobby-icon" aria-hidden="true">↻</span><span><strong>일스변 시뮬</strong><small>일반 스킬 변경 결과와 목표 조합 확인</small><span class="kbo-lobby-tag">IMPACT ROLL</span></span>
-   </button>
-   <button class="kbo-lobby-card" type="button" data-sim-open="advanced">
-    <span class="kbo-lobby-icon" aria-hidden="true">⌁</span><span><strong>고스변 시뮬</strong><small>고급 스킬 변경 및 목표 등급 시뮬레이션</small><span class="kbo-lobby-tag">ADVANCED ROLL</span></span>
-   </button>
-   <button id="kboLobbySquad" class="kbo-lobby-card" type="button">
-    <span class="kbo-lobby-icon" aria-hidden="true">♟</span><span><strong>스쿼드메이커</strong><small>기존 선수 카드 · 라인업 · 능력치 관리</small><span class="kbo-lobby-tag">OPEN SQUADMAKER</span></span>
-   </button>
-  </div>
-  <p class="kbo-lobby-foot">스킬 점수 계산기는 제공된 점수표 기준으로 계산하고, 일스변·고스변은 설정한 등급별 확률로 시뮬레이션합니다. 스쿼드메이커와 Google 로그인은 기존 기능을 사용합니다.</p>
- </div>
-</div>
-<div id="kboCpbvView" hidden aria-label="CPBV LAB 도구">
- <header class="kbo-cpbv-header">
-  <button id="kboCpbvHome" type="button">← 메인 메뉴</button>
-  <div class="kbo-cpbv-title"><strong id="kboCpbvTitle">CPBV LAB 도구</strong><small id="kboCpbvSubtitle">원본 계산기와 시뮬레이터를 이 화면에서 이용해.</small></div>
-  <button id="kboCpbvOpenExternal" type="button">새 탭에서 열기 ↗</button>
- </header>
- <div class="kbo-cpbv-frame-wrap">
-  <iframe id="kboCpbvFrame" title="CPBV LAB 원본 계산기 및 시뮬레이터" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-read; clipboard-write; fullscreen" src="about:blank"></iframe>
-  <div class="kbo-cpbv-fallback"><span>원본 사이트가 이 화면 안에 표시되지 않으면 오른쪽 링크로 열어줘.</span><a href="https://www.cpbv-lab.com/" target="_blank" rel="noopener noreferrer">CPBV LAB 열기</a></div>
- </div>
-</div>
-
-<div id="kboScoreView" hidden aria-label="스킬 점수 계산기">
- <header class="kbo-cpbv-header">
-  <button id="kboScoreHome" type="button">← 메인 메뉴</button>
-  <div class="kbo-cpbv-title"><strong>스킬 점수 계산기</strong><small>타자 · 선발 · 중계 · 마무리 스킬 점수와 등급 참고 분석</small></div>
- </header>
- <main class="kbo-score-content">
-  <div class="kbo-score-rolebar">
-   <label class="kbo-score-field">계산 대상
-    <select id="kboScoreRole">
-     <option value="hitter">타자</option>
-     <option value="starter">투수 · 선발</option>
-     <option value="middle">투수 · 중계</option>
-     <option value="closer">투수 · 마무리</option>
-    </select>
-   </label>
-   <label class="kbo-score-field">카드 타입
-    <select id="kboScoreCardType">
-     <option value="normal">기타 · 라이브 · 올스타</option>
-     <option value="signature">시그니처</option>
-     <option value="gold">골든글러브</option>
-     <option value="national">국가대표</option>
-     <option value="impact">임팩트</option>
-    </select>
-   </label>
-   <label id="kboScoreHitterPositionWrap" class="kbo-score-field">타자 포지션
-    <select id="kboScoreHitterPosition"><option value="fielder">야수</option><option value="catcher">포수</option></select>
-   </label>
-  </div>
-  <div id="kboScoreSlots" class="kbo-score-slot-grid">
-   <section class="kbo-score-slot" data-slot="1">
-    <div class="kbo-score-slot-head"><strong>① 스킬 1</strong><span class="kbo-score-pill" id="kboScorePill1">점수 —</span></div>
-    <label for="kboScoreSkill1">스킬 선택</label><select class="kbo-score-skill" id="kboScoreSkill1"><option value="">스킬 목록 불러오는 중…</option></select>
-    <div class="kbo-score-lvrow"><div><label for="kboScoreLevel1">레벨</label><select id="kboScoreLevel1"><option value="5">5 레벨</option><option value="6" selected>6 레벨</option><option value="7">7 레벨</option><option value="8">8 레벨</option><option value="9">9 레벨</option><option value="10">10 레벨</option></select></div><div class="kbo-score-live">스킬 점수<br><b id="kboScoreValue1">—</b></div></div>
-   </section>
-   <section class="kbo-score-slot" data-slot="2">
-    <div class="kbo-score-slot-head"><strong>② 스킬 2</strong><span class="kbo-score-pill" id="kboScorePill2">점수 —</span></div>
-    <label for="kboScoreSkill2">스킬 선택</label><select class="kbo-score-skill" id="kboScoreSkill2"><option value="">스킬 목록 불러오는 중…</option></select>
-    <div class="kbo-score-lvrow"><div><label for="kboScoreLevel2">레벨</label><select id="kboScoreLevel2"><option value="5" selected>5 레벨</option><option value="6">6 레벨</option><option value="7">7 레벨</option><option value="8">8 레벨</option><option value="9">9 레벨</option><option value="10">10 레벨</option></select></div><div class="kbo-score-live">스킬 점수<br><b id="kboScoreValue2">—</b></div></div>
-   </section>
-   <section class="kbo-score-slot" data-slot="3">
-    <div class="kbo-score-slot-head"><strong>③ 스킬 3</strong><span class="kbo-score-pill" id="kboScorePill3">점수 —</span></div>
-    <label for="kboScoreSkill3">스킬 선택</label><select class="kbo-score-skill" id="kboScoreSkill3"><option value="">스킬 목록 불러오는 중…</option></select>
-    <div class="kbo-score-lvrow"><div><label for="kboScoreLevel3">레벨</label><select id="kboScoreLevel3"><option value="5" selected>5 레벨</option><option value="6">6 레벨</option><option value="7">7 레벨</option><option value="8">8 레벨</option><option value="9">9 레벨</option><option value="10">10 레벨</option></select></div><div class="kbo-score-live">스킬 점수<br><b id="kboScoreValue3">—</b></div></div>
-   </section>
-  </div>
-  <div class="kbo-score-results">
-   <div class="kbo-score-results-top"><h2>계산 결과</h2><div>총점 <span id="kboScoreTotal" class="kbo-score-total">—</span></div></div>
-   <div class="kbo-score-metrics">
-    <div class="kbo-score-metric"><span>분포 등급(추정)</span><strong id="kboScoreGrade" class="kbo-score-grade">—</strong></div>
-    <div class="kbo-score-metric"><span>엑셀 기준 등급</span><strong id="kboScoreExcelGrade" class="kbo-score-grade">—</strong></div>
-    <div class="kbo-score-metric"><span>상위 확률(추정)</span><strong id="kboScoreRate">—</strong></div>
-    <div class="kbo-score-metric"><span>기대 시도 횟수(추정)</span><strong id="kboScoreAttempts">—</strong></div>
-   </div>
-   <div id="kboScoreStatus" class="kbo-score-status" role="status" aria-live="polite"></div>
-   <section class="kbo-score-distribution" aria-label="등급별 점수 분포 기준">
-    <div class="kbo-score-distribution-head"><h3>등급별 기준 점수</h3><span id="kboScoreDistributionCount">조합 분포 계산 중</span></div>
-    <table><thead><tr><th scope="col">등급</th><th scope="col">상위 확률 기준</th><th scope="col">분포상 점수 컷</th></tr></thead><tbody id="kboScoreDistributionRows"><tr><td colspan="3">점수 분포 계산 중…</td></tr></tbody></table>
-   </section>
-   <section class="kbo-score-distribution" aria-label="엑셀 카드별 등급 컷">
-    <div class="kbo-score-distribution-head"><h3>엑셀 기준 등급 컷 (고스변 기준)</h3><span id="kboScoreExcelCutoffContext">카드 조건 선택 중</span></div>
-    <table><thead><tr><th scope="col">등급</th><th scope="col">상위 확률 기준</th><th scope="col">엑셀 점수 컷</th></tr></thead><tbody id="kboScoreExcelCutoffRows"><tr><td colspan="3">카드 조건 확인 중…</td></tr></tbody></table>
-   </section>
-   <p class="kbo-score-note">엑셀 기준은 제공된 ‘카드별 점수 컷’ 시트를 반영했습니다. 타자는 야수/포수로 나뉘며 임팩트는 2·3옵션 합계만 판정합니다. 올스타·라이브·일반 시즌의 고정 컷은 자료에 없어 기준 미제공으로 표시합니다. 아래 분포 등급과 상위 확률은 가능한 조합을 열거한 별도의 추정치입니다.</p>
-   <p class="kbo-score-note">점수 컷은 현재 선택한 역할·카드 타입과 점수표에 등록된 스킬로 가능한 서로 다른 스킬 조합을 열거해 계산합니다. 골든글러브는 6-6-6, 그 외 카드는 6-5-5 기준이며 임팩트는 2개 스킬 점수로 비교합니다. 동점 조합은 같은 점수로 처리합니다. 스킬 출현 가중치와 일부 카드별 제한을 모두 확보하지 못해 CPBV LAB 원본의 등급 분포와 완전히 일치한다고 보장할 수 없는 참고값입니다.</p>
-  </div>
- </main>
-</div>
-
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="field-remove-black" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2126 .7152 .0722 0 0"/><feComponentTransfer><feFuncA type="linear" slope="20" intercept="-0.5"/></feComponentTransfer><feComposite in="SourceGraphic" operator="in"/></filter></defs></svg>
 <div class="wrap">
  <div class="top">
@@ -1910,7 +1660,6 @@ body{background:#fff!important;color:#17191c!important}
    <button class="btn primary" onclick="saveAll()">전체 저장</button>
    <button class="btn" onclick="openExport()">라인업 내보내기</button>
    <button class="btn" onclick="document.getElementById('lineupImportFile').click()">라인업 가져오기</button><input id="lineupImportFile" type="file" accept=".json,application/json" hidden onchange="importLineupFile(this)">
-   <button id="kboHomeButton" class="btn" type="button" title="메인 메뉴로 돌아가기">⌂ 홈</button>
    <button id="cloudLoginBtn" class="btn cloud-login-btn" type="button">Google 로그인</button>
    <button id="cloudAccountBtn" class="btn cloud-account-btn" type="button" hidden><img id="cloudAccountAvatar" alt="" referrerpolicy="no-referrer"><span id="cloudAccountName">내 라인업</span></button>
   </div>
@@ -2208,7 +1957,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.4.7-kbo-lobby-nav-v2"></script>
+<script src="./bootstrap.js?v=15.4.5-natural-impact-logo"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
@@ -2250,46 +1999,6 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-series-fallback{position:absolute!important;left:3px!important;bottom:21px!important;max-width:calc(100% - 34px)!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:5px!important;line-height:1!important;font-weight:900!important;color:#fff!important;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000!important;z-index:18!important}
 </style>
 
-
-<div id="kboSkillSimView" hidden aria-label="스킬 변경 시뮬레이터">
- <header class="kbo-cpbv-header">
-  <button id="kboSimHome" type="button">← 메인 메뉴</button>
-  <div class="kbo-cpbv-title"><strong id="kboSimTitle">일스변 시뮬</strong><small id="kboSimSubtitle">등급 확률에 따른 스킬 변경 시뮬레이터</small></div>
-  <span class="kbo-sim-brand-mark">KBO LAB</span>
- </header>
- <main class="kbo-sim-content">
-  <section class="kbo-sim-controls" aria-label="시뮬레이터 설정">
-   <label>선수 역할
-    <select id="kboSimRole">
-     <option value="hitter">타자</option>
-     <option value="starter">투수 · 선발</option>
-     <option value="middle">투수 · 중계</option>
-     <option value="closer">투수 · 마무리</option>
-    </select>
-   </label>
-   <label>카드 유형
-    <select id="kboSimCardType"><option value="normal">일반 카드</option></select>
-   </label>
-   <label id="kboSimLockWrap" class="kbo-sim-lock is-disabled">
-    <input id="kboSimLockFirst" type="checkbox" disabled>
-    <span><b>1옵 잠금</b><small id="kboSimLockHelp">임팩트·라이브 올스타 전용</small></span>
-   </label>
-  </section>
-  <section id="kboSimProbabilities" class="kbo-sim-probabilities" aria-label="적용 확률"></section>
-  <section class="kbo-sim-slots" aria-label="스킬 옵션">
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel1">1옵</strong><span id="kboSimTier1" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill1">스킬</label><select id="kboSimSkill1"><option value="">스킬 목록 불러오는 중…</option></select></article>
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel2">2옵</strong><span id="kboSimTier2" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill2">스킬</label><select id="kboSimSkill2"><option value="">스킬 목록 불러오는 중…</option></select></article>
-   <article class="kbo-sim-slot"><div class="kbo-sim-slot-head"><strong id="kboSimSlotLabel3">3옵</strong><span id="kboSimTier3" class="kbo-sim-tier">미선택</span></div><label for="kboSimSkill3">스킬</label><select id="kboSimSkill3"><option value="">스킬 목록 불러오는 중…</option></select></article>
-  </section>
-  <div class="kbo-sim-actions"><button id="kboSimRoll" type="button">스킬 변경 실행</button><button id="kboSimFresh" type="button">초기 조합 다시 뽑기</button></div>
-  <p id="kboSimStatus" class="kbo-sim-status" role="status" aria-live="polite">스킬 목록을 불러오는 중이야.</p>
-  <p class="kbo-sim-footnote">등급 확률은 지정된 값으로 적용돼. 각 등급 안에서 어떤 스킬이 나올지에 대한 별도 확률 데이터는 제공되지 않아, 해당 역할에서 선택 가능한 스킬을 균등 추첨해. 스킬 종류는 중복되지 않게 처리해.</p>
- </main>
-</div>
-
-<script src="./kbo-skill-score.js?v=1.0.0"></script>
-<script src="./kbo-skill-simulator.js?v=1.0.0"></script>
-<script src="./kbo-lobby.js?v=2.2.0"></script>
 </body>
 </html>
 

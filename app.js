@@ -2306,33 +2306,25 @@ let activeLineupSlot=null;
 let currentGrowSlot=null;
 
 function toggleLineupCardActions(slot,event){
- if(event)event.stopPropagation();
- activeLineupSlot=activeLineupSlot===slot?null:slot;
+ if(event){event.preventDefault();event.stopPropagation();}
+ activeLineupSlot = activeLineupSlot === slot ? null : slot;
  renderSquad();
 }
-// 관리 버튼이 열린 상태에서 다른 카드나 빈 공간을 누르면 선택을 해제한다.
-if(!window.__lineupActionDismissBound){
- window.__lineupActionDismissBound=true;
- document.addEventListener("click",function(event){
-  if(activeLineupSlot===null)return;
-  if(event.target.closest(".lineup-card-wrap"))return;
-  activeLineupSlot=null;
-  renderSquad();
- });
-}
 function quickChangePlayer(slot,event){
- if(event)event.stopPropagation();
+ if(event){event.preventDefault();event.stopPropagation();}
  activeLineupSlot=null;
  openPlayerPicker(slot);
 }
 function openGrowForSlot(slot,event){
- if(event)event.stopPropagation();
+ if(event){event.preventDefault();event.stopPropagation();}
  const id=lineup().slots[slot];if(!id)return;
+ activeLineupSlot=null;
  currentGrowSlot=slot;
  openGrow(id,slot);
 }
 function fullGrowSlot(slot,event){
- if(event)event.stopPropagation();
+ if(event){event.preventDefault();event.stopPropagation();}
+ activeLineupSlot=null;
  const id=lineup().slots[slot],p=players.find(x=>x.id===id);if(!p)return;
  const g=getGrowth(p);
  playerSkills(p).forEach((x,i)=>x.level=skillCap(p,i));
@@ -2354,14 +2346,23 @@ function fullGrowSlot(slot,event){
  const shell=document.querySelector(`[data-slot="${CSS.escape(slot)}"] .lineup-card-shell`);
  if(shell){shell.classList.add("fullgrow-flash");setTimeout(()=>shell.classList.remove("fullgrow-flash"),400)}
 }
+// Close the floating player controls when tapping elsewhere. Ignore clicks inside cards/buttons.
+if(!window.__lineupActionDismissBound){
+ window.__lineupActionDismissBound=true;
+ document.addEventListener('click',function(e){
+   if(activeLineupSlot==null)return;
+   if(e.target.closest('.lineup-card-wrap') || e.target.closest('.lineup-quick-actions'))return;
+   activeLineupSlot=null;
+   renderSquad();
+ },true);
+}
 function lineupQuickActionsHTML(slot,p){
- // 선택된 카드에만 관리 버튼을 표시한다. 다른 카드/빈 공간 클릭 시 선택이 해제된다.
- const isActive = activeLineupSlot === slot;
- return `<div class="lineup-quick-actions${isActive ? " is-active" : ""}" aria-label="${esc(p.name)} 선수 관리 메뉴" ${isActive ? "" : "aria-hidden=\"true\""}>
-   <button title="선수 능력치·상세" aria-label="선수 능력치·상세" onclick="openGrowForSlot('${slot}',event)">↗</button>
-   <button title="선수 관리" aria-label="선수 관리" onclick="openGrowForSlot('${slot}',event)">♟</button>
+ // Icons/actions follow the supplied reference: full growth, player growth, settings/change, details.
+ return `<div class="lineup-quick-actions" data-actions-for="${slot}">
+   <button class="fullgrow" title="풀성장" aria-label="풀성장" onclick="fullGrowSlot('${slot}',event)">↗</button>
+   <button title="선수 육성" aria-label="선수 육성" onclick="openGrowForSlot('${slot}',event)">♟</button>
    <button title="선수 교체" aria-label="선수 교체" onclick="quickChangePlayer('${slot}',event)">⚙</button>
-   <button class="remove-action" title="라인업에서 제거" aria-label="라인업에서 제거" onclick="event.stopPropagation();removeSlot('${slot}')">▤</button>
+   <button title="선수 상세 정보" aria-label="선수 상세 정보" onclick="openGrowForSlot('${slot}',event)">▤</button>
   </div>`;
 }
 function toggleRefPanel(id){
@@ -2461,9 +2462,9 @@ function impactSubtypeLogoHTML(p){
 }
 function lineupCompactCardHTML(p,slot,label){
  const g=getGrowth(p),growth=gameGrowthText(p,g),series=gameCardSeriesText(p,g);
- return `<div class="lineup-card-wrap" data-lineup-actions="${slot}">
+ return `<div class="lineup-card-wrap">
    ${lineupQuickActionsHTML(slot,p)}
-   <div class="lineup-card-shell ${cardBackgroundClass(p,g)}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 관리 메뉴 열기" onclick="toggleLineupCardActions('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLineupCardActions('${slot}',event)}">
+   <div class="lineup-card-shell ${cardBackgroundClass(p,g)}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 상세 열기" onclick="toggleLineupCardActions('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLineupCardActions('${slot}',event)}">
     ${gameStarHTML(p,true)}
     <div class="lc-ovr">${effectiveCardOvr(p,g,slot,currentMode)??"—"}</div>
     <div class="lc-growth">${growth.enhance}${growth.awake&&g.enhance===10?growth.awake:""}</div>
