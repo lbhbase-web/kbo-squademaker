@@ -1599,7 +1599,19 @@ function init(){
  initChoiceGridPickers();
  initYearGridPicker();
  ["q","team","type","series","year","pos","statsFilter"].forEach(id=>$(id).addEventListener(id==="q"?"input":"change",()=>{playerPage=1;renderPlayers();if(id==="year")updateYearFilterButton()}));
- $("preferredTeam").addEventListener("change",()=>{preferredTeam=$("preferredTeam").value;localStorage.setItem("v26_pref_team",preferredTeam);updateChoiceGridTriggers();renderAll()});
+ $("preferredTeam").addEventListener("change",()=>{
+ preferredTeam=$("preferredTeam").value;
+ localStorage.setItem("v26_pref_team",preferredTeam);
+ // 세트덱의 '선택 팀'도 선호구단 설정을 즉시 따라가게 한다.
+ // 단, 무소속은 선택 팀 드롭다운에도 무소속으로 반영한다.
+ const teamValue=canonicalPreferredTeam()||NO_PREFERRED_TEAM;
+ for(const L of Object.values(lineups)){
+   for(const params of Object.values(L?.setdeckParams||{})){
+     if(params && Object.hasOwn(params,"team")) params.team=teamValue;
+   }
+ }
+ updateChoiceGridTriggers();renderAll()
+});
  renderTabs();renderAll();
 }
 function fill(id,arr,keepFirst=true){
@@ -1833,16 +1845,17 @@ function setdeckYearOptions(){
 function getSetdeckParam(score,key,mode=currentMode){
  const L=ensureLineupState(mode);
  if(!L.setdeckParams[String(score)])L.setdeckParams[String(score)]={};
- let v=L.setdeckParams[String(score)][key];
- if(v!==undefined&&v!==null&&v!=="")return v;
- if(key==="team")v=canonicalPreferredTeam()||TEAMS[0];
- else if(key==="year"){
+ const saved=L.setdeckParams[String(score)][key];
+ if(saved!==undefined&&saved!==null&&saved!=="")return saved;
+ // 기본값은 저장하지 않는다. 새로고침 후 좌/우 효과 선택은 초기화되고,
+ // 선택 팀은 현재 선호구단을 따라가므로 오래된 팀 값이 남지 않는다.
+ if(key==="team")return canonicalPreferredTeam()||NO_PREFERRED_TEAM;
+ if(key==="year"){
    const years=setdeckYearOptions();
-   v=years.includes("26")?"26":(years.at(-1)??"26");
+   return years.includes("26")?"26":(years.at(-1)??"26");
  }
- else if(key==="player")v=Object.values(L.slots).find(Boolean)||"";
- L.setdeckParams[String(score)][key]=v;
- return v;
+ if(key==="player")return Object.values(L.slots).find(Boolean)||"";
+ return "";
 }
 function setSetdeckParam(score,key,value){
  const L=lineup();
@@ -1854,7 +1867,7 @@ function renderSetdeckParamControl(score,side){
  const need=setdeckParamNeed(score,side);if(!need)return "";
  const L=lineup(),value=getSetdeckParam(score,need);
  if(need==="team"){
-   const opts=TEAMS.map(t=>`<option value="${t}" ${t===value?"selected":""}>${t}</option>`).join("");
+   const opts=[NO_PREFERRED_TEAM,...TEAMS].map(t=>`<option value="${t}" ${t===value?"selected":""}>${t}</option>`).join("");
    return `<div class="setdeck-param"><label>${score}점 선택 팀</label><select onchange="setSetdeckParam(${score},'team',this.value)">${opts}</select></div>`;
  }
  if(need==="year"){
@@ -2462,7 +2475,7 @@ function impactSubtypeLogoHTML(p){
 }
 function lineupCompactCardHTML(p,slot,label){
  const g=getGrowth(p),growth=gameGrowthText(p,g),series=gameCardSeriesText(p,g);
- return `<div class="lineup-card-wrap${activeLineupSlot === slot ? ' actions-open' : ''}">
+ return `<div class="lineup-card-wrap">
    ${lineupQuickActionsHTML(slot,p)}
    <div class="lineup-card-shell ${cardBackgroundClass(p,g)}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 상세 열기" onclick="toggleLineupCardActions('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLineupCardActions('${slot}',event)}">
     ${gameStarHTML(p,true)}
