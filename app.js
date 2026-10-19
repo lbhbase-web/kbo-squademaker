@@ -2355,8 +2355,9 @@ function fullGrowSlot(slot,event){
  if(shell){shell.classList.add("fullgrow-flash");setTimeout(()=>shell.classList.remove("fullgrow-flash"),400)}
 }
 function lineupQuickActionsHTML(slot,p){
- // 선수 카드를 누르면 상세창을 바로 열지 않고, 카드 위 관리 버튼을 표시한다.
- return `<div class="lineup-quick-actions" aria-label="${esc(p.name)} 선수 관리 메뉴">
+ // 선택된 카드에만 관리 버튼을 표시한다. 다른 카드/빈 공간 클릭 시 선택이 해제된다.
+ const isActive = activeLineupSlot === slot;
+ return `<div class="lineup-quick-actions${isActive ? " is-active" : ""}" aria-label="${esc(p.name)} 선수 관리 메뉴" ${isActive ? "" : "aria-hidden=\"true\""}>
    <button title="선수 능력치·상세" aria-label="선수 능력치·상세" onclick="openGrowForSlot('${slot}',event)">↗</button>
    <button title="선수 관리" aria-label="선수 관리" onclick="openGrowForSlot('${slot}',event)">♟</button>
    <button title="선수 교체" aria-label="선수 교체" onclick="quickChangePlayer('${slot}',event)">⚙</button>
