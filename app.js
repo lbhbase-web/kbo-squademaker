@@ -2475,7 +2475,7 @@ function impactSubtypeLogoHTML(p){
 }
 function lineupCompactCardHTML(p,slot,label){
  const g=getGrowth(p),growth=gameGrowthText(p,g),series=gameCardSeriesText(p,g);
- return `<div class="lineup-card-wrap">
+ return `<div class="lineup-card-wrap ${activeLineupSlot === slot ? "actions-open" : ""}">
    ${lineupQuickActionsHTML(slot,p)}
    <div class="lineup-card-shell ${cardBackgroundClass(p,g)}" role="button" tabindex="0" aria-label="${esc(p.name)} 선수 상세 열기" onclick="toggleLineupCardActions('${slot}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLineupCardActions('${slot}',event)}">
     ${gameStarHTML(p,true)}
@@ -2751,22 +2751,49 @@ function bullpenTacticBonusMap(p,slot,mode=currentMode){
  const role=bullpenRole(slot,mode),s=bullpenStrategies(mode),counts=bullpenRoleCounts(mode);
  let add=0;
  if(role==="승리조"){
-   if(s.win==="split"&&counts.승리조>=3)add=2;
-   else if(s.win==="aggressive")add=1;
- }else if(role==="추격조"&&s.chase==="aggressive")add=1;
+   if(s.win==="split"&&counts.승리조>=3)add=3;
+   else if(s.win==="aggressive")add=2;
+ }else if(role==="추격조"&&s.chase==="aggressive")add=2;
  if(add)for(const k of Object.keys(out))if(k!=="stamina")out[k]=add;
  return out;
 }
 function bullpenTacticDescription(group){
  const s=bullpenStrategies(),counts=bullpenRoleCounts();
  if(group==="win"){
-   if(s.win==="split")return `승리조 최소 배치 필요 인원 ${counts.승리조}/3 · 선발맨/셋업 역할을 분업합니다. 홀드 상황에서 선발투수를 더 적극적으로 교체하고, 지구력을 제외한 승리조 능력치가 +2 상승합니다.${counts.승리조<3?' 현재는 인원 미달이라 능력치 효과가 적용되지 않습니다.':''}`;
-   if(s.win==="aggressive")return "적당한 타이밍에 적극적으로 교체하고 홀드 상황에서 선발투수를 조금 일찍 교체합니다. 지구력을 제외한 승리조 능력치가 +1 상승합니다.";
+   if(s.win==="split")return `승리조 최소 배치 필요 인원 ${counts.승리조}/3 · 선발맨/셋업 역할을 분업합니다. 홀드 상황에서 선발투수를 더 적극적으로 교체하고, 지구력을 제외한 승리조 능력치가 +3 상승합니다.${counts.승리조<3?' 현재는 인원 미달이라 능력치 효과가 적용되지 않습니다.':''}`;
+   if(s.win==="aggressive")return "적당한 타이밍에 적극적으로 교체하고 홀드 상황에서 선발투수를 조금 일찍 교체합니다. 지구력을 제외한 승리조 능력치가 +2 상승합니다.";
    return "최대한 길게 투구를 지시합니다. 추가 능력치 효과는 없습니다.";
  }
- if(s.chase==="aggressive")return "적당한 타이밍에 적극적으로 교체를 시도합니다. 지구력을 제외한 추격조 능력치가 +1 상승합니다.";
+ if(s.chase==="aggressive")return "적당한 타이밍에 적극적으로 교체를 시도합니다. 지구력을 제외한 추격조 능력치가 +2 상승합니다.";
  return "기본 교체 전술을 사용합니다. 추가 능력치 효과는 없습니다.";
 }
+const LINEUP_STRATEGY_KEY="v26_lineup_strategy_by_mode";
+function lineupStrategyMap(){
+ try{const v=JSON.parse(localStorage.getItem(LINEUP_STRATEGY_KEY)||"{}");return v&&typeof v==="object"?v:{}}catch(_){return {}}
+}
+function lineupStrategy(mode=currentMode){
+ const all=lineupStrategyMap();
+ const raw=all[mode]||{};
+ const bat=Math.max(4,Math.min(8,Number(raw.benchBatters)||6));
+ return {benchBatters:bat, middleRelievers:12-bat};
+}
+function setLineupStrategyCount(delta){
+ const all=lineupStrategyMap(),cur=lineupStrategy(currentMode);
+ const next=Math.max(4,Math.min(8,cur.benchBatters+delta));
+ all[currentMode]={benchBatters:next,middleRelievers:12-next};
+ localStorage.setItem(LINEUP_STRATEGY_KEY,JSON.stringify(all));
+ renderBullpenRoles();
+}
+function lineupStrategyControlsHTML(){
+ const v=lineupStrategy(currentMode),modeName=MODES[currentMode]||currentMode;
+ return `<div class="lineup-strategy-box">
+  <div class="lineup-strategy-head"><b>라인업 전략</b><span>${modeName} 전용 설정</span></div>
+  <div class="lineup-strategy-row"><strong>후보 타자</strong><button type="button" aria-label="후보 타자 감소" ${v.benchBatters<=4?'disabled':''} onclick="setLineupStrategyCount(-1)">−</button><b>${v.benchBatters}명</b><button type="button" aria-label="후보 타자 증가" ${v.benchBatters>=8?'disabled':''} onclick="setLineupStrategyCount(1)">+</button><small>최소 4명 · 최대 8명</small></div>
+  <div class="lineup-strategy-row"><strong>중간 계투</strong><button type="button" disabled>−</button><b>${v.middleRelievers}명</b><button type="button" disabled>+</button><small>자동 조절</small></div>
+  <div class="lineup-strategy-foot">후보 타자와 중간 계투 합계 12명 · 게임 모드별로 따로 저장돼.</div>
+ </div>`;
+}
+
 function renderBullpenRoles(){
  const controls=$("bullpenControls");
  if(!controls)return;
@@ -2775,7 +2802,8 @@ function renderBullpenRoles(){
  const winBtns=[["split","분업"],["aggressive","적극적"],["basic","기본"]].map(([v,t])=>`<button class="${s.win===v?'active':''}" onclick="setBullpenStrategy('win','${v}')">${t}</button>`).join("");
  const chaseBtns=[["aggressive","적극적"],["basic","기본"]].map(([v,t])=>`<button class="${s.chase===v?'active':''}" onclick="setBullpenStrategy('chase','${v}')">${t}</button>`).join("");
  controls.innerHTML=`<div class="bullpen-settings">
-  <div style="font-weight:900;margin-bottom:8px">투수 전술 설정 · 중간계투 (6/6)</div>
+  ${lineupStrategyControlsHTML()}
+  <div style="font-weight:900;margin-bottom:8px">전략 전술 설정 · 중간계투 (6/6)</div>
   <div class="bullpen-summary">
    <div class="bullpen-summary-card">승리조<b>${counts.승리조}</b><small>최소 1 · 최대 4</small></div>
    <div class="bullpen-summary-card">추격조<b>${counts.추격조}</b><small>최소 1 · 최대 4</small></div>

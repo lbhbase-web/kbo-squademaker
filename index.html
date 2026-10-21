@@ -1142,6 +1142,17 @@ body{background:#fff!important;color:#17191c!important}
 }
 .lineup-card-shell .lc-team{width:23px;height:23px;right:5px;top:20px}
 .lineup-card-shell .lc-team img{max-width:23px;max-height:23px}
+.lineup-strategy-box{border:1px solid #cfd6e0;background:#fff;border-radius:9px;padding:10px;margin-bottom:12px}
+.lineup-strategy-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.lineup-strategy-head span{font-size:11px;color:#65748a;background:#eef2f7;border-radius:20px;padding:4px 8px}
+.lineup-strategy-row{display:grid;grid-template-columns:minmax(78px,1fr) 38px 58px 38px minmax(92px,1fr);gap:6px;align-items:center;margin:7px 0}
+.lineup-strategy-row>strong{font-size:13px}
+.lineup-strategy-row>button{border:1px solid #c5cfdd;border-radius:7px;background:#f8fafc;color:#1f2937;font-size:20px;font-weight:900;min-height:34px;cursor:pointer}
+.lineup-strategy-row>button:disabled{opacity:.35;cursor:not-allowed}
+.lineup-strategy-row>b{text-align:center;font-size:16px;font-variant-numeric:tabular-nums}
+.lineup-strategy-row>small{font-size:10px;color:#64748b}
+.lineup-strategy-foot{font-size:11px;color:#526278;padding-top:7px;border-top:1px solid #e2e8f0}
+@media(max-width:520px){.lineup-strategy-row{grid-template-columns:minmax(68px,1fr) 34px 48px 34px}.lineup-strategy-row>small{grid-column:2/5;text-align:center}}
 .bullpen-controls{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 20px;font-size:13px}
 .bullpen-controls label{display:flex;align-items:center;gap:4px}
 .bullpen-controls select{font-size:13px;padding:4px}
@@ -1377,8 +1388,30 @@ body{background:#fff!important;color:#17191c!important}
 .diamond .slot[data-slot="DH"]{left:68%!important;top:348px!important}
 .ref-bench-panel{margin-top:0!important}#bench{max-width:560px!important;gap:7px!important}#bench .mslot{height:104px!important}
 .ref-pitcher-panel{padding-top:34px!important}#pitchers{grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-auto-rows:126px!important;gap:12px 8px!important;width:100%;max-width:414px;margin:auto}#pitchers .mslot{height:108px!important}
+.lineup-strategy-box{border:1px solid #cfd6e0;background:#fff;border-radius:9px;padding:10px;margin-bottom:12px}
+.lineup-strategy-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.lineup-strategy-head span{font-size:11px;color:#65748a;background:#eef2f7;border-radius:20px;padding:4px 8px}
+.lineup-strategy-row{display:grid;grid-template-columns:minmax(78px,1fr) 38px 58px 38px minmax(92px,1fr);gap:6px;align-items:center;margin:7px 0}
+.lineup-strategy-row>strong{font-size:13px}
+.lineup-strategy-row>button{border:1px solid #c5cfdd;border-radius:7px;background:#f8fafc;color:#1f2937;font-size:20px;font-weight:900;min-height:34px;cursor:pointer}
+.lineup-strategy-row>button:disabled{opacity:.35;cursor:not-allowed}
+.lineup-strategy-row>b{text-align:center;font-size:16px;font-variant-numeric:tabular-nums}
+.lineup-strategy-row>small{font-size:10px;color:#64748b}
+.lineup-strategy-foot{font-size:11px;color:#526278;padding-top:7px;border-top:1px solid #e2e8f0}
+@media(max-width:520px){.lineup-strategy-row{grid-template-columns:minmax(68px,1fr) 34px 48px 34px}.lineup-strategy-row>small{grid-column:2/5;text-align:center}}
 .bullpen-controls{margin:0 0 30px!important;gap:6px!important;font-size:12px!important}.ref-empty-pos{top:10px!important}.ref-empty-plus{width:48px!important;height:48px!important;top:62%!important}
-@media(max-width:850px){.ref-lineup-grid{grid-template-columns:1fr!important;max-width:600px!important;gap:26px!important}.ref-pitcher-panel{padding-top:0!important}.bullpen-controls{justify-content:center}}
+@media(max-width:850px){.ref-lineup-grid{grid-template-columns:1fr!important;max-width:600px!important;gap:26px!important}.ref-pitcher-panel{padding-top:0!important}.lineup-strategy-box{border:1px solid #cfd6e0;background:#fff;border-radius:9px;padding:10px;margin-bottom:12px}
+.lineup-strategy-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.lineup-strategy-head span{font-size:11px;color:#65748a;background:#eef2f7;border-radius:20px;padding:4px 8px}
+.lineup-strategy-row{display:grid;grid-template-columns:minmax(78px,1fr) 38px 58px 38px minmax(92px,1fr);gap:6px;align-items:center;margin:7px 0}
+.lineup-strategy-row>strong{font-size:13px}
+.lineup-strategy-row>button{border:1px solid #c5cfdd;border-radius:7px;background:#f8fafc;color:#1f2937;font-size:20px;font-weight:900;min-height:34px;cursor:pointer}
+.lineup-strategy-row>button:disabled{opacity:.35;cursor:not-allowed}
+.lineup-strategy-row>b{text-align:center;font-size:16px;font-variant-numeric:tabular-nums}
+.lineup-strategy-row>small{font-size:10px;color:#64748b}
+.lineup-strategy-foot{font-size:11px;color:#526278;padding-top:7px;border-top:1px solid #e2e8f0}
+@media(max-width:520px){.lineup-strategy-row{grid-template-columns:minmax(68px,1fr) 34px 48px 34px}.lineup-strategy-row>small{grid-column:2/5;text-align:center}}
+.bullpen-controls{justify-content:center}}
 @media(max-width:480px){.diamond{height:410px!important;min-height:410px!important}.diamond::before{height:360px!important;top:26px!important}.diamond .slot{width:56px!important;height:82px!important}.diamond .slot[data-slot="LF"],.diamond .slot[data-slot="RF"]{top:55px!important}.diamond .slot[data-slot="SS"],.diamond .slot[data-slot="2B"]{top:148px!important}.diamond .slot[data-slot="3B"],.diamond .slot[data-slot="1B"]{top:222px!important}.diamond .slot[data-slot="C"],.diamond .slot[data-slot="DH"]{top:310px!important}.ref-empty-plus{width:38px!important;height:38px!important;font-size:27px!important}#bench .mslot{height:82px!important}#bench{gap:4px!important}}
 
 .condition-skill-item{padding:8px 9px;margin:6px 0;background:#fff;border-radius:8px;font-size:10px;line-height:1.55}.condition-skill-item b{font-size:11px}.condition-skill-panel{color:#253044}.condition-skill-panel> b{font-size:12px}
@@ -1708,7 +1741,7 @@ body{background:#fff!important;color:#17191c!important}
     <button onclick="fillReferenceDummy()">더미 데이터 채우기</button>
     <button onclick="saveAll();toast('현재 설정을 저장했어.')">전체 저장</button>
     <button onclick="toggleRefPanel('advancedSetdeckPanel')">세트덱·특훈</button>
-    <button onclick="toggleRefPanel('refBullpenPanel')">투수 전술 설정</button>
+    <button onclick="toggleRefPanel('refBullpenPanel')">전략 전술 설정</button>
     <button onclick="toggleRefPanel('refPatchPanel')">패치 노트</button>
    </div>
 
@@ -1785,7 +1818,7 @@ body{background:#fff!important;color:#17191c!important}
    </section>
 
    <section id="refBullpenPanel" class="panel ref-collapsible">
-    <div class="ph"><strong>투수 전술 설정</strong><button class="mini" onclick="toggleRefPanel('refBullpenPanel')">닫기</button></div>
+    <div class="ph"><strong>전략 전술 설정</strong><button class="mini" onclick="toggleRefPanel('refBullpenPanel')">닫기</button></div>
     <div class="pb">
      <p style="margin-top:0">아래에서 중간계투 역할(승리조 / 추격조 / 롱릴리프)과 교체 전술을 게임처럼 따로 설정할 수 있어.</p>
      <div id="bullpenControls" class="bullpen-controls"></div>
