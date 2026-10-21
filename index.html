@@ -849,8 +849,7 @@ body{background:#fff!important;color:#17191c!important}
 .lineup-card-shell .lc-series{font-size:6px!important}
 .lineup-card-shell .lc-label{display:none!important}
 
-.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s ease}
-.lineup-card-wrap:hover .lineup-quick-actions,.lineup-card-wrap:focus-within .lineup-quick-actions{opacity:1;visibility:visible;pointer-events:auto}
+.lineup-quick-actions{position:absolute;left:-3px;top:-26px;z-index:30;display:flex;gap:3px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
 .lineup-quick-actions button{width:23px;height:23px;border:1px solid #bbb;background:#fff;color:#222;padding:0;font-size:12px;display:grid;place-items:center;cursor:pointer;border-radius:2px}
 .lineup-quick-actions .fullgrow{font-size:16px;font-weight:900}
 .lineup-quick-actions button:hover{background:#eee}
@@ -1142,7 +1141,6 @@ body{background:#fff!important;color:#17191c!important}
 }
 .lineup-card-shell .lc-team{width:23px;height:23px;right:5px;top:20px}
 .lineup-card-shell .lc-team img{max-width:23px;max-height:23px}
-.lineup-strategy-box{border:1px solid #cfd6e0;background:#fff;border-radius:9px;padding:10px;margin-bottom:12px}.lineup-strategy-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.lineup-strategy-head span{font-size:11px;color:#65748a;background:#eef2f7;border-radius:20px;padding:4px 8px}.lineup-strategy-row{display:grid;grid-template-columns:minmax(78px,1fr) 38px 58px 38px minmax(92px,1fr);gap:6px;align-items:center;margin:7px 0}.lineup-strategy-row>strong{font-size:13px}.lineup-strategy-row>button{border:1px solid #c5cfdd;border-radius:7px;background:#f8fafc;color:#1f2937;font-size:20px;font-weight:900;min-height:34px;cursor:pointer}.lineup-strategy-row>button:disabled{opacity:.35;cursor:not-allowed}.lineup-strategy-row>b{text-align:center;font-size:16px}.lineup-strategy-row>small{font-size:10px;color:#64748b}.lineup-strategy-foot{font-size:11px;color:#526278;padding-top:7px;border-top:1px solid #e2e8f0}@media(max-width:520px){.lineup-strategy-row{grid-template-columns:minmax(68px,1fr) 34px 48px 34px}.lineup-strategy-row>small{grid-column:2/5;text-align:center}}
 .bullpen-controls{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 20px;font-size:13px}
 .bullpen-controls label{display:flex;align-items:center;gap:4px}
 .bullpen-controls select{font-size:13px;padding:4px}
@@ -1336,14 +1334,6 @@ body{background:#fff!important;color:#17191c!important}
 /* v13.1: 선호구단 버튼에 현재팀(옛팀) 이름을 함께 표시 */
 #choiceGridBackdrop .choice-grid .choice-cell{white-space:normal;line-height:1.25;min-height:52px;padding:8px 6px;font-size:12px}
 #preferredTeamPickerBtn{white-space:normal;line-height:1.25;max-width:300px}
-
-
-/* Player quick actions: touch-friendly explicit selection; close on outside tap. */
-.lineup-card-wrap .lineup-quick-actions{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
-.lineup-card-wrap.actions-open .lineup-quick-actions{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
-.lineup-card-wrap:hover .lineup-quick-actions,.lineup-card-wrap:focus-within .lineup-quick-actions{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
-.lineup-card-wrap.actions-open:hover .lineup-quick-actions,.lineup-card-wrap.actions-open:focus-within .lineup-quick-actions{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
-.lineup-quick-actions button{font-family:Arial,sans-serif;font-weight:700}
 
 </style>
 <style>
@@ -1709,7 +1699,7 @@ body{background:#fff!important;color:#17191c!important}
     <button onclick="fillReferenceDummy()">더미 데이터 채우기</button>
     <button onclick="saveAll();toast('현재 설정을 저장했어.')">전체 저장</button>
     <button onclick="toggleRefPanel('advancedSetdeckPanel')">세트덱·특훈</button>
-    <button onclick="toggleRefPanel('refBullpenPanel')">전략 전술 설정</button>
+    <button onclick="toggleRefPanel('refBullpenPanel')">투수 전술 설정</button>
     <button onclick="toggleRefPanel('refPatchPanel')">패치 노트</button>
    </div>
 
@@ -1786,7 +1776,7 @@ body{background:#fff!important;color:#17191c!important}
    </section>
 
    <section id="refBullpenPanel" class="panel ref-collapsible">
-    <div class="ph"><strong>전략 전술 설정</strong><button class="mini" onclick="toggleRefPanel('refBullpenPanel')">닫기</button></div>
+    <div class="ph"><strong>투수 전술 설정</strong><button class="mini" onclick="toggleRefPanel('refBullpenPanel')">닫기</button></div>
     <div class="pb">
      <p style="margin-top:0">아래에서 중간계투 역할(승리조 / 추격조 / 롱릴리프)과 교체 전술을 게임처럼 따로 설정할 수 있어.</p>
      <div id="bullpenControls" class="bullpen-controls"></div>
@@ -1800,6 +1790,9 @@ body{background:#fff!important;color:#17191c!important}
      </section>
      <section class="panel ref-bench-panel">
       <div class="pb"><div id="bench" class="mini-grid"></div></div>
+     </section>
+     <section class="panel ref-bullpen-slots-panel">
+      <div class="pb"><div id="bullpenBench" class="mini-grid"></div></div>
      </section>
     </div>
 
@@ -1958,7 +1951,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.4.8-20261021-dynamic-slots-v1"></script>
+<script src="./bootstrap.js?v=15.4.9-bullpen-below-bench"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
@@ -1978,28 +1971,19 @@ body{background:#fff!important;color:#17191c!important}
 }
 </style>
 
-
-<style id="impact-subtype-logo-style">
-/* Original subtype emblems, cropped from the user's supplied emblem sheets. */
-.lineup-card-shell .lc-series{display:flex!important;align-items:center!important;gap:2px!important;padding:0 2px!important;box-sizing:border-box;text-align:left!important;white-space:nowrap!important;overflow:hidden!important}
-.lineup-card-shell .lc-subtype-logo{position:static!important;display:inline-block!important;flex:0 0 20px!important;width:20px!important;height:20px!important;object-fit:contain!important;z-index:30!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;background:#fff!important;border-radius:4px!important;padding:1px!important;box-sizing:border-box!important;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))!important}
-.lineup-card-shell .lc-series span{overflow:hidden!important;text-overflow:ellipsis!important;min-width:0!important}
-.lineup-card-shell .lc-subtype-logo-missing{display:none!important}
-.reference-card{width:72px!important;min-width:72px!important;height:105px!important;flex:0 0 72px!important}
-.reference-card>.game-player-card{width:72px!important;height:105px!important;min-height:0!important}
-@media(min-width:601px){.reference-card{width:78px!important;min-width:78px!important;height:114px!important;flex-basis:78px!important}.reference-card>.game-player-card{width:78px!important;height:114px!important}}
+<style>
+/* Bullpen relievers belong below the candidate-batter slots, not mixed into the starter/closer panel. */
+.ref-lineup-grid{grid-template-columns:minmax(0,600px) minmax(0,414px)!important;}
+.ref-bullpen-slots-panel{grid-column:1; margin-top:10px!important; border:0!important;box-shadow:none!important;background:#fff!important;overflow:visible!important}
+.ref-bullpen-slots-panel .pb{padding:0!important}
+#bullpenBench{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:7px!important;width:100%;max-width:560px;margin:0 auto;align-items:start}
+#bullpenBench .mslot{height:104px!important;min-height:0!important;padding:0!important;position:relative!important;overflow:visible!important;border:1px solid #7d8389!important;border-radius:5px!important;background:linear-gradient(145deg,#f7f9fa,#d6d8da)!important}
+#bullpenBench .mslot:has(.lineup-card-shell){background:transparent!important;border:0!important}
+#bullpenBench .mslot[data-slot^="RP"]::before{content:attr(data-role-label);position:absolute;left:0;right:0;top:-19px;height:15px;background:#3474ec;color:#fff;font-size:8px;display:grid;place-items:center}
+#pitchers .mslot[data-slot^="RP"]{display:none!important}
+@media(max-width:850px){.ref-bullpen-slots-panel{grid-column:1!important}#bullpenBench{grid-template-columns:repeat(4,minmax(0,1fr))!important;max-width:560px}}
+@media(max-width:480px){#bullpenBench{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}#bullpenBench .mslot{height:82px!important}}
 </style>
-
-<style id="impact-subtype-logo-natural-v2">
-/* Keep the original subtype emblem as a small, integrated badge instead of a separate text tile. */
-.lineup-card-shell{position:relative!important}
-.lineup-card-shell .lc-series{position:absolute!important;right:3px!important;bottom:20px!important;left:auto!important;top:auto!important;width:27px!important;height:27px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important;padding:2px!important;margin:0!important;box-sizing:border-box!important;border-radius:50%!important;background:rgba(255,255,255,.94)!important;border:1px solid rgba(25,35,48,.38)!important;box-shadow:0 1px 3px rgba(0,0,0,.28)!important;z-index:18!important}
-.lineup-card-shell .lc-subtype-logo{display:block!important;position:static!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;flex:1 1 auto!important;object-fit:contain!important;background:transparent!important;border:0!important;border-radius:50%!important;padding:0!important;filter:none!important;opacity:1!important;visibility:visible!important}
-.lineup-card-shell .lc-bottom{position:absolute!important;left:0!important;right:0!important;bottom:0!important;padding:8px 2px 2px!important}
-.lineup-card-shell .lc-name{position:relative!important;z-index:19!important;padding-right:15px!important}
-.lineup-card-shell .lc-series-fallback{position:absolute!important;left:3px!important;bottom:21px!important;max-width:calc(100% - 34px)!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:5px!important;line-height:1!important;font-weight:900!important;color:#fff!important;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000!important;z-index:18!important}
-</style>
-
 </body>
 </html>
 

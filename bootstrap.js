@@ -1,10 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.8-20261021-dynamic-slots-v1';
-  const DATA_URLS=[
-  'https://raw.githubusercontent.com/lbhbase-web/kbo-squademaker/main/players.json',
-  './players.json?v=15.3',
-  './data/players.json?v=15.3'
-];
+  const APP_URL='./app.js?v=15.4.9-bullpen-below-bench';
+  const DATA_URLS=['./players.json?v=15.3','./data/players.json?v=15.3'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -19,8 +15,7 @@
     let lastError=null;
     for(const url of DATA_URLS){
       try{
-        const requestUrl=url.startsWith('https://') ? `${url}?v=${Date.now()}` : url;
-        const r=await fetch(requestUrl,{cache:'no-store'});
+        const r=await fetch(url,{cache:'no-cache'});
         if(!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
         const data=await r.json();
         if(!Array.isArray(data)) throw new Error(`${url}: 선수 데이터 형식 오류`);
