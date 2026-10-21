@@ -1,5 +1,5 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.11-20261021-top3-year-search-dedupe';
+  const APP_URL='./app.js?v=15.4.12-20261021-impact-detail-picker';
   const DATA_URLS=['./players.json?v=15.4.11-20261021-top3-year-search-dedupe','./data/players.json?v=15.4.11-20261021-top3-year-search-dedupe'];
 
   const showError=(msg)=>{

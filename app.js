@@ -1657,7 +1657,7 @@ function init(){
  [...$("preferredTeam").options].forEach(o=>o.textContent=preferredTeamLabel(o.value));
  fill("pickerTeam",TEAMS);
  fill("pickerType",["골든글러브","국가대표","시그니처","시즌","라이브","라이브 올스타","임팩트"]);
- fill("pickerSeries",[...new Set(players.filter(p=>p.type==="임팩트").map(p=>p.series).filter(Boolean))].sort());
+ fill("pickerSeries",["year:25","year:26",...[...new Set(players.filter(p=>p.type==="임팩트").map(p=>String(p.series||"").trim()).filter(Boolean))].filter(x=>x!=="TOP3").sort().map(x=>`series:${x}`)]);
  let pickerSearchTimer;
  ["pickerQ","pickerTeam","pickerType","pickerSeries"].forEach(id=>$(id).addEventListener(id==="pickerQ"?"input":"change",()=>{clearTimeout(pickerSearchTimer);pickerPage=1;if(id==="pickerQ")pickerSearchTimer=setTimeout(renderPlayerPicker,180);else renderPlayerPicker()}));
  initSimplePickerControls();
@@ -2517,6 +2517,24 @@ function initSimplePickerControls(){
  updatePickerSortUI();
  document.addEventListener("click",e=>{const menu=$("pickerSortMenu"),btn=$("pickerSortBtn"); if(!menu||!btn) return; if(menu.contains(e.target)||btn.contains(e.target)) return; closePickerSortMenu();});
 }
+function impactDetailOptions(){
+ const raw=[...new Set(players.filter(p=>p.type==="임팩트").map(p=>String(p.series||"").trim()).filter(Boolean))];
+ const opts=[{key:"year:25",label:"2025 TOP3"},{key:"year:26",label:"2026 TOP3"}];
+ const labelMap={"5툴선수":"5툴 선수","FA선수":"FA선수","구종마스터":"구종 마스터","끝내기":"끝내기","대체외인":"대체 외인","주력선수":"주력 선수","중간계투":"중간 계투","느림의미학":"느림의 미학","슬로우스타터":"슬로우 스타터","좌완에이스":"좌완 에이스","좌타 해결사":"좌타해결사","키플레이어":"키 플레이어","호타준족":"호타준족","TOP3":null};
+ raw.filter(x=>x!=="TOP3").sort((a,b)=>(labelMap[a]||a).localeCompare(labelMap[b]||b,"ko")).forEach(series=>opts.push({key:`series:${series}`,label:labelMap[series]===undefined?series:labelMap[series]}));
+ return opts;
+}
+function renderImpactDetailChoices(){
+ const wrap=$("pickerImpactDetailGrid"),section=$("pickerImpactDetailSection");
+ if(!wrap||!section)return;
+ const active=$("pickerType")?.value==="임팩트";
+ section.style.display=active?"block":"none";
+ if(!active){wrap.innerHTML="";return;}
+ const selected=$("pickerSeries")?.value||"";
+ const opts=[{key:"",label:"전체"},...impactDetailOptions()];
+ wrap.innerHTML=opts.map(o=>`<button type="button" class="picker-choice-btn ${selected===o.key?"active":""}" onclick="togglePickerImpactDetail(${JSON.stringify(o.key).replace(/\"/g,'&quot;')})">${esc(o.label)}</button>`).join("");
+}
+function togglePickerImpactDetail(key){const el=$("pickerSeries");if(!el)return;el.value=el.value===key?"":key;pickerPage=1;renderImpactDetailChoices();renderPlayerPicker();}
 function renderSimplePickerChoices(){
  const teamWrap=$("pickerTeamGrid"),typeWrap=$("pickerTypeGrid"),posWrap=$("pickerPosGrid");
  if(teamWrap){
@@ -2526,6 +2544,7 @@ function renderSimplePickerChoices(){
   const types=[["시즌","시즌"],["라이브","라이브"],["임팩트","임팩트"],["시그니처","시그니처"],["국가대표","국가대표"],["라이브 올스타","올스타"],["골든글러브","골든글러브"]];
   typeWrap.innerHTML=types.map(([val,label])=>`<button type="button" class="picker-choice-btn ${$("pickerType")?.value===val?"active":""}" onclick="togglePickerType('${val}')">${label}</button>`).join("");
  }
+ renderImpactDetailChoices();
  if(posWrap){
   const opts=["SP","RP","CP","LF","CF","RF","1B","2B","SS","3B","C","DH"];
   const def=pickerDefaultPosFilter(currentPickerSlot||"");
@@ -2633,7 +2652,12 @@ function renderPlayerPicker(){
    if(q&&!searchable.includes(q))return false;
    if(team&&p.team!==team)return false;
    if(type&&p.type!==type&&!(type==="라이브"&&family(p)==="live"))return false;
-   if(series&&p.series!==series)return false;
+   if(series){
+     if(type!=="임팩트")return false;
+     if(series==="year:25"&&!(String(p.series||"")==="TOP3"&&["25","2025"].includes(String(p.year||""))))return false;
+     else if(series==="year:26"&&!(String(p.series||"")==="TOP3"&&["26","2026"].includes(String(p.year||""))))return false;
+     else if(series.startsWith("series:")&&String(p.series||"")!==series.slice(7))return false;
+   }
    if(posFilter){
      if(posFilter==="DH"){ if(!FIELD.includes(p.pos)) return false; }
      else if(p.pos!==posFilter) return false;
@@ -2658,7 +2682,7 @@ function renderPlayerPicker(){
  const tags=[];
  if(team)tags.push(`<span class="tag">팀: ${esc(team)}</span>`);
  if(type)tags.push(`<span class="tag">카드: ${esc(type==="라이브 올스타"?"올스타":type)}</span>`);
- if(series)tags.push(`<span class="tag">세부: ${esc(series)}</span>`);
+ if(series){const detail=impactDetailOptions().find(o=>o.key===series);tags.push(`<span class="tag">임팩트 상세: ${esc(detail?.label||series)}</span>`);}
  if(posFilter)tags.push(`<span class="tag">포지션: ${esc(posFilter)}</span>`);
  $("pickerActive").innerHTML=tags.join("");
  renderSimplePickerChoices();
