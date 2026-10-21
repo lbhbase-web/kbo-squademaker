@@ -69,9 +69,9 @@ function preferredTeamLabel(team){return team===NO_PREFERRED_TEAM?NO_PREFERRED_T
 function canonicalPreferredTeam(){return hasPreferredTeam()?canonicalTeam(preferredTeam):""}
 const POS=["LF","CF","RF","SS","2B","1B","3B","C","DH","SP","RP","CP"];
 const FIELD=["LF","CF","RF","SS","2B","1B","3B","C","DH"];
-const BENCH=["SUB1","SUB2","SUB3","SUB4","SUB5","SUB6"];
-const PITCH=["SP1","SP2","SP3","SP4","SP5","RP1","RP2","RP3","RP4","RP5","RP6","CP"];
-const ALL_SLOTS=[...FIELD,...BENCH,...PITCH];
+let BENCH=["SUB1","SUB2","SUB3","SUB4","SUB5","SUB6"];
+let PITCH=["SP1","SP2","SP3","SP4","SP5","RP1","RP2","RP3","RP4","RP5","RP6","CP"];
+let ALL_SLOTS=[...FIELD,...BENCH,...PITCH];
 const SETDECK_THRESHOLDS=[0,30,40,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200];
 
 const POSITION_BASE_BAT={power:4,contact:6,eye:6,patience:5,baserun:7,fielding:8};
@@ -994,7 +994,7 @@ function isSeasonCard(p){
  const t=((p.type||"")+" "+(p.series||"")).toLowerCase();
  return t.includes("시즌");
 }
-function isBullpenSlot(slot){return /^RP[1-6]$/.test(slot)||slot==="CP"}
+function isBullpenSlot(slot){return /^RP[1-8]$/.test(slot)||slot==="CP"}
 function isStarterSlot(slot){return /^SP[1-5]$/.test(slot)}
 function setdeckBonusMap(p,slot,mode=currentMode){
  const out=emptyStatBonus(p),L=ensureLineupState(mode),effects=selectedSetdeckEffects(mode);
@@ -1993,7 +1993,7 @@ function pickerRequiredPos(slot){
  if(slot==="DH")return "타자 전체";
  if(FIELD.includes(slot))return slot;
  if(/^SP[1-5]$/.test(slot))return "SP";
- if(/^RP[1-6]$/.test(slot))return "RP";
+ if(/^RP[1-8]$/.test(slot))return "RP";
  if(slot==="CP")return "CP";
  if(BENCH.includes(slot))return "타자";
  return "";
@@ -2724,7 +2724,7 @@ function bullpenRoleCounts(mode=currentMode){
  return out;
 }
 function setBullpenRole(slot,role){
- if(!/^RP[1-6]$/.test(slot)||!["승리조","추격조","롱릴리프"].includes(role))return;
+ if(!/^RP[1-8]$/.test(slot)||!["승리조","추격조","롱릴리프"].includes(role))return;
  const L=lineup();if(!L.bullpenRoles)L.bullpenRoles={};
  const old=bullpenRole(slot),counts=bullpenRoleCounts();
  if(old===role)return;
@@ -2747,7 +2747,7 @@ function setBullpenStrategy(group,value){
 }
 function bullpenTacticBonusMap(p,slot,mode=currentMode){
  const out={};for(const [k] of statMeta(p))out[k]=0;
- if(!/^RP[1-6]$/.test(slot||""))return out;
+ if(!/^RP[1-8]$/.test(slot||""))return out;
  const role=bullpenRole(slot,mode),s=bullpenStrategies(mode),counts=bullpenRoleCounts(mode);
  let add=0;
  if(role==="승리조"){
@@ -2768,37 +2768,17 @@ function bullpenTacticDescription(group){
  return "기본 교체 전술을 사용합니다. 추가 능력치 효과는 없습니다.";
 }
 const LINEUP_STRATEGY_KEY="v26_lineup_strategy_by_mode";
-function lineupStrategyMap(){
- try{const v=JSON.parse(localStorage.getItem(LINEUP_STRATEGY_KEY)||"{}");return v&&typeof v==="object"?v:{}}catch(_){return {}}
-}
-function lineupStrategy(mode=currentMode){
- const all=lineupStrategyMap();
- const raw=all[mode]||{};
- const bat=Math.max(4,Math.min(8,Number(raw.benchBatters)||6));
- return {benchBatters:bat, middleRelievers:12-bat};
-}
-function setLineupStrategyCount(delta){
- const all=lineupStrategyMap(),cur=lineupStrategy(currentMode);
- const next=Math.max(4,Math.min(8,cur.benchBatters+delta));
- all[currentMode]={benchBatters:next,middleRelievers:12-next};
- localStorage.setItem(LINEUP_STRATEGY_KEY,JSON.stringify(all));
- renderBullpenRoles();
-}
-function lineupStrategyControlsHTML(){
- const v=lineupStrategy(currentMode),modeName=MODES[currentMode]||currentMode;
- return `<div class="lineup-strategy-box">
-  <div class="lineup-strategy-head"><b>라인업 전략</b><span>${modeName} 전용 설정</span></div>
-  <div class="lineup-strategy-row"><strong>후보 타자</strong><button type="button" aria-label="후보 타자 감소" ${v.benchBatters<=4?'disabled':''} onclick="setLineupStrategyCount(-1)">−</button><b>${v.benchBatters}명</b><button type="button" aria-label="후보 타자 증가" ${v.benchBatters>=8?'disabled':''} onclick="setLineupStrategyCount(1)">+</button><small>최소 4명 · 최대 8명</small></div>
-  <div class="lineup-strategy-row"><strong>중간 계투</strong><button type="button" disabled>−</button><b>${v.middleRelievers}명</b><button type="button" disabled>+</button><small>자동 조절</small></div>
-  <div class="lineup-strategy-foot">후보 타자와 중간 계투 합계 12명 · 게임 모드별로 따로 저장돼.</div>
- </div>`;
-}
+function lineupStrategyMap(){try{const v=JSON.parse(localStorage.getItem(LINEUP_STRATEGY_KEY)||"{}");return v&&typeof v==="object"?v:{}}catch(_){return {}}}
+function lineupStrategy(mode=currentMode){const all=lineupStrategyMap(),raw=all[mode]||{};const n=Math.max(4,Math.min(8,Number(raw.benchBatters)||6));return {benchBatters:n,middleRelievers:12-n}}
+function syncLineupSlotCounts(){const v=lineupStrategy(currentMode);BENCH=Array.from({length:v.benchBatters},(_,i)=>`SUB${i+1}`);PITCH=["SP1","SP2","SP3","SP4","SP5",...Array.from({length:v.middleRelievers},(_,i)=>`RP${i+1}`),"CP"];ALL_SLOTS=[...FIELD,...BENCH,...PITCH]}
+function setLineupStrategyCount(delta){const all=lineupStrategyMap(),cur=lineupStrategy(currentMode),next=Math.max(4,Math.min(8,cur.benchBatters+delta));all[currentMode]={benchBatters:next,middleRelievers:12-next};localStorage.setItem(LINEUP_STRATEGY_KEY,JSON.stringify(all));syncLineupSlotCounts();renderAll()}
+function lineupStrategyControlsHTML(){const v=lineupStrategy(currentMode);return `<div class="lineup-strategy-box"><div class="lineup-strategy-head"><b>라인업 전략</b><span>현재 모드 전용</span></div><div class="lineup-strategy-row"><strong>후보 타자</strong><button type="button" ${v.benchBatters<=4?'disabled':''} onclick="setLineupStrategyCount(-1)">−</button><b>${v.benchBatters}명</b><button type="button" ${v.benchBatters>=8?'disabled':''} onclick="setLineupStrategyCount(1)">+</button><small>최소 4명 · 최대 8명</small></div><div class="lineup-strategy-row"><strong>중간 계투</strong><button type="button" disabled>−</button><b>${v.middleRelievers}명</b><button type="button" disabled>+</button><small>자동 조절</small></div><div class="lineup-strategy-foot">후보 타자와 중간 계투 합계 12명 · 모드별 개별 저장</div></div>`}
 
 function renderBullpenRoles(){
  const controls=$("bullpenControls");
  if(!controls)return;
  const counts=bullpenRoleCounts(),s=bullpenStrategies();
- const slots=Array.from({length:6},(_,i)=>{const slot=`RP${i+1}`;return `<label>${slot}<select aria-label="${slot} 불펜 역할" onchange="setBullpenRole('${slot}',this.value)">${["승리조","추격조","롱릴리프"].map(r=>`<option ${bullpenRole(slot)===r?"selected":""}>${r}</option>`).join("")}</select></label>`}).join("");
+ const slots=Array.from({length:lineupStrategy(currentMode).middleRelievers},(_,i)=>{const slot=`RP${i+1}`;return `<label>${slot}<select aria-label="${slot} 불펜 역할" onchange="setBullpenRole('${slot}',this.value)">${["승리조","추격조","롱릴리프"].map(r=>`<option ${bullpenRole(slot)===r?"selected":""}>${r}</option>`).join("")}</select></label>`}).join("");
  const winBtns=[["split","분업"],["aggressive","적극적"],["basic","기본"]].map(([v,t])=>`<button class="${s.win===v?'active':''}" onclick="setBullpenStrategy('win','${v}')">${t}</button>`).join("");
  const chaseBtns=[["aggressive","적극적"],["basic","기본"]].map(([v,t])=>`<button class="${s.chase===v?'active':''}" onclick="setBullpenStrategy('chase','${v}')">${t}</button>`).join("");
  controls.innerHTML=`<div class="bullpen-settings">
@@ -2816,7 +2796,7 @@ function renderBullpenRoles(){
   </div>
  </div>`;
  const rows={승리조:2,추격조:2,롱릴리프:2};
- for(let i=1;i<=6;i++){const slot=`RP${i}`,role=bullpenRole(slot),el=$("pitchers").querySelector(`[data-slot="${slot}"]`);if(!el)continue;el.dataset.roleLabel=role;el.style.gridColumn=String({승리조:1,추격조:2,롱릴리프:3}[role]);el.style.gridRow=String(rows[role]++);}
+ for(let i=1;i<=lineupStrategy(currentMode).middleRelievers;i++){const slot=`RP${i}`,role=bullpenRole(slot),el=$("pitchers").querySelector(`[data-slot="${slot}"]`);if(!el)continue;el.dataset.roleLabel=role;el.style.gridColumn=String({승리조:1,추격조:2,롱릴리프:3}[role]);el.style.gridRow=String(rows[role]++);}
 }
 function miniSlot(slot,label){
  const id=lineup().slots[slot],p=players.find(x=>x.id===id);
@@ -2846,6 +2826,7 @@ function validateLineupSlots(mode=currentMode){
 }
 
 function renderSquad(){
+ syncLineupSlotCounts();
  validateLineupSlots();
  autoOrder();
  $("diamond").innerHTML=FIELD.map(fieldSlot).join("");
@@ -2968,7 +2949,7 @@ function slotAcceptsPlayer(slot,p){
 
  // 투수 역할 고정
  if(/^SP[1-5]$/.test(slot))return p.pos==="SP";
- if(/^RP[1-6]$/.test(slot))return p.pos==="RP";
+ if(/^RP[1-8]$/.test(slot))return p.pos==="RP";
  if(slot==="CP")return p.pos==="CP";
 
  return false;
@@ -3212,7 +3193,7 @@ function renderGrow(){
  <section><h3>훈련</h3><div class="reference-controls">${level('training',g.training,maxTraining(p))}<span>훈련 총합: ${sum(es.trainingBonus)}/${3*g.training}</span><span>${g.trainingMode==='manual'?'수동 배분':'자동 배분'}</span></div><div class="reference-allocation">${detailRows(p,es.trainingBonus,'training')}</div></section>
  <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div></section>
  <section><h3>포지션 특훈</h3><div class="reference-controls">${slot?level('position',lineup().positionTraining[slot]??0,20):'라인업에 배치하면 적용돼.'}<span>적용 총합: ${sum(es.positionBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.positionBonus||{},'position')}</div></section>
- ${slot&&/^RP[1-6]$/.test(slot)?`<section><h3>불펜 전술</h3><div class="reference-controls"><span>${bullpenRole(slot)}</span><span>전술 능력치 총합: +${sum(es.bullpenTacticBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.bullpenTacticBonus||{},'bullpen')}</div></section>`:''}
+ ${slot&&/^RP[1-8]$/.test(slot)?`<section><h3>불펜 전술</h3><div class="reference-controls"><span>${bullpenRole(slot)}</span><span>전술 능력치 총합: +${sum(es.bullpenTacticBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.bullpenTacticBonus||{},'bullpen')}</div></section>`:''}
  ${skillControls(p,slot)}
  <details class="reference-extra"><summary>강화·각성</summary>${quickEnhanceHTML(p,g)}${quickAwakeningHTML(p,g)}</details>
  </div>`;

@@ -1,5 +1,5 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.7-20261021-strategy-actions-v1';
+  const APP_URL='./app.js?v=15.4.8-20261021-dynamic-slots-v1';
   const DATA_URLS=[
   'https://raw.githubusercontent.com/lbhbase-web/kbo-squademaker/main/players.json',
   './players.json?v=15.3',
