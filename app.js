@@ -2803,7 +2803,7 @@ function renderBullpenRoles(){
  const chaseBtns=[["aggressive","적극적"],["basic","기본"]].map(([v,t])=>`<button class="${s.chase===v?'active':''}" onclick="setBullpenStrategy('chase','${v}')">${t}</button>`).join("");
  controls.innerHTML=`<div class="bullpen-settings">
   ${lineupStrategyControlsHTML()}
-  <div style="font-weight:900;margin-bottom:8px">전략 전술 설정 · 중간계투 (6/6)</div>
+  <div style="font-weight:900;margin-bottom:8px">전략 전술 설정 · 중간계투</div>
   <div class="bullpen-summary">
    <div class="bullpen-summary-card">승리조<b>${counts.승리조}</b><small>최소 1 · 최대 4</small></div>
    <div class="bullpen-summary-card">추격조<b>${counts.추격조}</b><small>최소 1 · 최대 4</small></div>
