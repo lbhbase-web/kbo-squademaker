@@ -2808,7 +2808,7 @@
   {
     "id": "site-00123",
     "name": "송성문",
-    "year": null,
+    "year": "25",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -2831,7 +2831,7 @@
   {
     "id": "site-00124",
     "name": "알칸타라",
-    "year": null,
+    "year": "25",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -2854,7 +2854,7 @@
   {
     "id": "site-00125",
     "name": "하영민",
-    "year": null,
+    "year": "25",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -2877,7 +2877,7 @@
   {
     "id": "site-00126",
     "name": "이주형B",
-    "year": null,
+    "year": "25",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -2900,7 +2900,7 @@
   {
     "id": "site-00127",
     "name": "최주환",
-    "year": null,
+    "year": "25",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -2923,7 +2923,7 @@
   {
     "id": "site-00128",
     "name": "주승우",
-    "year": null,
+    "year": "25",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -25337,7 +25337,7 @@
   {
     "id": "site-01133",
     "name": "임찬규",
-    "year": null,
+    "year": "25",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -25360,7 +25360,7 @@
   {
     "id": "site-01134",
     "name": "신민재",
-    "year": null,
+    "year": "25",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -25383,7 +25383,7 @@
   {
     "id": "site-01135",
     "name": "치리노스",
-    "year": null,
+    "year": "25",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -25406,7 +25406,7 @@
   {
     "id": "site-01136",
     "name": "오스틴",
-    "year": null,
+    "year": "25",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -25429,7 +25429,7 @@
   {
     "id": "site-01137",
     "name": "문보경",
-    "year": null,
+    "year": "25",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -25452,7 +25452,7 @@
   {
     "id": "site-01138",
     "name": "김영우",
-    "year": null,
+    "year": "25",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -50558,7 +50558,7 @@
   {
     "id": "site-02260",
     "name": "잭로그",
-    "year": null,
+    "year": "25",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -50581,7 +50581,7 @@
   {
     "id": "site-02261",
     "name": "케이브",
-    "year": null,
+    "year": "25",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -50604,7 +50604,7 @@
   {
     "id": "site-02262",
     "name": "양의지",
-    "year": null,
+    "year": "25",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -50627,7 +50627,7 @@
   {
     "id": "site-02263",
     "name": "곽빈",
-    "year": null,
+    "year": "25",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -50650,7 +50650,7 @@
   {
     "id": "site-02264",
     "name": "김택연",
-    "year": null,
+    "year": "25",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -50673,7 +50673,7 @@
   {
     "id": "site-02265",
     "name": "안재석",
-    "year": null,
+    "year": "25",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -59688,7 +59688,7 @@
   {
     "id": "site-02664",
     "name": "감보아",
-    "year": null,
+    "year": "25",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -59711,7 +59711,7 @@
   {
     "id": "site-02665",
     "name": "윤동희",
-    "year": null,
+    "year": "25",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -59734,7 +59734,7 @@
   {
     "id": "site-02666",
     "name": "레이예스S",
-    "year": null,
+    "year": "25",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -59757,7 +59757,7 @@
   {
     "id": "site-02667",
     "name": "나균안",
-    "year": null,
+    "year": "25",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -59780,7 +59780,7 @@
   {
     "id": "site-02668",
     "name": "윤성빈",
-    "year": null,
+    "year": "25",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -59803,7 +59803,7 @@
   {
     "id": "site-02669",
     "name": "전준우",
-    "year": null,
+    "year": "25",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -86929,7 +86929,7 @@
   {
     "id": "site-03881",
     "name": "라일리",
-    "year": null,
+    "year": "25",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -86952,7 +86952,7 @@
   {
     "id": "site-03882",
     "name": "김주원",
-    "year": null,
+    "year": "25",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -86975,7 +86975,7 @@
   {
     "id": "site-03883",
     "name": "박민우",
-    "year": null,
+    "year": "25",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -86998,7 +86998,7 @@
   {
     "id": "site-03884",
     "name": "전사민",
-    "year": null,
+    "year": "25",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -87021,7 +87021,7 @@
   {
     "id": "site-03885",
     "name": "데이비슨B",
-    "year": null,
+    "year": "25",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -87044,7 +87044,7 @@
   {
     "id": "site-03886",
     "name": "류진욱",
-    "year": null,
+    "year": "25",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -109026,7 +109026,7 @@
   {
     "id": "site-04868",
     "name": "폰세",
-    "year": null,
+    "year": "25",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -109049,7 +109049,7 @@
   {
     "id": "site-04869",
     "name": "와이스",
-    "year": null,
+    "year": "25",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -109072,7 +109072,7 @@
   {
     "id": "site-04870",
     "name": "문현빈",
-    "year": null,
+    "year": "25",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -109095,7 +109095,7 @@
   {
     "id": "site-04871",
     "name": "류현진",
-    "year": null,
+    "year": "25",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -109118,7 +109118,7 @@
   {
     "id": "site-04872",
     "name": "리베라토",
-    "year": null,
+    "year": "25",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -109141,7 +109141,7 @@
   {
     "id": "site-04873",
     "name": "노시환",
-    "year": null,
+    "year": "25",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -114053,7 +114053,7 @@
   {
     "id": "site-05091",
     "name": "앤더슨C",
-    "year": null,
+    "year": "25",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -114076,7 +114076,7 @@
   {
     "id": "site-05092",
     "name": "박성한",
-    "year": null,
+    "year": "25",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -114099,7 +114099,7 @@
   {
     "id": "site-05093",
     "name": "최정",
-    "year": null,
+    "year": "25",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -114122,7 +114122,7 @@
   {
     "id": "site-05094",
     "name": "에레디아",
-    "year": null,
+    "year": "25",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -114145,7 +114145,7 @@
   {
     "id": "site-05095",
     "name": "조병현",
-    "year": null,
+    "year": "25",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -114168,7 +114168,7 @@
   {
     "id": "site-05096",
     "name": "노경은",
-    "year": null,
+    "year": "25",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -145135,7 +145135,7 @@
   {
     "id": "site-06478",
     "name": "네일",
-    "year": null,
+    "year": "25",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -145158,7 +145158,7 @@
   {
     "id": "site-06479",
     "name": "올러",
-    "year": null,
+    "year": "25",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -145181,7 +145181,7 @@
   {
     "id": "site-06480",
     "name": "박찬호S",
-    "year": null,
+    "year": "25",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -145204,7 +145204,7 @@
   {
     "id": "site-06481",
     "name": "김호령",
-    "year": null,
+    "year": "25",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -145227,7 +145227,7 @@
   {
     "id": "site-06482",
     "name": "성영탁",
-    "year": null,
+    "year": "25",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -145250,7 +145250,7 @@
   {
     "id": "site-06483",
     "name": "최형우",
-    "year": null,
+    "year": "25",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -165525,7 +165525,7 @@
   {
     "id": "site-07390",
     "name": "후라도",
-    "year": null,
+    "year": "25",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -165548,7 +165548,7 @@
   {
     "id": "site-07391",
     "name": "김성윤",
-    "year": null,
+    "year": "25",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -165571,7 +165571,7 @@
   {
     "id": "site-07392",
     "name": "원태인",
-    "year": null,
+    "year": "25",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -165594,7 +165594,7 @@
   {
     "id": "site-07393",
     "name": "디아즈",
-    "year": null,
+    "year": "25",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -165617,7 +165617,7 @@
   {
     "id": "site-07394",
     "name": "구자욱",
-    "year": null,
+    "year": "25",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -165640,7 +165640,7 @@
   {
     "id": "site-07395",
     "name": "배찬승",
-    "year": null,
+    "year": "25",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -183031,7 +183031,7 @@
   {
     "id": "site-08175",
     "name": "강백호",
-    "year": null,
+    "year": "25",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -183054,7 +183054,7 @@
   {
     "id": "site-08176",
     "name": "허경민",
-    "year": null,
+    "year": "25",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -183077,7 +183077,7 @@
   {
     "id": "site-08177",
     "name": "박영현",
-    "year": null,
+    "year": "25",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -183100,7 +183100,7 @@
   {
     "id": "site-08178",
     "name": "소형준",
-    "year": null,
+    "year": "25",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -183123,7 +183123,7 @@
   {
     "id": "site-08179",
     "name": "고영표",
-    "year": null,
+    "year": "25",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -183146,7 +183146,7 @@
   {
     "id": "site-08180",
     "name": "안현민",
-    "year": null,
+    "year": "25",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -202720,742 +202720,6 @@
     "receivesAllYearEffects": true
   },
   {
-    "id": "site-top3-2026-001",
-    "name": "곽도규",
-    "year": null,
-    "team": "KIA",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "RP",
-    "ovr": 71,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 70,
-      "break": 72,
-      "stuff": 74,
-      "control": 71,
-      "stamina": 71,
-      "fielding": 70
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-002",
-    "name": "페덱",
-    "year": null,
-    "team": "삼성",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 77,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 74,
-      "break": 82,
-      "stuff": 83,
-      "control": 74,
-      "stamina": 75,
-      "fielding": 74
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-003",
-    "name": "김재윤",
-    "year": null,
-    "team": "삼성",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "CP",
-    "ovr": 73,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 70,
-      "break": 76,
-      "stuff": 78,
-      "control": 75,
-      "stamina": 72,
-      "fielding": 71
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-004",
-    "name": "고우석",
-    "year": null,
-    "team": "LG",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "RP",
-    "ovr": 74,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 77,
-      "break": 77,
-      "stuff": 79,
-      "control": 75,
-      "stamina": 68,
-      "fielding": 70
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-005",
-    "name": "손주영",
-    "year": null,
-    "team": "LG",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "CP",
-    "ovr": 73,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 75,
-      "break": 77,
-      "stuff": 75,
-      "control": 73,
-      "stamina": 73,
-      "fielding": 70
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-006",
-    "name": "최민석",
-    "year": null,
-    "team": "두산",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 75,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 70,
-      "break": 79,
-      "stuff": 78,
-      "control": 74,
-      "stamina": 78,
-      "fielding": 73
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-007",
-    "name": "아빌라",
-    "year": null,
-    "team": "롯데",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 77,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 77,
-      "break": 81,
-      "stuff": 84,
-      "control": 75,
-      "stamina": 75,
-      "fielding": 74
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-008",
-    "name": "김민준",
-    "year": null,
-    "team": "롯데",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 75,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 71,
-      "break": 80,
-      "stuff": 77,
-      "control": 73,
-      "stamina": 78,
-      "fielding": 74
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-009",
-    "name": "김진욱",
-    "year": null,
-    "team": "롯데",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 76,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 72,
-      "break": 82,
-      "stuff": 82,
-      "control": 75,
-      "stamina": 77,
-      "fielding": 73
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-010",
-    "name": "로드리게스",
-    "year": null,
-    "team": "롯데",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 76,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 77,
-      "break": 80,
-      "stuff": 75,
-      "control": 74,
-      "stamina": 78,
-      "fielding": 72
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-011",
-    "name": "이이무라",
-    "year": null,
-    "team": "롯데",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "CP",
-    "ovr": 74,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 75,
-      "break": 75,
-      "stuff": 75,
-      "control": 76,
-      "stamina": 75,
-      "fielding": 72
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-012",
-    "name": "왕옌청",
-    "year": null,
-    "team": "한화",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 75,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 72,
-      "break": 76,
-      "stuff": 80,
-      "control": 75,
-      "stamina": 78,
-      "fielding": 73
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-013",
-    "name": "화이트D",
-    "year": null,
-    "team": "한화",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 75,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 75,
-      "break": 77,
-      "stuff": 78,
-      "control": 73,
-      "stamina": 78,
-      "fielding": 74
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-014",
-    "name": "구창모",
-    "year": null,
-    "team": "NC",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 74,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 69,
-      "break": 77,
-      "stuff": 77,
-      "control": 74,
-      "stamina": 75,
-      "fielding": 74
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-015",
-    "name": "신영우",
-    "year": null,
-    "team": "NC",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "RP",
-    "ovr": 72,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 77,
-      "break": 73,
-      "stuff": 75,
-      "control": 68,
-      "stamina": 72,
-      "fielding": 71
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-016",
-    "name": "안우진",
-    "year": null,
-    "team": "키움",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "SP",
-    "ovr": 77,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 78,
-      "break": 82,
-      "stuff": 81,
-      "control": 76,
-      "stamina": 76,
-      "fielding": 74
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-017",
-    "name": "유토",
-    "year": null,
-    "team": "키움",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "CP",
-    "ovr": 74,
-    "setdeck": 4,
-    "role": "pitcher",
-    "stats": {
-      "velocity": 75,
-      "break": 75,
-      "stuff": 76,
-      "control": 74,
-      "stamina": 74,
-      "fielding": 71
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-018",
-    "name": "김도영",
-    "year": null,
-    "team": "KIA",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "3B",
-    "ovr": 78,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 86,
-      "contact": 86,
-      "eye": 73,
-      "patience": 76,
-      "baserun": 73,
-      "fielding": 76
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-019",
-    "name": "나성범",
-    "year": null,
-    "team": "KIA",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "RF",
-    "ovr": 70,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 83,
-      "contact": 81,
-      "eye": 70,
-      "patience": 63,
-      "baserun": 55,
-      "fielding": 71
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-020",
-    "name": "카스트로",
-    "year": null,
-    "team": "KIA",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "LF",
-    "ovr": 71,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 82,
-      "contact": 86,
-      "eye": 74,
-      "patience": 56,
-      "baserun": 60,
-      "fielding": 72
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-021",
-    "name": "디아스",
-    "year": null,
-    "team": "삼성",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "1B",
-    "ovr": 74,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 84,
-      "contact": 81,
-      "eye": 73,
-      "patience": 71,
-      "baserun": 60,
-      "fielding": 76
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-022",
-    "name": "송찬의",
-    "year": null,
-    "team": "LG",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "LF",
-    "ovr": 71,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 84,
-      "contact": 83,
-      "eye": 71,
-      "patience": 56,
-      "baserun": 63,
-      "fielding": 72
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-023",
-    "name": "문정빈",
-    "year": null,
-    "team": "LG",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "1B",
-    "ovr": 70,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 81,
-      "contact": 76,
-      "eye": 70,
-      "patience": 63,
-      "baserun": 65,
-      "fielding": 70
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-024",
-    "name": "박준순",
-    "year": null,
-    "team": "두산",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "2B",
-    "ovr": 73,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 84,
-      "contact": 88,
-      "eye": 71,
-      "patience": 58,
-      "baserun": 66,
-      "fielding": 76
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-025",
-    "name": "힐리어드",
-    "year": null,
-    "team": "KT",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "LF",
-    "ovr": 75,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 85,
-      "contact": 84,
-      "eye": 72,
-      "patience": 64,
-      "baserun": 69,
-      "fielding": 77
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-026",
-    "name": "최원준",
-    "year": null,
-    "team": "KT",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "RF",
-    "ovr": 76,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 71,
-      "contact": 89,
-      "eye": 75,
-      "patience": 67,
-      "baserun": 77,
-      "fielding": 78
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-027",
-    "name": "정준재",
-    "year": null,
-    "team": "SSG",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "2B",
-    "ovr": 75,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 74,
-      "contact": 86,
-      "eye": 72,
-      "patience": 66,
-      "baserun": 76,
-      "fielding": 77
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-028",
-    "name": "한동희",
-    "year": null,
-    "team": "롯데",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "3B",
-    "ovr": 69,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 83,
-      "contact": 80,
-      "eye": 73,
-      "patience": 63,
-      "baserun": 51,
-      "fielding": 64
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-029",
-    "name": "고승민",
-    "year": null,
-    "team": "롯데",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "2B",
-    "ovr": 73,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 81,
-      "contact": 81,
-      "eye": 72,
-      "patience": 63,
-      "baserun": 66,
-      "fielding": 75
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-030",
-    "name": "허인서",
-    "year": null,
-    "team": "한화",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "C",
-    "ovr": 70,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 80,
-      "contact": 79,
-      "eye": 69,
-      "patience": 62,
-      "baserun": 57,
-      "fielding": 74
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-031",
-    "name": "서건창",
-    "year": null,
-    "team": "키움",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "2B",
-    "ovr": 74,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 76,
-      "contact": 91,
-      "eye": 74,
-      "patience": 62,
-      "baserun": 70,
-      "fielding": 75
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
-    "id": "site-top3-2026-032",
-    "name": "김건희",
-    "year": null,
-    "team": "키움",
-    "type": "임팩트",
-    "series": "TOP3",
-    "pos": "C",
-    "ovr": 67,
-    "setdeck": 4,
-    "role": "batter",
-    "stats": {
-      "power": 71,
-      "contact": 82,
-      "eye": 71,
-      "patience": 56,
-      "baserun": 53,
-      "fielding": 74
-    },
-    "sourceLevel": "site-dataset",
-    "dataSource": "사용자 제공 2026 TOP3 선수 카드 영상 (2026-10-21)",
-    "impactSeries": "TOP3"
-  },
-  {
     "id": "site-rightslugger-2026-001",
     "name": "김상호B",
     "year": null,
@@ -204125,7 +203389,7 @@
   {
     "id": "site-top3-2026-new-001",
     "name": "네일",
-    "year": 2026,
+    "year": "26",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -204148,7 +203412,7 @@
   {
     "id": "site-top3-2026-new-002",
     "name": "곽도규",
-    "year": 2026,
+    "year": "26",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -204171,7 +203435,7 @@
   {
     "id": "site-top3-2026-new-003",
     "name": "올러",
-    "year": 2026,
+    "year": "26",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -204194,7 +203458,7 @@
   {
     "id": "site-top3-2026-new-004",
     "name": "페덱",
-    "year": 2026,
+    "year": "26",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -204217,7 +203481,7 @@
   {
     "id": "site-top3-2026-new-005",
     "name": "후라도",
-    "year": 2026,
+    "year": "26",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -204240,7 +203504,7 @@
   {
     "id": "site-top3-2026-new-006",
     "name": "김재윤",
-    "year": 2026,
+    "year": "26",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -204263,7 +203527,7 @@
   {
     "id": "site-top3-2026-new-007",
     "name": "고우석",
-    "year": 2026,
+    "year": "26",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -204286,7 +203550,7 @@
   {
     "id": "site-top3-2026-new-008",
     "name": "임찬규",
-    "year": 2026,
+    "year": "26",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -204309,7 +203573,7 @@
   {
     "id": "site-top3-2026-new-009",
     "name": "손주영",
-    "year": 2026,
+    "year": "26",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -204332,7 +203596,7 @@
   {
     "id": "site-top3-2026-new-010",
     "name": "곽빈",
-    "year": 2026,
+    "year": "26",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -204355,7 +203619,7 @@
   {
     "id": "site-top3-2026-new-011",
     "name": "최민석",
-    "year": 2026,
+    "year": "26",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -204378,7 +203642,7 @@
   {
     "id": "site-top3-2026-new-012",
     "name": "김택연",
-    "year": 2026,
+    "year": "26",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -204401,7 +203665,7 @@
   {
     "id": "site-top3-2026-new-013",
     "name": "고영표",
-    "year": 2026,
+    "year": "26",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -204424,7 +203688,7 @@
   {
     "id": "site-top3-2026-new-014",
     "name": "박영현",
-    "year": 2026,
+    "year": "26",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -204447,7 +203711,7 @@
   {
     "id": "site-top3-2026-new-015",
     "name": "소형준",
-    "year": 2026,
+    "year": "26",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -204470,7 +203734,7 @@
   {
     "id": "site-top3-2026-new-016",
     "name": "아빌라",
-    "year": 2026,
+    "year": "26",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -204493,7 +203757,7 @@
   {
     "id": "site-top3-2026-new-017",
     "name": "조병현",
-    "year": 2026,
+    "year": "26",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -204516,7 +203780,7 @@
   {
     "id": "site-top3-2026-new-018",
     "name": "김민준",
-    "year": 2026,
+    "year": "26",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -204539,7 +203803,7 @@
   {
     "id": "site-top3-2026-new-019",
     "name": "김진욱C",
-    "year": 2026,
+    "year": "26",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -204562,7 +203826,7 @@
   {
     "id": "site-top3-2026-new-020",
     "name": "로드리게스",
-    "year": 2026,
+    "year": "26",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -204585,7 +203849,7 @@
   {
     "id": "site-top3-2026-new-021",
     "name": "이이무라",
-    "year": 2026,
+    "year": "26",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -204608,7 +203872,7 @@
   {
     "id": "site-top3-2026-new-022",
     "name": "류현진",
-    "year": 2026,
+    "year": "26",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -204631,7 +203895,7 @@
   {
     "id": "site-top3-2026-new-023",
     "name": "왕엔청",
-    "year": 2026,
+    "year": "26",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -204654,7 +203918,7 @@
   {
     "id": "site-top3-2026-new-024",
     "name": "화이트D",
-    "year": 2026,
+    "year": "26",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -204677,7 +203941,7 @@
   {
     "id": "site-top3-2026-new-025",
     "name": "라일리",
-    "year": 2026,
+    "year": "26",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -204700,7 +203964,7 @@
   {
     "id": "site-top3-2026-new-026",
     "name": "구창모",
-    "year": 2026,
+    "year": "26",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -204723,7 +203987,7 @@
   {
     "id": "site-top3-2026-new-027",
     "name": "신영우",
-    "year": 2026,
+    "year": "26",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -204746,7 +204010,7 @@
   {
     "id": "site-top3-2026-new-028",
     "name": "안우진",
-    "year": 2026,
+    "year": "26",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -204769,7 +204033,7 @@
   {
     "id": "site-top3-2026-new-029",
     "name": "알칸타라",
-    "year": 2026,
+    "year": "26",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -204792,7 +204056,7 @@
   {
     "id": "site-top3-2026-new-030",
     "name": "유토",
-    "year": 2026,
+    "year": "26",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -204815,7 +204079,7 @@
   {
     "id": "site-top3-2026-new-031",
     "name": "김도영",
-    "year": 2026,
+    "year": "26",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -204838,7 +204102,7 @@
   {
     "id": "site-top3-2026-new-032",
     "name": "나성범",
-    "year": 2026,
+    "year": "26",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -204861,7 +204125,7 @@
   {
     "id": "site-top3-2026-new-033",
     "name": "카스트로",
-    "year": 2026,
+    "year": "26",
     "team": "KIA",
     "type": "임팩트",
     "series": "TOP3",
@@ -204884,7 +204148,7 @@
   {
     "id": "site-top3-2026-new-034",
     "name": "구자욱",
-    "year": 2026,
+    "year": "26",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -204907,7 +204171,7 @@
   {
     "id": "site-top3-2026-new-035",
     "name": "최형우",
-    "year": 2026,
+    "year": "26",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -204930,7 +204194,7 @@
   {
     "id": "site-top3-2026-new-036",
     "name": "디아스",
-    "year": 2026,
+    "year": "26",
     "team": "삼성",
     "type": "임팩트",
     "series": "TOP3",
@@ -204953,7 +204217,7 @@
   {
     "id": "site-top3-2026-new-037",
     "name": "오스틴",
-    "year": 2026,
+    "year": "26",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -204976,7 +204240,7 @@
   {
     "id": "site-top3-2026-new-038",
     "name": "송찬의",
-    "year": 2026,
+    "year": "26",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -204999,7 +204263,7 @@
   {
     "id": "site-top3-2026-new-039",
     "name": "문정빈",
-    "year": 2026,
+    "year": "26",
     "team": "LG",
     "type": "임팩트",
     "series": "TOP3",
@@ -205022,7 +204286,7 @@
   {
     "id": "site-top3-2026-new-040",
     "name": "박준순",
-    "year": 2026,
+    "year": "26",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -205045,7 +204309,7 @@
   {
     "id": "site-top3-2026-new-041",
     "name": "양의지",
-    "year": 2026,
+    "year": "26",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -205068,7 +204332,7 @@
   {
     "id": "site-top3-2026-new-042",
     "name": "김민석",
-    "year": 2026,
+    "year": "26",
     "team": "두산",
     "type": "임팩트",
     "series": "TOP3",
@@ -205091,7 +204355,7 @@
   {
     "id": "site-top3-2026-new-043",
     "name": "힐리어드",
-    "year": 2026,
+    "year": "26",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -205114,7 +204378,7 @@
   {
     "id": "site-top3-2026-new-044",
     "name": "최원준B",
-    "year": 2026,
+    "year": "26",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -205137,7 +204401,7 @@
   {
     "id": "site-top3-2026-new-045",
     "name": "안현민",
-    "year": 2026,
+    "year": "26",
     "team": "KT",
     "type": "임팩트",
     "series": "TOP3",
@@ -205160,7 +204424,7 @@
   {
     "id": "site-top3-2026-new-046",
     "name": "박성한",
-    "year": 2026,
+    "year": "26",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -205183,7 +204447,7 @@
   {
     "id": "site-top3-2026-new-047",
     "name": "정준재",
-    "year": 2026,
+    "year": "26",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -205206,7 +204470,7 @@
   {
     "id": "site-top3-2026-new-048",
     "name": "최정",
-    "year": 2026,
+    "year": "26",
     "team": "SSG",
     "type": "임팩트",
     "series": "TOP3",
@@ -205229,7 +204493,7 @@
   {
     "id": "site-top3-2026-new-049",
     "name": "레이예스S",
-    "year": 2026,
+    "year": "26",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -205252,7 +204516,7 @@
   {
     "id": "site-top3-2026-new-050",
     "name": "한동희",
-    "year": 2026,
+    "year": "26",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -205275,7 +204539,7 @@
   {
     "id": "site-top3-2026-new-051",
     "name": "고승민",
-    "year": 2026,
+    "year": "26",
     "team": "롯데",
     "type": "임팩트",
     "series": "TOP3",
@@ -205298,7 +204562,7 @@
   {
     "id": "site-top3-2026-new-052",
     "name": "강백호",
-    "year": 2026,
+    "year": "26",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -205321,7 +204585,7 @@
   {
     "id": "site-top3-2026-new-053",
     "name": "허인서",
-    "year": 2026,
+    "year": "26",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -205344,7 +204608,7 @@
   {
     "id": "site-top3-2026-new-054",
     "name": "노시환",
-    "year": 2026,
+    "year": "26",
     "team": "한화",
     "type": "임팩트",
     "series": "TOP3",
@@ -205367,7 +204631,7 @@
   {
     "id": "site-top3-2026-new-055",
     "name": "김주원",
-    "year": 2026,
+    "year": "26",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -205390,7 +204654,7 @@
   {
     "id": "site-top3-2026-new-056",
     "name": "박민우",
-    "year": 2026,
+    "year": "26",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -205413,7 +204677,7 @@
   {
     "id": "site-top3-2026-new-057",
     "name": "박건우B",
-    "year": 2026,
+    "year": "26",
     "team": "NC",
     "type": "임팩트",
     "series": "TOP3",
@@ -205436,7 +204700,7 @@
   {
     "id": "site-top3-2026-new-058",
     "name": "서건창",
-    "year": 2026,
+    "year": "26",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -205459,7 +204723,7 @@
   {
     "id": "site-top3-2026-new-059",
     "name": "데이비슨B",
-    "year": 2026,
+    "year": "26",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",
@@ -205482,7 +204746,7 @@
   {
     "id": "site-top3-2026-new-060",
     "name": "김건희",
-    "year": 2026,
+    "year": "26",
     "team": "키움",
     "type": "임팩트",
     "series": "TOP3",

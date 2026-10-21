@@ -372,7 +372,8 @@ function effectiveSetdeckScore(p){
 
 
 function isYearlessImpact(p){return String(p?.type||"").trim()==="임팩트"||family(p)==="impact"}
-function displayYear(p){return isYearlessImpact(p)?"":(p.year??"")}
+function isTop3Card(p){return String(p?.series||"").trim().toUpperCase()==="TOP3"||String(p?.impactSeries||"").trim().toUpperCase()==="TOP3"}
+function displayYear(p){if(isTop3Card(p)&&p.year!==null&&p.year!==undefined&&p.year!=="")return normalizeYearKey(p.year);return isYearlessImpact(p)?"":(p.year??"")}
 function normalizeYearKey(value){
  if(value===null||value===undefined||value==="")return "";
  if(String(value)==="없음")return "없음";
@@ -1679,7 +1680,12 @@ function switchMode(m){currentMode=m;localStorage.setItem("v26_mode",m);renderTa
 
 const PLAYER_PAGE_SIZE=100;
 let playerPage=1;
-function playerYearValue(p){return isYearlessImpact(p)?"없음":normalizeYearKey(p.year??"없음")}
+function playerYearValue(p){if(isTop3Card(p)&&p.year!==null&&p.year!==undefined&&p.year!=="")return normalizeYearKey(p.year);return isYearlessImpact(p)?"없음":normalizeYearKey(p.year??"없음")}
+function playerSearchText(p){
+ const y=normalizeYearKey(p?.year);
+ const fullYear=y&&y!=="없음"&&/^\d{2}$/.test(y)?`${Number(y)>=82?"19":"20"}${y}`:String(p?.year??"");
+ return [p?.name,p?.team,p?.type,p?.series,p?.impactSeries,y,fullYear].filter(v=>v!==null&&v!==undefined&&v!=="").join(" ").toLowerCase();
+}
 function baseStatsHTML(p){
  return `<div class="base-stats">${statMeta(p).map(([k,l])=>`<div class="base-stat"><small>${l}</small><b>${p.stats?.[k]??"—"}</b></div>`).join("")}</div>`;
 }
@@ -1696,7 +1702,7 @@ function renderPlayerPager(total){
 
 function filtered(){
  const q=$("q").value.trim().toLowerCase(),team=$("team").value,type=$("type").value,series=$("series").value,year=$("year").value,pos=$("pos").value,sf=$("statsFilter").value;
- return players.filter(p=>(!q||p.name.toLowerCase().includes(q))&&(!team||p.team===team)&&(!type||p.type===type)&&(!series||p.series===series)&&(!year||playerYearValue(p)===year)&&(!pos||p.pos===pos)&&(!sf||(sf==="known"?hasFullStats(p):!hasFullStats(p))));
+ return players.filter(p=>(!q||playerSearchText(p).includes(q))&&(!team||p.team===team)&&(!type||p.type===type)&&(!series||p.series===series)&&(!year||playerYearValue(p)===year)&&(!pos||p.pos===pos)&&(!sf||(sf==="known"?hasFullStats(p):!hasFullStats(p))));
 }
 function renderPlayers(){
  if(!$("players")||!$("players").getClientRects().length)return;

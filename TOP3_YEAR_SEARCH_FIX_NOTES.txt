@@ -1,0 +1,25 @@
+KBO SquadMaker — TOP3 2025/2026 search and duplicate fix
+
+Modified files:
+- app.js
+- players.json
+- bootstrap.js
+- index.html
+
+Changes:
+- Removed the 32 intermediate duplicate/incorrect TOP3 records (IDs site-top3-2026-001 through site-top3-2026-032).
+- Kept the correct 60-card 2026 TOP3 set (10 teams, each with 3 batters and 3 pitchers).
+- Marked the 60 pre-existing TOP3 cards as year 25 without changing their stats or IDs.
+- Marked the 60 new TOP3 cards as year 26 while keeping their unique IDs and stats.
+- TOP3 year now appears in player search results despite TOP3 being type "임팩트".
+- Player search matches the card year as well as name/team/type/series. Searching 25 or 26 finds cards for that year; the year filter also works for TOP3.
+- Kept Impact set-deck all-year behavior unchanged.
+- Bumped cache-busting version to 15.4.11-20261021-top3-year-search-dedupe.
+
+Validation:
+- TOP3 cards: exactly 120 total; 60 tagged year 25 and 60 tagged year 26.
+- Every team has exactly 3 TOP3 batters and 3 TOP3 pitchers per year.
+- Removed 32 intermediate TOP3 records that duplicated/overlapped the final 2026 set.
+- No duplicate player IDs.
+- JavaScript syntax, JSON parsing, and ZIP integrity checks passed.
+- Not browser-runtime tested.
