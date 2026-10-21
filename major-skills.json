@@ -2116,5 +2116,66 @@
       10,
       11
     ]
+  },
+  {
+    "id": "m_right_B",
+    "name": "우타해결사",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "eye"
+    ],
+    "values": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "extra": "right"
+  },
+  {
+    "id": "m_cleanup",
+    "name": "클린업 트리오",
+    "role": "B",
+    "tier": "major",
+    "keys": [
+      "power",
+      "eye"
+    ],
+    "values": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "extraKeys": [
+      "contact"
+    ],
+    "extraValues": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      4,
+      5,
+      5
+    ],
+    "extra": "cleanup"
   }
 ]

@@ -1,0 +1,16 @@
+KBO SquadMaker Update — 2026-10-21
+
+Changes in this patch:
+- Added 60 separate 2026 TOP3 player card records: 30 pitchers + 30 batters; each of the 10 teams has 3 pitchers and 3 batters.
+- All 92 existing TOP3 records and all other pre-existing player records were preserved unchanged.
+- Added the missing 30th 우타 거포 record: 장종훈 (한화, SS, OVR 74).
+- Updated MAJOR_SKILLS and major-skills.json definitions for 우타해결사 and 클린업 트리오 using level-by-level values visible in the user-provided video.
+- Both skills inherit GENERAL_SKILLS and therefore enter the batter's major-skill selector and position-training skill pool/random picker.
+- Updated cache-busting keys in bootstrap.js/index.html so updated app.js and players.json are requested.
+
+Skill implementation limits:
+- Self-stat bonuses are included in effectiveStats/skillBonuses.
+- Conditional descriptions for opponent pitcher decreases are displayed in the skill detail panel. The app does not currently model an opponent lineup, so those opponent debuffs are not automatically subtracted from an opposing pitcher card.
+- Right-handed extra bonuses apply when the player's batting hand is set to right-handed or switch-hitter (우/양) in player management.
+
+Validation performed: JSON parsing; JavaScript syntax checks; unique player IDs; added-card/team counts; comparison that no existing player record changed; ZIP integrity. This patch was not browser-runtime tested.
