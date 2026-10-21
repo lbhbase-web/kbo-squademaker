@@ -810,7 +810,7 @@ body{background:#fff!important;color:#17191c!important}
 .ref-empty-plus.out{color:#ff394a}.ref-empty-plus.in{color:#3472ff}.ref-empty-plus.dh{color:#08b73b}.ref-empty-plus.bench{color:#fff}
 
 .ref-bench-panel{margin-top:-42px!important}
-#bench{display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:7px!important;max-width:580px;margin:0 auto}
+#bench{display:grid!important;grid-template-columns:repeat(var(--bench-slot-count,6),minmax(0,1fr))!important;gap:7px!important;max-width:580px;margin:0 auto}
 #bench .mslot{height:100px!important;min-height:0!important;padding:0!important;position:relative!important;overflow:visible!important;border:1px solid #7d8389!important;border-radius:5px!important;background:linear-gradient(145deg,#f7f9fa,#d6d8da)!important}
 #bench .mslot:has(.lineup-card-shell){background:transparent!important;border:0!important}
 
@@ -1366,11 +1366,26 @@ body{background:#fff!important;color:#17191c!important}
 .diamond .slot[data-slot="1B"]{left:84%!important;top:264px!important}
 .diamond .slot[data-slot="C"]{left:50%!important;top:348px!important}
 .diamond .slot[data-slot="DH"]{left:68%!important;top:348px!important}
-.ref-bench-panel{margin-top:0!important}#bench{max-width:560px!important;gap:7px!important}#bench .mslot{height:104px!important}
+.ref-bench-panel{margin-top:0!important}#bench{max-width:560px!important;gap:7px!important;grid-template-columns:repeat(var(--bench-slot-count,6),minmax(0,1fr))!important}#bench .mslot{height:104px!important}
 .ref-pitcher-panel{padding-top:34px!important}#pitchers{grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-auto-rows:126px!important;gap:12px 8px!important;width:100%;max-width:414px;margin:auto}#pitchers .mslot{height:108px!important}
 .bullpen-controls{margin:0 0 30px!important;gap:6px!important;font-size:12px!important}.ref-empty-pos{top:10px!important}.ref-empty-plus{width:48px!important;height:48px!important;top:62%!important}
 @media(max-width:850px){.ref-lineup-grid{grid-template-columns:1fr!important;max-width:600px!important;gap:26px!important}.ref-pitcher-panel{padding-top:0!important}.bullpen-controls{justify-content:center}}
 @media(max-width:480px){.diamond{height:410px!important;min-height:410px!important}.diamond::before{height:360px!important;top:26px!important}.diamond .slot{width:56px!important;height:82px!important}.diamond .slot[data-slot="LF"],.diamond .slot[data-slot="RF"]{top:55px!important}.diamond .slot[data-slot="SS"],.diamond .slot[data-slot="2B"]{top:148px!important}.diamond .slot[data-slot="3B"],.diamond .slot[data-slot="1B"]{top:222px!important}.diamond .slot[data-slot="C"],.diamond .slot[data-slot="DH"]{top:310px!important}.ref-empty-plus{width:38px!important;height:38px!important;font-size:27px!important}#bench .mslot{height:82px!important}#bench{gap:4px!important}}
+
+
+.lineup-strategy-controls{margin:0 0 14px;padding:12px;border:1px solid #d8dee8;border-radius:10px;background:#f7f9fc;color:#172033}
+.lineup-strategy-title{display:flex;align-items:baseline;gap:10px;font-weight:900;font-size:14px;margin-bottom:10px}
+.lineup-strategy-title small{font-size:11px;font-weight:500;color:#5e6878}
+.lineup-strategy-row{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.lineup-strategy-count{display:flex;flex:1 1 180px;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:#fff;border:1px solid #dce2eb;border-radius:8px}
+.lineup-strategy-count>span{font-size:12px;font-weight:800}
+.lineup-strategy-count>div{display:flex;align-items:center;gap:10px}
+.lineup-strategy-count button{width:32px;height:30px;border:1px solid #c6ceda;border-radius:7px;background:#fff;color:#172033;font-size:20px;font-weight:800;line-height:1;cursor:pointer}
+.lineup-strategy-count button:disabled{opacity:.35;cursor:default}
+.lineup-strategy-count b{font-size:16px;min-width:34px;text-align:center}
+.lineup-strategy-count.bullpen-count{background:#eef4ff;border-color:#cbd9f8}
+.lineup-strategy-note{font-size:11px;color:#566275;margin-top:8px}
+@media(max-width:480px){.lineup-strategy-title{font-size:13px;flex-wrap:wrap}.lineup-strategy-count{flex-basis:100%}}
 
 .condition-skill-item{padding:8px 9px;margin:6px 0;background:#fff;border-radius:8px;font-size:10px;line-height:1.55}.condition-skill-item b{font-size:11px}.condition-skill-panel{color:#253044}.condition-skill-panel> b{font-size:12px}
 
@@ -1699,7 +1714,7 @@ body{background:#fff!important;color:#17191c!important}
     <button onclick="fillReferenceDummy()">더미 데이터 채우기</button>
     <button onclick="saveAll();toast('현재 설정을 저장했어.')">전체 저장</button>
     <button onclick="toggleRefPanel('advancedSetdeckPanel')">세트덱·특훈</button>
-    <button onclick="toggleRefPanel('refBullpenPanel')">투수 전술 설정</button>
+    <button onclick="toggleRefPanel('refBullpenPanel')">전략 전술 설정</button>
     <button onclick="toggleRefPanel('refPatchPanel')">패치 노트</button>
    </div>
 
@@ -1740,6 +1755,8 @@ body{background:#fff!important;color:#17191c!important}
   </div>
  </div>
 </div>
+
+<div id="lineupStrategyControls" class="lineup-strategy-controls"></div>
 
 <section id="advancedSetdeckPanel" class="panel ref-collapsible">
     <div class="ph">
@@ -1791,9 +1808,6 @@ body{background:#fff!important;color:#17191c!important}
      <section class="panel ref-bench-panel">
       <div class="pb"><div id="bench" class="mini-grid"></div></div>
      </section>
-     <section class="panel ref-bullpen-slots-panel">
-      <div class="pb"><div id="bullpenBench" class="mini-grid"></div></div>
-     </section>
     </div>
 
     <section class="panel ref-pitcher-panel">
@@ -1809,7 +1823,7 @@ body{background:#fff!important;color:#17191c!important}
    <section id="refPatchPanel" class="panel ref-collapsible">
     <div class="ph"><strong>적용한 육성 규칙</strong></div>
     <div class="pb">
-     <div class="rulebox"><b>선수 DB:</b> 기존 8,379장 전체 DB + 사용자 제공 GIF/스크린샷 카드 217장 = 8,596장 반영 · 중복 카드 유지 · 임팩트 연도 없음 · 전 카드 6스탯 입력<br><b>임팩트 종류:</b> 엑셀 기준 총 52종을 그대로 반영. 여름사나이·가을사나이·저니맨·난세의 영웅 등 포함. “지니어스”, “번개의 영웅”은 새 파일에 없어서 제거.<br><b>OVR 계산:</b> 원본 6스탯 대비 최종 능력치의 합이 +6 될 때마다 OVR +1. +12면 +2, +18이면 +3. 반대로 총 -6이면 OVR -1. 훈련·강화·각성·특훈·포지션 특훈·라인업/세트덱 효과·역시너지를 모두 합산해서 계산.<br><b>포지션 배치:</b> LF→LF, CF→CF, RF→RF, 3B→3B, SS→SS, 2B→2B, 1B→1B, C→C, DH→모든 타자. SUB1~6은 타자 후보 슬롯.<br><b>구단 로고:</b> KIA·삼성·LG·두산·롯데·한화·SSG·NC·KT·키움의 실제 구단 로고 이미지를 카드 오른쪽 위에 표시. K/S 같은 임시 글자 표시는 제거.<br><b>선수카드 디자인:</b> 게임 카드 형태로 표시. 상단 성급 별, 왼쪽 위 OVR, 그 아래 강화/각성, 오른쪽 위 소속팀 로고와 포지션, 중앙 선수 사진, 하단 선수명. 임팩트는 이름 위에 여름사나이·가을사나이 등 세부 종류, 시그니처·국가대표·골든글러브 등 연도 카드에는 이름 옆에 연도 표시.<br><b>PC/모바일 화면:</b> 처음에는 기기 폭에 맞춰 자동 표시되고, 오른쪽 아래 버튼으로 언제든 PC↔모바일 전환 가능. 선택한 화면은 다음 실행에도 기억됨.<br><b>선수 선택:</b> 선수 전체 목록은 숨김. 라인업 포지션 칸을 누르면 해당 포지션 선수만 열리며, 선택창에서 팀과 카드종류를 동시에 필터 가능. 골든글러브·국가대표·시그니처·라이브·라이브 올스타·임팩트를 구분 표시.<br><b>국가대표 와일드카드 제한:</b> 모든 모드에서 국가대표 와일드카드를 라인업당 최대 2장. 3번째 카드는 배치할 수 없음.<br><b>국가대표 와일드카드:</b> 육성창에서 국가대표를 와일드카드로 변경 가능. 변경 시 OVR -3 및 기본 6능력치 각각 -3, 특훈은 1에서 시작해 최대 7(추가 6회), 강화는 국가대표 5성 강화표를 그대로 사용. 이번에 받은 각성표를 적용해 9각 누적 총 +24. 잠재력 슬롯 효과는 계속 제외.<br><b>성급:</b> 올스타·시그니처·국가대표는 5성, 임팩트는 4성. 골든글러브는 이번에 받은 4성 도감 스크린샷의 87장만 4성으로 고정하고 나머지는 5성. 라이브는 성급 미입력으로 두어 3/4/5성 세트덱 효과 판정에서 제외.<br><b>역시너지 면제:</b> 골든글러브는 세트덱 팀 카드 1장까지만 역시너지 카운트에서 제외. 라이브 올스타도 세트덱 팀 카드 1장까지만 역시너지 카운트에서 제외.<br><b>라인업별 역시너지:</b> 실시간 매치=골글 5/-2, 6/-4, 7+/-6 · 올스타 4/-3, 5+/-6. 랭킹 챌린지·클럽 대전=골글 6/-2, 7/-4, 8+/-6 · 올스타 4/-3, 5+/-6. 리그 모드·스페셜 매치=골글 7/-2, 8/-4, 9+/-6 · 올스타 5/-3, 6+/-6. 골글/올스타 역시너지가 동시에 발생하면 두 패널티를 합산해 모든 선수 모든 능력치에 적용.<br><b>세트덱 효과:</b> 선택한 30~200점 효과를 최종 능력치에 실제 반영. “선택 선수/연도/팀” 효과는 해당 점수 아래에 뜨는 선택 메뉴로 대상을 지정.<br><b>투수 역할 고정:</b> SP는 SP1~SP5만, RP는 RP1~RP6만, CP는 CP만 가능. 선발↔불펜↔마무리 간 이동은 불가.<br><b>포지션 특훈 보너스:</b> Lv.5와 Lv.15에서 각각 1회 발생. 게임처럼 6개 능력치 중 1개와 +1~+3을 랜덤으로 뽑을 수 있고, 스쿼드 메이커에서는 실제 보유 결과를 맞추기 위해 능력치와 상승량을 직접 선택하는 것도 가능. “랜덤 재추첨”을 누르면 새 결과가 나오고, 드롭다운을 바꾸면 직접 선택한 값으로 즉시 적용됨. 20레벨은 기본 36 + 보너스 2~6으로 총 38~42. Lv.10·Lv.20 스킬은 적용하며, 랜덤 등급 확률은 메이저 10% · 마이너 30% · 루키 30% · 아마추어 30%.<br><b>포지션 특훈 단계표:</b> 첨부 GIF 27프레임을 느리게 확인해 C·1B·2B·3B·SS·LF·CF·RF·DH·SUB1~6·SP1~5·RP1~6·CP의 1~20레벨 상승치를 각각 반영. 모든 슬롯 기본 합계는 20레벨 36, Lv.5/+3 및 Lv.15/+3 보너스 포함 최대 총합 42.<br><b>선수 중복:</b> 같은 이름의 선수는 카드 종류·연도·포지션이 달라도 한 라인업에 1명만 사용 가능. 선발·DH·후보 포함 전체 슬롯에 적용.<br>
+     <div class="rulebox"><b>선수 DB:</b> 기존 8,379장 전체 DB + 사용자 제공 GIF/스크린샷 카드 217장 = 8,596장 반영 · 중복 카드 유지 · 임팩트 연도 없음 · 전 카드 6스탯 입력<br><b>임팩트 종류:</b> 엑셀 기준 총 52종을 그대로 반영. 여름사나이·가을사나이·저니맨·난세의 영웅 등 포함. “지니어스”, “번개의 영웅”은 새 파일에 없어서 제거.<br><b>OVR 계산:</b> 원본 6스탯 대비 최종 능력치의 합이 +6 될 때마다 OVR +1. +12면 +2, +18이면 +3. 반대로 총 -6이면 OVR -1. 훈련·강화·각성·특훈·포지션 특훈·라인업/세트덱 효과·역시너지를 모두 합산해서 계산.<br><b>포지션 배치:</b> LF→LF, CF→CF, RF→RF, 3B→3B, SS→SS, 2B→2B, 1B→1B, C→C, DH→모든 타자. SUB1~8은 타자 후보 슬롯(선택한 4~8자리만 활성화).<br><b>구단 로고:</b> KIA·삼성·LG·두산·롯데·한화·SSG·NC·KT·키움의 실제 구단 로고 이미지를 카드 오른쪽 위에 표시. K/S 같은 임시 글자 표시는 제거.<br><b>선수카드 디자인:</b> 게임 카드 형태로 표시. 상단 성급 별, 왼쪽 위 OVR, 그 아래 강화/각성, 오른쪽 위 소속팀 로고와 포지션, 중앙 선수 사진, 하단 선수명. 임팩트는 이름 위에 여름사나이·가을사나이 등 세부 종류, 시그니처·국가대표·골든글러브 등 연도 카드에는 이름 옆에 연도 표시.<br><b>PC/모바일 화면:</b> 처음에는 기기 폭에 맞춰 자동 표시되고, 오른쪽 아래 버튼으로 언제든 PC↔모바일 전환 가능. 선택한 화면은 다음 실행에도 기억됨.<br><b>선수 선택:</b> 선수 전체 목록은 숨김. 라인업 포지션 칸을 누르면 해당 포지션 선수만 열리며, 선택창에서 팀과 카드종류를 동시에 필터 가능. 골든글러브·국가대표·시그니처·라이브·라이브 올스타·임팩트를 구분 표시.<br><b>국가대표 와일드카드 제한:</b> 모든 모드에서 국가대표 와일드카드를 라인업당 최대 2장. 3번째 카드는 배치할 수 없음.<br><b>국가대표 와일드카드:</b> 육성창에서 국가대표를 와일드카드로 변경 가능. 변경 시 OVR -3 및 기본 6능력치 각각 -3, 특훈은 1에서 시작해 최대 7(추가 6회), 강화는 국가대표 5성 강화표를 그대로 사용. 이번에 받은 각성표를 적용해 9각 누적 총 +24. 잠재력 슬롯 효과는 계속 제외.<br><b>성급:</b> 올스타·시그니처·국가대표는 5성, 임팩트는 4성. 골든글러브는 이번에 받은 4성 도감 스크린샷의 87장만 4성으로 고정하고 나머지는 5성. 라이브는 성급 미입력으로 두어 3/4/5성 세트덱 효과 판정에서 제외.<br><b>역시너지 면제:</b> 골든글러브는 세트덱 팀 카드 1장까지만 역시너지 카운트에서 제외. 라이브 올스타도 세트덱 팀 카드 1장까지만 역시너지 카운트에서 제외.<br><b>라인업별 역시너지:</b> 실시간 매치=골글 5/-2, 6/-4, 7+/-6 · 올스타 4/-3, 5+/-6. 랭킹 챌린지·클럽 대전=골글 6/-2, 7/-4, 8+/-6 · 올스타 4/-3, 5+/-6. 리그 모드·스페셜 매치=골글 7/-2, 8/-4, 9+/-6 · 올스타 5/-3, 6+/-6. 골글/올스타 역시너지가 동시에 발생하면 두 패널티를 합산해 모든 선수 모든 능력치에 적용.<br><b>세트덱 효과:</b> 선택한 30~200점 효과를 최종 능력치에 실제 반영. “선택 선수/연도/팀” 효과는 해당 점수 아래에 뜨는 선택 메뉴로 대상을 지정.<br><b>투수 역할 고정:</b> SP는 SP1~SP5만, RP는 현재 활성화된 RP 슬롯만, CP는 CP만 가능. 후보 타자 4~8명 선택에 따라 중간계투 수가 자동 조정돼. 선발↔불펜↔마무리 간 이동은 불가.<br><b>포지션 특훈 보너스:</b> Lv.5와 Lv.15에서 각각 1회 발생. 게임처럼 6개 능력치 중 1개와 +1~+3을 랜덤으로 뽑을 수 있고, 스쿼드 메이커에서는 실제 보유 결과를 맞추기 위해 능력치와 상승량을 직접 선택하는 것도 가능. “랜덤 재추첨”을 누르면 새 결과가 나오고, 드롭다운을 바꾸면 직접 선택한 값으로 즉시 적용됨. 20레벨은 기본 36 + 보너스 2~6으로 총 38~42. Lv.10·Lv.20 스킬은 적용하며, 랜덤 등급 확률은 메이저 10% · 마이너 30% · 루키 30% · 아마추어 30%.<br><b>포지션 특훈 단계표:</b> 첨부 GIF 27프레임을 느리게 확인해 C·1B·2B·3B·SS·LF·CF·RF·DH·SUB1~6·SP1~5·RP1~6·CP의 1~20레벨 상승치를 각각 반영. 새로 활성화되는 SUB7~8·RP7~8은 기본 분배 규칙으로 계산. 모든 슬롯 기본 합계는 20레벨 36, Lv.5/+3 및 Lv.15/+3 보너스 포함 최대 총합 42.<br><b>선수 중복:</b> 같은 이름의 선수는 카드 종류·연도·포지션이 달라도 한 라인업에 1명만 사용 가능. 선발·DH·후보 포함 전체 슬롯에 적용.<br>
       훈련 최대: <b>시그니처 25 / 골든글러브 25 / 임팩트 18 / 국가대표 22 / 라이브 올스타 30</b>. 훈련 1레벨마다 6개 능력치 중 3개가 각각 +1.<br>
       강화: 0~10강.<br><b>강화 능력치:</b> 이번 스크린샷에서 확인한 라이브 올스타 5성, 골든글러브 5성/4성, 국가대표 5성, 시그니처 5성, 임팩트 4성의 +1~+10강 단계별 능력치 상승을 실제 최종 능력치에 누적 반영. 시그니처와 임팩트는 FA 여부와 관계없이 같은 강화표를 사용. 10강 누적 합계는 라이브 올스타/국가대표/시그니처 130, 골든글러브 5성 136, 골든글러브 4성 76, 임팩트 4성 70. 라이브 강화표는 아직 자료가 없어 미적용.<br>각성 지원 카드(임팩트·시그니처·골든글러브·국가대표)는 0~9각. 라이브·올스타는 각성 불가.<br><b>각성 능력치:</b> 스크린샷에서 확인한 골든글러브, FA 임팩트, FA 시그니처, 국가대표 와일드카드의 타자/투수 1~9각 기본 능력치 상승을 실제 최종 능력치에 누적 반영. 9각 총합은 FA 임팩트 +15, FA 시그니처 +27, 국가대표 와일드카드 +24, 골든글러브 +36. <b>잠재력 슬롯 추가/개방 효과는 구현하지 않음.</b> 국가대표·비FA 임팩트/시그니처는 각성 가능하며, 세부 각성 능력치 표가 없는 유형은 자료를 받기 전까지 능력치 보너스만 미적용. 라이브·올스타는 각성 자체가 불가.<br>
       특훈: 국가대표 4~8 / 시그니처 5~8 / 임팩트 4~7 / 골든글러브 3~6.<br>
@@ -1951,7 +1965,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.4.9-bullpen-below-bench"></script>
+<script src="./bootstrap.js?v=15.4.9-20261021-lineup-slots-v2"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
@@ -1971,19 +1985,6 @@ body{background:#fff!important;color:#17191c!important}
 }
 </style>
 
-<style>
-/* Bullpen relievers belong below the candidate-batter slots, not mixed into the starter/closer panel. */
-.ref-lineup-grid{grid-template-columns:minmax(0,600px) minmax(0,414px)!important;}
-.ref-bullpen-slots-panel{grid-column:1; margin-top:10px!important; border:0!important;box-shadow:none!important;background:#fff!important;overflow:visible!important}
-.ref-bullpen-slots-panel .pb{padding:0!important}
-#bullpenBench{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:7px!important;width:100%;max-width:560px;margin:0 auto;align-items:start}
-#bullpenBench .mslot{height:104px!important;min-height:0!important;padding:0!important;position:relative!important;overflow:visible!important;border:1px solid #7d8389!important;border-radius:5px!important;background:linear-gradient(145deg,#f7f9fa,#d6d8da)!important}
-#bullpenBench .mslot:has(.lineup-card-shell){background:transparent!important;border:0!important}
-#bullpenBench .mslot[data-slot^="RP"]::before{content:attr(data-role-label);position:absolute;left:0;right:0;top:-19px;height:15px;background:#3474ec;color:#fff;font-size:8px;display:grid;place-items:center}
-#pitchers .mslot[data-slot^="RP"]{display:none!important}
-@media(max-width:850px){.ref-bullpen-slots-panel{grid-column:1!important}#bullpenBench{grid-template-columns:repeat(4,minmax(0,1fr))!important;max-width:560px}}
-@media(max-width:480px){#bullpenBench{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}#bullpenBench .mslot{height:82px!important}}
-</style>
 </body>
 </html>
 

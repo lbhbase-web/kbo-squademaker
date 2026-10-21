@@ -1,5 +1,5 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.9-bullpen-below-bench';
+  const APP_URL='./app.js?v=15.4.9-20261021-lineup-slots-v2';
   const DATA_URLS=['./players.json?v=15.3','./data/players.json?v=15.3'];
 
   const showError=(msg)=>{

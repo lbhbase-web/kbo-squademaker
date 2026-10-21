@@ -69,9 +69,9 @@ function preferredTeamLabel(team){return team===NO_PREFERRED_TEAM?NO_PREFERRED_T
 function canonicalPreferredTeam(){return hasPreferredTeam()?canonicalTeam(preferredTeam):""}
 const POS=["LF","CF","RF","SS","2B","1B","3B","C","DH","SP","RP","CP"];
 const FIELD=["LF","CF","RF","SS","2B","1B","3B","C","DH"];
-const BENCH=["SUB1","SUB2","SUB3","SUB4","SUB5","SUB6"];
-const PITCH=["SP1","SP2","SP3","SP4","SP5","RP1","RP2","RP3","RP4","RP5","RP6","CP"];
-const ALL_SLOTS=[...FIELD,...BENCH,...PITCH];
+let BENCH=["SUB1","SUB2","SUB3","SUB4","SUB5","SUB6"];
+let PITCH=["SP1","SP2","SP3","SP4","SP5","RP1","RP2","RP3","RP4","RP5","RP6","CP"];
+let ALL_SLOTS=[...FIELD,...BENCH,...PITCH];
 const SETDECK_THRESHOLDS=[0,30,40,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200];
 
 const POSITION_BASE_BAT={power:4,contact:6,eye:6,patience:5,baserun:7,fielding:8};
@@ -245,6 +245,59 @@ if(HISTORIC_TEAM_PARENT[preferredTeam])preferredTeam=canonicalTeam(preferredTeam
 if(!preferredTeam||(!PREFERRED_TEAM_OPTIONS.includes(preferredTeam)&&preferredTeam!==NO_PREFERRED_TEAM))preferredTeam=NO_PREFERRED_TEAM;
 localStorage.setItem("v26_pref_team",preferredTeam);
 let lineups={ranking:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},realtime:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},club:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},league:{slots:{},order:{},setdeckChoices:{},positionTraining:{}},special:{slots:{},order:{},setdeckChoices:{},positionTraining:{}}};
+
+// 후보 타자와 중간계투는 합계 12칸이며, 선택 수는 경기 모드마다 별도로 저장한다.
+const LINEUP_STRATEGY_KEY="v26_lineup_strategy_by_mode";
+function readLineupStrategyMap(){
+ try{
+  const raw=JSON.parse(localStorage.getItem(LINEUP_STRATEGY_KEY)||"{}");
+  const out={};
+  for(const mode of Object.keys(MODES)){
+   const n=Number(raw?.[mode]?.candidateBatters ?? raw?.[mode]);
+   out[mode]={candidateBatters:Number.isFinite(n)?Math.max(4,Math.min(8,Math.round(n))):6};
+  }
+  return out;
+ }catch(_){return Object.fromEntries(Object.keys(MODES).map(mode=>[mode,{candidateBatters:6}]));}
+}
+let lineupStrategyMap=readLineupStrategyMap();
+function lineupStrategy(mode=currentMode){
+ if(!lineupStrategyMap[mode])lineupStrategyMap[mode]={candidateBatters:6};
+ const n=Number(lineupStrategyMap[mode].candidateBatters);
+ lineupStrategyMap[mode].candidateBatters=Number.isFinite(n)?Math.max(4,Math.min(8,Math.round(n))):6;
+ return lineupStrategyMap[mode];
+}
+function syncLineupSlotCounts(mode=currentMode){
+ const candidateCount=lineupStrategy(mode).candidateBatters;
+ const bullpenCount=12-candidateCount;
+ BENCH=Array.from({length:candidateCount},(_,i)=>`SUB${i+1}`);
+ PITCH=[...Array.from({length:5},(_,i)=>`SP${i+1}`),...Array.from({length:bullpenCount},(_,i)=>`RP${i+1}`),"CP"];
+ ALL_SLOTS=[...FIELD,...BENCH,...PITCH];
+}
+function renderLineupStrategyControls(){
+ const box=$("lineupStrategyControls");if(!box)return;
+ const count=lineupStrategy().candidateBatters,bullpenCount=12-count;
+ box.innerHTML=`<div class="lineup-strategy-title">라인업 후보 슬롯 설정 <small>총 12칸 · 모드별로 따로 저장</small></div>
+  <div class="lineup-strategy-row">
+   <div class="lineup-strategy-count"><span>후보 타자</span><div><button type="button" aria-label="후보 타자 슬롯 줄이기" onclick="setLineupStrategyCount(-1)" ${count<=4?'disabled':''}>−</button><b>${count}명</b><button type="button" aria-label="후보 타자 슬롯 늘리기" onclick="setLineupStrategyCount(1)" ${count>=8?'disabled':''}>＋</button></div></div>
+   <div class="lineup-strategy-count bullpen-count"><span>중간계투</span><div><b>${bullpenCount}명</b></div></div>
+  </div>
+  <div class="lineup-strategy-note">현재 ${esc(MODES[currentMode]||currentMode)} 설정 · 후보 타자 4~8명 · 중간계투는 자동으로 ${bullpenCount}명</div>`;
+}
+function setLineupStrategyCount(delta){
+ const mode=currentMode,oldCount=lineupStrategy(mode).candidateBatters,nextCount=Math.max(4,Math.min(8,oldCount+Number(delta)));
+ if(nextCount===oldCount)return;
+ const oldRelievers=12-oldCount,newRelievers=12-nextCount;
+ const L=lineups[mode]||lineups.ranking;
+ const blocked=[];
+ if(nextCount<oldCount){for(let i=nextCount+1;i<=oldCount;i++)if(L?.slots?.[`SUB${i}`])blocked.push(`SUB${i}`);}
+ if(newRelievers<oldRelievers){for(let i=newRelievers+1;i<=oldRelievers;i++)if(L?.slots?.[`RP${i}`])blocked.push(`RP${i}`);}
+ if(blocked.length){toast(`${blocked.join(", ")}에 선수가 있어. 슬롯 수를 줄이기 전에 해당 슬롯을 비워줘.`);return;}
+ lineupStrategyMap[mode].candidateBatters=nextCount;
+ localStorage.setItem(LINEUP_STRATEGY_KEY,JSON.stringify(lineupStrategyMap));
+ syncLineupSlotCounts(mode);
+ renderAll();
+}
+syncLineupSlotCounts(currentMode);
 let growth={};
 let currentGrowId=null,currentFaId=null;
 let faMenuOpen=false;
@@ -993,7 +1046,7 @@ function isSeasonCard(p){
  const t=((p.type||"")+" "+(p.series||"")).toLowerCase();
  return t.includes("시즌");
 }
-function isBullpenSlot(slot){return /^RP[1-6]$/.test(slot)||slot==="CP"}
+function isBullpenSlot(slot){return /^RP[1-8]$/.test(slot)||slot==="CP"}
 function isStarterSlot(slot){return /^SP[1-5]$/.test(slot)}
 function setdeckBonusMap(p,slot,mode=currentMode){
  const out=emptyStatBonus(p),L=ensureLineupState(mode),effects=selectedSetdeckEffects(mode);
@@ -1974,7 +2027,7 @@ function pickerRequiredPos(slot){
  if(slot==="DH")return "타자 전체";
  if(FIELD.includes(slot))return slot;
  if(/^SP[1-5]$/.test(slot))return "SP";
- if(/^RP[1-6]$/.test(slot))return "RP";
+ if(/^RP[1-8]$/.test(slot))return "RP";
  if(slot==="CP")return "CP";
  if(BENCH.includes(slot))return "타자";
  return "";
@@ -2625,16 +2678,20 @@ function fieldSlot(pos){
  if(!p)return `<div class="slot" data-slot="${pos}" onclick="openPlayerPicker('${pos}')"><div class="ref-empty-pos">${pos}</div><div class="ref-empty-plus ${cls}">＋</div></div>`;
  return `<div class="slot filled" data-slot="${pos}">${lineupCompactCardHTML(p,pos,pos)}</div>`;
 }
+function defaultBullpenRole(slot){
+ const n=Number(String(slot).replace("RP", ""));
+ return n<=3?"승리조":n<=5?"추격조":"롱릴리프";
+}
 function bullpenRole(slot,mode=currentMode){
- return ensureLineupState(mode).bullpenRoles?.[slot]||({RP1:"승리조",RP2:"승리조",RP3:"승리조",RP4:"추격조",RP5:"추격조",RP6:"롱릴리프"}[slot]);
+ return ensureLineupState(mode).bullpenRoles?.[slot]||defaultBullpenRole(slot);
 }
 function bullpenRoleCounts(mode=currentMode){
  const out={승리조:0,추격조:0,롱릴리프:0};
- for(let i=1;i<=6;i++){const r=bullpenRole(`RP${i}`,mode);if(r in out)out[r]++;}
+ for(let i=1;i<=12-lineupStrategy(mode).candidateBatters;i++){const r=bullpenRole(`RP${i}`,mode);if(r in out)out[r]++;}
  return out;
 }
 function setBullpenRole(slot,role){
- if(!/^RP[1-6]$/.test(slot)||!["승리조","추격조","롱릴리프"].includes(role))return;
+ if(!PITCH.includes(slot)||!/^RP[1-8]$/.test(slot)||!["승리조","추격조","롱릴리프"].includes(role))return;
  const L=lineup();if(!L.bullpenRoles)L.bullpenRoles={};
  const old=bullpenRole(slot),counts=bullpenRoleCounts();
  if(old===role)return;
@@ -2657,35 +2714,37 @@ function setBullpenStrategy(group,value){
 }
 function bullpenTacticBonusMap(p,slot,mode=currentMode){
  const out={};for(const [k] of statMeta(p))out[k]=0;
- if(!/^RP[1-6]$/.test(slot||""))return out;
+ if(!/^RP[1-8]$/.test(slot||""))return out;
  const role=bullpenRole(slot,mode),s=bullpenStrategies(mode),counts=bullpenRoleCounts(mode);
  let add=0;
  if(role==="승리조"){
-   if(s.win==="split"&&counts.승리조>=3)add=2;
-   else if(s.win==="aggressive")add=1;
- }else if(role==="추격조"&&s.chase==="aggressive")add=1;
+   if(s.win==="split"&&counts.승리조>=3)add=3;
+   else if(s.win==="aggressive")add=2;
+ }else if(role==="추격조"&&s.chase==="aggressive")add=2;
  if(add)for(const k of Object.keys(out))if(k!=="stamina")out[k]=add;
  return out;
 }
 function bullpenTacticDescription(group){
  const s=bullpenStrategies(),counts=bullpenRoleCounts();
  if(group==="win"){
-   if(s.win==="split")return `승리조 최소 배치 필요 인원 ${counts.승리조}/3 · 선발맨/셋업 역할을 분업합니다. 홀드 상황에서 선발투수를 더 적극적으로 교체하고, 지구력을 제외한 승리조 능력치가 +2 상승합니다.${counts.승리조<3?' 현재는 인원 미달이라 능력치 효과가 적용되지 않습니다.':''}`;
-   if(s.win==="aggressive")return "적당한 타이밍에 적극적으로 교체하고 홀드 상황에서 선발투수를 조금 일찍 교체합니다. 지구력을 제외한 승리조 능력치가 +1 상승합니다.";
+   if(s.win==="split")return `승리조 최소 배치 필요 인원 ${counts.승리조}/3 · 선발맨/셋업 역할을 분업합니다. 홀드 상황에서 선발투수를 더 적극적으로 교체하고, 지구력을 제외한 승리조 능력치가 +3 상승합니다.${counts.승리조<3?' 현재는 인원 미달이라 능력치 효과가 적용되지 않습니다.':''}`;
+   if(s.win==="aggressive")return "적당한 타이밍에 적극적으로 교체하고 홀드 상황에서 선발투수를 조금 일찍 교체합니다. 지구력을 제외한 승리조 능력치가 +2 상승합니다.";
    return "최대한 길게 투구를 지시합니다. 추가 능력치 효과는 없습니다.";
  }
- if(s.chase==="aggressive")return "적당한 타이밍에 적극적으로 교체를 시도합니다. 지구력을 제외한 추격조 능력치가 +1 상승합니다.";
+ if(s.chase==="aggressive")return "적당한 타이밍에 적극적으로 교체를 시도합니다. 지구력을 제외한 추격조 능력치가 +2 상승합니다.";
  return "기본 교체 전술을 사용합니다. 추가 능력치 효과는 없습니다.";
 }
 function renderBullpenRoles(){
  const controls=$("bullpenControls");
  if(!controls)return;
+ renderLineupStrategyControls();
+ const activeRelievers=PITCH.filter(s=>/^RP/.test(s));
  const counts=bullpenRoleCounts(),s=bullpenStrategies();
- const slots=Array.from({length:6},(_,i)=>{const slot=`RP${i+1}`;return `<label>${slot}<select aria-label="${slot} 불펜 역할" onchange="setBullpenRole('${slot}',this.value)">${["승리조","추격조","롱릴리프"].map(r=>`<option ${bullpenRole(slot)===r?"selected":""}>${r}</option>`).join("")}</select></label>`}).join("");
+ const slots=activeRelievers.map(slot=>`<label>${slot}<select aria-label="${slot} 불펜 역할" onchange="setBullpenRole('${slot}',this.value)">${["승리조","추격조","롱릴리프"].map(r=>`<option ${bullpenRole(slot)===r?"selected":""}>${r}</option>`).join("")}</select></label>`).join("");
  const winBtns=[["split","분업"],["aggressive","적극적"],["basic","기본"]].map(([v,t])=>`<button class="${s.win===v?'active':''}" onclick="setBullpenStrategy('win','${v}')">${t}</button>`).join("");
  const chaseBtns=[["aggressive","적극적"],["basic","기본"]].map(([v,t])=>`<button class="${s.chase===v?'active':''}" onclick="setBullpenStrategy('chase','${v}')">${t}</button>`).join("");
  controls.innerHTML=`<div class="bullpen-settings">
-  <div style="font-weight:900;margin-bottom:8px">투수 전술 설정 · 중간계투 (6/6)</div>
+  <div style="font-weight:900;margin-bottom:8px">투수 전술 설정 · 중간계투 (${activeRelievers.length}명)</div>
   <div class="bullpen-summary">
    <div class="bullpen-summary-card">승리조<b>${counts.승리조}</b><small>최소 1 · 최대 4</small></div>
    <div class="bullpen-summary-card">추격조<b>${counts.추격조}</b><small>최소 1 · 최대 4</small></div>
@@ -2697,7 +2756,8 @@ function renderBullpenRoles(){
    <div class="bullpen-tactic-row"><strong>추격조</strong><div class="bullpen-tactic-buttons">${chaseBtns}</div><div class="bullpen-tactic-desc">${bullpenTacticDescription('chase')}</div></div>
   </div>
  </div>`;
- for(let i=1;i<=6;i++){const slot=`RP${i}`,role=bullpenRole(slot),el=$("bullpenBench").querySelector(`[data-slot="${slot}"]`);if(!el)continue;el.dataset.roleLabel=role;}
+ const rows={승리조:2,추격조:2,롱릴리프:2};
+ for(const slot of activeRelievers){const role=bullpenRole(slot),el=$("pitchers").querySelector(`[data-slot="${slot}"]`);if(!el)continue;el.dataset.roleLabel=role;el.style.gridColumn=String({승리조:1,추격조:2,롱릴리프:3}[role]);el.style.gridRow=String(rows[role]++);}
 }
 function miniSlot(slot,label){
  const id=lineup().slots[slot],p=players.find(x=>x.id===id);
@@ -2727,14 +2787,15 @@ function validateLineupSlots(mode=currentMode){
 }
 
 function renderSquad(){
+ syncLineupSlotCounts(currentMode);
  validateLineupSlots();
  autoOrder();
  $("diamond").innerHTML=FIELD.map(fieldSlot).join("");
+ $("bench").style.setProperty("--bench-slot-count",String(BENCH.length));
  $("bench").innerHTML=BENCH.map((s,i)=>miniSlot(s,"SUB "+(i+1))).join("");
- $("pitchers").innerHTML=PITCH.filter(s=>s.startsWith("SP")||s==="CP").map((s,i)=>miniSlot(s,s.startsWith("SP")?`${Number(s.slice(2))}선발`:"마무리")).join("");
- $("bullpenBench").innerHTML=PITCH.filter(s=>s.startsWith("RP")).map(s=>miniSlot(s,`불펜 ${Number(s.slice(2))}`)).join("");
+ $("pitchers").innerHTML=PITCH.map((s,i)=>miniSlot(s,s.startsWith("SP")?`${Number(s.slice(2))}선발`:s.startsWith("RP")?`불펜 ${Number(s.slice(2))}`:"마무리")).join("");
  renderBullpenRoles();
- renderBattingOrder();renderSetdeckPosition();renderLineupEffects();calcSummary();hydratePlayerPhotos($("diamond"));hydratePlayerPhotos($("bench"));hydratePlayerPhotos($("pitchers"));hydratePlayerPhotos($("bullpenBench"));hydrateTeamLogos($("diamond"));hydrateTeamLogos($("bench"));hydrateTeamLogos($("pitchers"));hydrateTeamLogos($("bullpenBench"));
+ renderBattingOrder();renderSetdeckPosition();renderLineupEffects();calcSummary();hydratePlayerPhotos($("diamond"));hydratePlayerPhotos($("bench"));hydratePlayerPhotos($("pitchers"));hydrateTeamLogos($("diamond"));hydrateTeamLogos($("bench"));hydrateTeamLogos($("pitchers"));
 }
 let battingPickSlot=null;
 function battingOrderAccent(n){
@@ -2830,13 +2891,13 @@ function lineupHasSamePlayerName(p,mode=currentMode){
 
 function compatibleSlotsFor(p){
  if(!p)return [];
- // 타자: 선발은 카드의 주포지션과 정확히 같은 자리, 후보는 SUB1~6.
+ // 타자: 선발은 카드의 주포지션과 정확히 같은 자리, 후보는 현재 활성화된 SUB 슬롯.
  if(FIELD.includes(p.pos))return [...new Set([p.pos,"DH",...BENCH])];
 
  // 투수는 카드 역할을 절대 섞지 않음.
  // SP는 선발만, RP는 중간계투만, CP는 마무리만.
  if(p.pos==="SP")return ["SP1","SP2","SP3","SP4","SP5"];
- if(p.pos==="RP")return ["RP1","RP2","RP3","RP4","RP5","RP6"];
+ if(p.pos==="RP")return PITCH.filter(s=>/^RP/.test(s));
  if(p.pos==="CP")return ["CP"];
  return [];
 }
@@ -2850,7 +2911,7 @@ function slotAcceptsPlayer(slot,p){
 
  // 투수 역할 고정
  if(/^SP[1-5]$/.test(slot))return p.pos==="SP";
- if(/^RP[1-6]$/.test(slot))return p.pos==="RP";
+ if(/^RP[1-8]$/.test(slot))return PITCH.includes(slot)&&p.pos==="RP";
  if(slot==="CP")return p.pos==="CP";
 
  return false;
@@ -2866,7 +2927,7 @@ function addPlayer(id){
  if(!candidates.length){toast("이 카드의 포지션에 맞는 슬롯이 없어.");return;}
 
  // 선발 포지션이 비어 있으면 우선 선발 자리에 배치.
- // 타자는 주포지션이 이미 차 있으면 SUB1~6으로 이동 가능.
+ // 타자는 주포지션이 이미 차 있으면 현재 활성화된 SUB 슬롯으로 이동 가능.
  const slot=candidates.find(s=>!L.slots[s]);
  if(!slot){
    if(FIELD.includes(p.pos)){
@@ -2874,7 +2935,7 @@ function addPlayer(id){
    }else if(p.pos==="SP"){
      toast("선발투수(SP)는 SP1~SP5에만 들어갈 수 있고, 선발 자리가 모두 가득 찼어.");
    }else if(p.pos==="RP"){
-     toast("중간계투(RP)는 RP1~RP6에만 들어갈 수 있고, 불펜 자리가 모두 가득 찼어.");
+     toast("중간계투(RP)는 현재 설정된 불펜 슬롯에만 들어갈 수 있고, 불펜 자리가 모두 가득 찼어.");
    }else if(p.pos==="CP"){
      toast("마무리(CP)는 CP 자리에만 들어갈 수 있고, 마무리 자리가 이미 차 있어.");
    }
@@ -3094,7 +3155,7 @@ function renderGrow(){
  <section><h3>훈련</h3><div class="reference-controls">${level('training',g.training,maxTraining(p))}<span>훈련 총합: ${sum(es.trainingBonus)}/${3*g.training}</span><span>${g.trainingMode==='manual'?'수동 배분':'자동 배분'}</span></div><div class="reference-allocation">${detailRows(p,es.trainingBonus,'training')}</div></section>
  <section><h3>특훈</h3><div class="reference-controls">${hi?level('special',Math.max(0,g.special-lo),hi-lo):'특훈 없음'}<span>특훈 총합: ${sum(es.specialBonus)}/${Math.max(0,g.special-lo)}</span></div><div class="reference-allocation">${detailRows(p,es.specialBonus,'special')}</div></section>
  <section><h3>포지션 특훈</h3><div class="reference-controls">${slot?level('position',lineup().positionTraining[slot]??20,20):'라인업에 배치하면 적용돼.'}<span>적용 총합: ${sum(es.positionBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.positionBonus||{},'position')}</div></section>
- ${slot&&/^RP[1-6]$/.test(slot)?`<section><h3>불펜 전술</h3><div class="reference-controls"><span>${bullpenRole(slot)}</span><span>전술 능력치 총합: +${sum(es.bullpenTacticBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.bullpenTacticBonus||{},'bullpen')}</div></section>`:''}
+ ${slot&&/^RP[1-8]$/.test(slot)?`<section><h3>불펜 전술</h3><div class="reference-controls"><span>${bullpenRole(slot)}</span><span>전술 능력치 총합: +${sum(es.bullpenTacticBonus)}</span></div><div class="reference-allocation">${detailRows(p,es.bullpenTacticBonus||{},'bullpen')}</div></section>`:''}
  ${skillControls(p,slot)}
  <details class="reference-extra"><summary>강화·각성</summary>${quickEnhanceHTML(p,g)}${quickAwakeningHTML(p,g)}</details>
  </div>`;
@@ -3272,7 +3333,7 @@ function exportCurrentJSON(){download(`v26-${currentMode}-lineup.json`,JSON.stri
 function exportCurrentTXT(){download(`v26-${currentMode}-lineup.txt`,currentText(),"text/plain;charset=utf-8")}
 function exportAllJSON(){download("v26-all-lineups.json",JSON.stringify({version:8.1,preferredTeam,lineups:Object.fromEntries(Object.keys(MODES).map(m=>[m,lineupPayload(m)])),growth},null,2),"application/json")}
 async function copyCurrent(){try{await navigator.clipboard.writeText(currentText());toast("현재 라인업을 복사했어.")}catch(e){alert("브라우저에서 클립보드 복사가 막혀 있어. TXT 내보내기를 사용해 줘.")}}
-function renderAll(){ensureLineupState(currentMode);updateChoiceGridTriggers();renderSquad();if(currentPickerSlot)renderPlayerPicker()}
+function renderAll(){syncLineupSlotCounts(currentMode);ensureLineupState(currentMode);updateChoiceGridTriggers();renderSquad();if(currentPickerSlot)renderPlayerPicker()}
 function toast(msg){const d=document.createElement("div");d.textContent=msg;Object.assign(d.style,{position:"fixed",left:"50%",bottom:"20px",transform:"translateX(-50%)",background:"#101d2d",border:"1px solid #3d6488",color:"#eef8ff",padding:"9px 13px",borderRadius:"9px",zIndex:99,fontSize:"11px"});document.body.appendChild(d);setTimeout(()=>d.remove(),1900)}
 const CUSTOM_STORE='v26_custom_cards_v1';
 const CUSTOM_TYPES=['임팩트','시그니처','골든글러브','국가대표','LIVE','라이브 올스타','시즌'];
