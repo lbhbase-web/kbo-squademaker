@@ -1,0 +1,21 @@
+KBO SquadMaker - Live Card Enhancement Fix
+
+Changes:
+- Added the Live 3-star enhancement table based on the user's screenshot.
+- Added the Live 4-star enhancement table based on the user's screenshot.
+- Added the Live 5-star enhancement table based on the user's screenshot.
+- Connected live card star level to the corresponding enhancement table.
+- Added labels for the three Live enhancement tables.
+- Bumped app.js/bootstrap.js cache version so GitHub Pages requests the updated code.
+- Did not modify players.json or any existing player card records.
+
+Expected totals in order Power/Contact/Eye/Baserun/Patience/Fielding (or Pitcher equivalents):
+- Live 3-star: 9, 9, 7, 5, 5, 5 (total 40; OVR contribution 6.7)
+- Live 4-star: 14, 14, 12, 10, 10, 10 (total 70; OVR contribution 11.7)
+- Live 5-star: 24, 24, 22, 20, 20, 20 (total 130; OVR contribution 21.7)
+
+Validation:
+- node --check app.js: passed
+- node --check bootstrap.js: passed
+- All three 10-row tables and their totals checked: passed
+- Browser runtime test was not performed.

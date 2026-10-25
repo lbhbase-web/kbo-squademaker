@@ -1295,18 +1295,12 @@ body{background:#fff!important;color:#17191c!important}
 .picker-choice-btn{min-height:28px;border:1px solid #707070;background:#fff;color:#333;font-size:12px;border-radius:0;cursor:pointer;padding:0 6px}
 .picker-choice-btn.active{background:#5b5b5b!important;color:#fff!important;border-color:#5b5b5b!important}
 .picker-choice-btn:disabled{opacity:.45;cursor:not-allowed;background:#f1f1f1!important;color:#888!important}
-.picker-impact-detail-section{margin-top:14px;padding-top:10px;border-top:1px solid #ddd}
-.picker-impact-detail-heading{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:800;color:#333;margin:0 0 8px}
-.picker-impact-detail-heading button{border:0;background:transparent;color:#777;font-size:24px;line-height:22px;cursor:pointer;padding:0 4px}
-.picker-impact-detail-grid{grid-template-columns:repeat(4,minmax(0,1fr));max-height:390px;overflow-y:auto;padding-right:2px}
-.picker-impact-detail-grid .picker-choice-btn{min-height:32px;background:#f1f1f1;border-color:#e4e4e4;color:#666;font-size:12px;white-space:normal;line-height:1.2;padding:4px 3px}
-.picker-impact-detail-grid .picker-choice-btn.active{background:#075bd5!important;border-color:#075bd5!important;color:#fff!important}
 .picker-custom-btn{margin-top:18px;background:#666;border:1px solid #666;color:#fff;border-radius:4px;font-size:12px;padding:10px 12px;cursor:pointer}
 .picker-position-tip{margin-top:10px;font-size:12px;color:#666}
 .picker-simple-results{padding:18px 18px 16px!important}
 .picker-count-line{margin-bottom:10px;font-size:12px;color:#666!important}
 .picker-simple-results .picker-list{max-height:430px!important;min-height:430px!important;padding-right:4px}
-@media(max-width:760px){.picker-body{grid-template-columns:1fr!important}.picker-choice-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.picker-pos-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.picker-impact-detail-grid{grid-template-columns:repeat(4,minmax(0,1fr));max-height:340px}.picker-simple-results .picker-list{min-height:280px!important;max-height:280px!important}}
+@media(max-width:760px){.picker-body{grid-template-columns:1fr!important}.picker-choice-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.picker-pos-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.picker-simple-results .picker-list{min-height:280px!important;max-height:280px!important}}
 
 
 /* ===== Google account + cloud lineup shelf v11.4 ===== */
@@ -1613,7 +1607,7 @@ body{background:#fff!important;color:#17191c!important}
 }
 </style>
 <style id="v153-import-mobile-fix">
-/* v15.4.11-20261021-top3-year-search-dedupe: mobile player picker visibility + scroll */
+/* v15.4.12-20261025-live-enhancement-tables: mobile player picker visibility + scroll */
 @media (max-width: 760px) {
   body.view-mobile #playerPickerModal.modal.open {
     display:flex!important;position:fixed!important;inset:0!important;
@@ -1880,10 +1874,6 @@ body{background:#fff!important;color:#17191c!important}
     <div id="pickerPosGrid" class="picker-choice-grid picker-pos-grid"></div>
     <div class="picker-section-label">선수 종류</div>
     <div id="pickerTypeGrid" class="picker-choice-grid"></div>
-    <div id="pickerImpactDetailSection" class="picker-impact-detail-section" style="display:none">
-     <div class="picker-impact-detail-heading"><span>임팩트 상세 검색</span><button type="button" aria-label="임팩트 상세 선택 초기화" onclick="togglePickerImpactDetail('')">×</button></div>
-     <div id="pickerImpactDetailGrid" class="picker-choice-grid picker-impact-detail-grid"></div>
-    </div>
     <button type="button" class="picker-custom-btn" onclick="openCustomCards()">커스텀 선수 생성하기</button>
     <div class="picker-position-tip">현재 슬롯 : <b id="pickerLockedPosition">-</b></div>
     <div id="pickerActive" class="picker-active" style="display:none"></div>
@@ -1975,7 +1965,7 @@ body{background:#fff!important;color:#17191c!important}
 
 <div id="app-loading" role="status" aria-live="polite" style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;background:#101a29;border:1px solid #26364f;border-radius:999px;padding:9px 14px;color:#f4f7fb;font:700 12px system-ui,-apple-system,'Noto Sans KR',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.35)">선수 데이터 불러오는 중…</div>
 <script>try{document.documentElement.style.colorScheme="only light";}catch(e){}</script>
-<script src="./bootstrap.js?v=15.4.12-20261021-impact-detail-picker"></script>
+<script src="./bootstrap.js?v=15.4.12-20261025-live-enhancement-tables"></script>
 <script type="module" src="./cloud-lineups.js"></script>
 
 <button id="viewToggle" class="view-switch" type="button" onclick="toggleViewMode()" aria-label="PC 모바일 화면 전환">
