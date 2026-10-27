@@ -1,0 +1,16 @@
+KBO SquadMaker performance patch
+
+What changed:
+- Extracted 20 embedded team-logo PNG data URIs from app.js into assets/team-logos/*.webp.
+- Resized logo assets to max 512x512 and encoded as WebP with alpha transparency.
+- app.js is substantially smaller so the browser has less JavaScript source to download/parse.
+- Bumped app/bootstrap cache version to 15.4.13-20261027-performance.
+- Player data and gameplay calculations were not edited.
+
+Apply:
+1. Back up the current repository.
+2. Copy app.js, bootstrap.js, index.html and the entire assets/team-logos folder into the repository root, preserving paths.
+3. Commit all files to GitHub Pages.
+4. Reload the site; if it still looks cached, do a hard refresh or clear site cache.
+
+Checks: JS syntax check, logo decoding/resizing, ZIP integrity. No real browser/device benchmark was performed.
