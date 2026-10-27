@@ -1,0 +1,14 @@
+KBO SquadMaker 구단 로고 경로 수정
+
+이 패치는 이미지 URL을 GitHub Pages 프로젝트 경로 기준의 상대 경로(./assets/team-logos/...)로 변경합니다.
+
+반드시 아래 항목을 모두 업로드하세요:
+- app.js
+- bootstrap.js
+- index.html
+- assets/team-logos/ 폴더 전체(logo-01.webp ~ logo-20.webp)
+
+GitHub 저장소 최상위에 assets/team-logos/ 경로가 생겨야 합니다.
+커밋 후 사이트를 열어 강력 새로고침하거나 브라우저 캐시를 지워 확인하세요.
+
+확인: JS 문법 검사, ZIP 무결성 검사 완료. 실제 브라우저에서의 네트워크 로딩 검증은 수행하지 못했습니다.
