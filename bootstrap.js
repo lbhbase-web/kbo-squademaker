@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.13-20261027-performance';
-  const DATA_URLS=['./players.json?v=15.4.13-20261027-performance','./data/players.json?v=15.4.13-20261027-performance'];
+  const APP_URL='./app.js?v=15.4.14-20261027-logo-path-fix';
+  const DATA_URLS=['./players.json?v=15.4.14-20261027-logo-path-fix','./data/players.json?v=15.4.14-20261027-logo-path-fix'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -42,7 +42,7 @@
           positionChoicePatch.onerror=()=>console.warn('포지션 특훈 선택 패치를 불러오지 못했습니다.');
           document.body.appendChild(positionChoicePatch);
           const importMobilePatch=document.createElement('script');
-          importMobilePatch.src='./lineup-import-mobile-runtime-patch.js?v=15.4.13-20261027-performance';
+          importMobilePatch.src='./lineup-import-mobile-runtime-patch.js?v=15.4.14-20261027-logo-path-fix';
           importMobilePatch.onerror=()=>console.warn('라인업 가져오기/모바일 화면 패치를 불러오지 못했습니다.');
           document.body.appendChild(importMobilePatch);
           const skillStatPatch=document.createElement('script');

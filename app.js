@@ -2281,8 +2281,8 @@ async function hydratePlayerPhotos(root=document){
 }
 
 
-const TEAM_LOGO_URLS={"KIA":"./assets/team-logos/logo-01.webp","삼성":"./assets/team-logos/logo-02.webp","LG":"./assets/team-logos/logo-03.webp","두산":"./assets/team-logos/logo-04.webp","롯데":"./assets/team-logos/logo-05.webp","한화":"./assets/team-logos/logo-06.webp","SSG":"./assets/team-logos/logo-07.webp","NC":"./assets/team-logos/logo-08.webp","KT":"./assets/team-logos/logo-09.webp","키움":"./assets/team-logos/logo-10.webp"};
-const HISTORIC_TEAM_LOGO_URLS={"SK":"./assets/team-logos/logo-11.webp","쌍방울":"./assets/team-logos/logo-12.webp","현대":"./assets/team-logos/logo-13.webp","태평양":"./assets/team-logos/logo-14.webp","청보":"./assets/team-logos/logo-15.webp","삼미":"./assets/team-logos/logo-16.webp","해태":"./assets/team-logos/logo-17.webp","OB":"./assets/team-logos/logo-18.webp","빙그레":"./assets/team-logos/logo-19.webp","MBC청룡":"./assets/team-logos/logo-20.webp"};
+const TEAM_LOGO_URLS={"KIA":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-01.webp","삼성":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-02.webp","LG":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-03.webp","두산":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-04.webp","롯데":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-05.webp","한화":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-06.webp","SSG":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-07.webp","NC":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-08.webp","KT":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-09.webp","키움":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-10.webp"};
+const HISTORIC_TEAM_LOGO_URLS={"SK":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-11.webp","쌍방울":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-12.webp","현대":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-13.webp","태평양":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-14.webp","청보":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-15.webp","삼미":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-16.webp","해태":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-17.webp","OB":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-18.webp","빙그레":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-19.webp","MBC청룡":"https://lbhbase-web.github.io/kbo-squademaker/assets/team-logos/logo-20.webp"};
 function gameTeamLogoUrl(team){
  return HISTORIC_TEAM_LOGO_URLS[team]||TEAM_LOGO_URLS[team]||"";
 }
@@ -2363,10 +2363,9 @@ function gameGrowthText(p,g=getGrowth(p)){
 function teamLogoHTML(team,compact=false,fa=false){
  const cls=compact?"lc-team":"game-card-team";
  const url=gameTeamLogoUrl(team);
+ const fallback=`<span class="game-card-team-fallback" style="display:${url?"none":"inline-flex"};align-items:center;justify-content:center;font-size:12px;font-weight:700">${esc(team||"팀")}</span>`;
  return `<div class="${cls}" data-team-logo-wrap="${esc(team||"")}">
-   ${url
-     ?`<img class="${compact?"lc-team-logo":"game-team-logo"}" src="${url}" alt="${esc(team||"")} 구단 로고" referrerpolicy="no-referrer" style="display:block">`
-     :`<span class="${compact?"":"game-team-fallback"}">${esc(team||"팀")}</span>`}
+   ${url?`<img class="${compact?"lc-team-logo":"game-team-logo"}" src="${url}" alt="${esc(team||"")} 구단 로고" referrerpolicy="no-referrer" style="display:block" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex'">`:""}${fallback}
    ${fa?`<b class="team-fa-badge" style="position:absolute;right:0;bottom:-5px;min-width:20px;padding:0 2px;background:rgba(0,0,0,.7);color:#3ff5ef;font-size:${compact?11:14}px;font-style:italic;line-height:1.2;text-align:center;text-shadow:0 1px 2px #000" aria-label="FA 이적">FA</b>`:""}
  </div>`;
 }
