@@ -1,0 +1,12 @@
+KBO SquadMaker 로고 표시 수정 패치
+
+수정 원인과 대응:
+- 기존 로고 URL이 ./assets/team-logos/... 외부 파일 경로에 의존해, GitHub Pages 배포 경로/폴더 누락 시 로고가 전부 깨질 수 있었습니다.
+- 20개 구단 로고를 최대 128px WebP로 최적화해 app.js 내부 data URL로 포함했습니다. 별도 assets/team-logos 폴더가 없어도 표시됩니다.
+- 이미지 디코딩 실패 시 선수 카드의 구단명이 텍스트 대체 표시됩니다.
+- 선수 데이터와 강화/스킬/라인업 계산 로직은 변경하지 않았습니다.
+- bootstrap/index cache version을 갱신했습니다.
+
+적용: app.js, bootstrap.js, index.html, historic-logo-transparent.js 네 파일을 저장소 최상위에 덮어써 커밋합니다. assets/team-logos 폴더는 이 수정본에서는 필요하지 않습니다. 옛 구단 로고는 historic-logo-transparent.js의 최적화된 투명 이미지로 표시됩니다.
+
+검증: JavaScript 문법 검사, 20개 WebP 디코딩 검사, ZIP 무결성 검사 완료. 실제 GitHub Pages 브라우저 렌더링은 환경상 직접 확인하지 못했습니다.
