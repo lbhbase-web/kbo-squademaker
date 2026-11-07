@@ -363,7 +363,15 @@ function effectiveSetdeckScore(p){
  }
  const base=Number(p.setdeck);
  if(!Number.isFinite(base))return null;
- if(f==="live"&&(year===25||year===2025))return Math.floor(base/2);
+ // LIVE 세트덱 연차 규칙: 매년 4월 1일부터 직전 연도 LIVE 카드의
+ // 세트덱 포인트만 50% 적용한다. 선수 기본 능력치/카드 데이터는 변경하지 않는다.
+ if(f==="live"&&Number.isFinite(year)&&year>0){
+   const now=new Date();
+   const currentYear=now.getFullYear();
+   const reductionYear=now.getMonth()>=3?currentYear-1:currentYear-2;
+   const normalizedYear=year<100?2000+year:year;
+   if(normalizedYear<=reductionYear)return Math.floor(base/2);
+ }
  if(f==="live"&&pastSeason)return base;
  const g=getGrowth(p),[initial]=specialBounds(p,g.faTeam);
  if(isNationalWildcard(p,g))return Math.max(1,Math.min(7,Number(g.special)||1));
