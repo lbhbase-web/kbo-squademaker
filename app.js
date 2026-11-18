@@ -51,6 +51,23 @@ const HISTORIC_TEAM_PARENT={
  "청보":"키움",
  "삼미":"키움"
 };
+// 선수 카드의 구단 원본 표기는 유지하고, 검색할 때만 현재 프랜차이즈로 묶는다.
+// LG의 옛 구단명은 "MBC청룡"만 인정한다. "MBC"는 별칭으로 사용하지 않는다.
+const TEAM_SEARCH_GROUPS={
+ "KIA":["KIA","해태"],
+ "삼성":["삼성"],
+ "LG":["LG","MBC청룡"],
+ "한화":["한화","빙그레"],
+ "SSG":["SSG","SK","쌍방울"],
+ "KT":["KT"],
+ "NC":["NC"],
+ "두산":["두산","OB"],
+ "롯데":["롯데"],
+ "키움":["키움","현대","태평양","청보","삼미"]
+};
+const TEAM_SEARCH_PARENT=Object.fromEntries(Object.entries(TEAM_SEARCH_GROUPS).flatMap(([parent,names])=>names.map(name=>[name,parent])));
+function canonicalSearchTeam(team){const key=String(team??"").trim();return TEAM_SEARCH_PARENT[key]||key}
+function teamSearchTerms(team){const key=String(team??"").trim(),parent=canonicalSearchTeam(key);return TEAM_SEARCH_GROUPS[parent]||[key]}
 const PREFERRED_TEAM_OPTIONS=[...TEAMS];
 const PREFERRED_TEAM_LABELS={
  "KIA":"KIA (해태)",
@@ -1710,7 +1727,8 @@ function playerYearValue(p){if(isTop3Card(p)&&p.year!==null&&p.year!==undefined&
 function playerSearchText(p){
  const y=normalizeYearKey(p?.year);
  const fullYear=y&&y!=="없음"&&/^\d{2}$/.test(y)?`${Number(y)>=82?"19":"20"}${y}`:String(p?.year??"");
- return [p?.name,p?.team,p?.type,p?.series,p?.impactSeries,y,fullYear].filter(v=>v!==null&&v!==undefined&&v!=="").join(" ").toLowerCase();
+ const teamTerms=teamSearchTerms(p?.team).join(" ");
+ return [p?.name,p?.team,teamTerms,p?.type,p?.series,p?.impactSeries,y,fullYear].filter(v=>v!==null&&v!==undefined&&v!=="").join(" ").toLowerCase();
 }
 function baseStatsHTML(p){
  return `<div class="base-stats">${statMeta(p).map(([k,l])=>`<div class="base-stat"><small>${l}</small><b>${p.stats?.[k]??"—"}</b></div>`).join("")}</div>`;
@@ -1728,7 +1746,7 @@ function renderPlayerPager(total){
 
 function filtered(){
  const q=$("q").value.trim().toLowerCase(),team=$("team").value,type=$("type").value,series=$("series").value,year=$("year").value,pos=$("pos").value,sf=$("statsFilter").value;
- return players.filter(p=>(!q||playerSearchText(p).includes(q))&&(!team||p.team===team)&&(!type||p.type===type)&&(!series||p.series===series)&&(!year||playerYearValue(p)===year)&&(!pos||p.pos===pos)&&(!sf||(sf==="known"?hasFullStats(p):!hasFullStats(p))));
+ return players.filter(p=>(!q||playerSearchText(p).includes(q))&&(!team||canonicalSearchTeam(p.team)===canonicalSearchTeam(team))&&(!type||p.type===type)&&(!series||p.series===series)&&(!year||playerYearValue(p)===year)&&(!pos||p.pos===pos)&&(!sf||(sf==="known"?hasFullStats(p):!hasFullStats(p))));
 }
 function renderPlayers(){
  if(!$("players")||!$("players").getClientRects().length)return;
@@ -2662,7 +2680,7 @@ function renderPlayerPicker(){
    if(!playerAllowedForPicker(p,currentPickerSlot))return false;
    const searchable=`${p.name||""} ${p.year||""} ${p.type||""} ${p.series||""} ${p.team||""}`.toLowerCase();
    if(q&&!searchable.includes(q))return false;
-   if(team&&p.team!==team)return false;
+   if(team&&canonicalSearchTeam(p.team)!==canonicalSearchTeam(team))return false;
    if(type&&p.type!==type&&!(type==="라이브"&&family(p)==="live"))return false;
    if(series&&p.series!==series)return false;
    if(posFilter){
