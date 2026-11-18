@@ -3385,15 +3385,17 @@ function importLineupData(raw){
  for(const [slot,id] of Object.entries(payload.slots)){
    if(!ALL_SLOTS.includes(slot))throw Error('알 수 없는 포지션: '+slot);
    if(!id){next.slots[slot]=null;continue;}
-   const p=available.get(id);if(!p)throw Error('선수 데이터가 없어: '+(payload.players.find(x=>x.id===id)?.name||id)+'. 커스텀 선수라면 선수 백업을 먼저 가져와 줘.');
+   const legacyMap=window.__KBO_LEGACY_PLAYER_ID_MAP__||{};
+   const resolvedId=available.has(id)?id:(available.has(legacyMap[id])?legacyMap[id]:id);
+   const p=available.get(resolvedId);if(!p)throw Error('선수 데이터가 없어: '+(payload.players.find(x=>x.id===id)?.name||id)+'. 이 카드의 구버전 ID를 새 선수 데이터와 연결하지 못했어.');
    if(!slotAcceptsPlayer(slot,p))throw Error(p.name+'의 포지션을 확인해 줘.');
    if(names.has(p.name.trim()))throw Error('같은 선수가 중복 배치돼 있어: '+p.name);names.add(p.name.trim());
-   const row=payload.players.find(x=>x.id===id);
-   const g=clean(row?.growth||data.growth?.[id]||{});
+   const row=payload.players.find(x=>x.id===id)||payload.players.find(x=>x.id===resolvedId);
+   const g=clean(row?.growth||data.growth?.[id]||data.growth?.[resolvedId]||{});
    if(!obj(g))throw Error('육성 데이터 형식이 올바르지 않아.');
    if(g.trainingAlloc&&!Array.isArray(g.trainingAlloc))throw Error('훈련 배분 데이터가 올바르지 않아.');
    if(usesSharedCardLimit(p,g))limited++;
-   nextGrowth[id]=g;next.slots[slot]=id;
+   nextGrowth[resolvedId]=g;next.slots[slot]=resolvedId;
  }
  if(limited>2)throw Error('FA 임팩트·FA 시그니처·국가대표 와일드카드 합계가 2장을 초과해.');
  for(const key of ['setdeckChoices','setdeckParams','positionTraining','positionTrainingChoices','bullpenRoles','bullpenStrategy','detailPosition','positionSkills']){

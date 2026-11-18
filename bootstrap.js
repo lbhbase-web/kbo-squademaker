@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.10-name-suffix-restore';
-  const DATA_URLS=['./players.json?v=15.4.10-name-suffix-restore','./data/players.json?v=15.4.10-name-suffix-restore'];
+  const APP_URL='./app.js?v=15.4.11-legacy-lineup-compat';
+  const DATA_URLS=['./players.json?v=15.4.11-legacy-lineup-compat','./data/players.json?v=15.4.11-legacy-lineup-compat'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -33,6 +33,14 @@
     .then(data=>{
       window.__KBO_PLAYERS__=data;
       const startApp=()=>{
+        const loadLegacyMap=()=>{
+          const mapScript=document.createElement('script');
+          mapScript.src='./legacy-player-id-map.js?v=15.4.11-legacy-lineup-compat';
+          mapScript.onload=loadMainApp;
+          mapScript.onerror=()=>{console.warn('구버전 선수 ID 연결표를 불러오지 못했습니다.');loadMainApp();};
+          document.head.appendChild(mapScript);
+        };
+        const loadMainApp=()=>{
         const script=document.createElement('script');
         script.src=APP_URL;
         script.onerror=()=>showError('앱 스크립트를 불러오지 못했습니다. app.js가 저장소 최상위에 있는지 확인해 주세요.');
@@ -56,7 +64,7 @@
           document.body.appendChild(logoPatch);
 
           const photoPatch=document.createElement('script');
-          photoPatch.src='./player-photo-runtime-patch.js?v=15.4.10-name-suffix-restore';
+          photoPatch.src='./player-photo-runtime-patch.js?v=15.4.11-legacy-lineup-compat';
           photoPatch.onerror=()=>console.warn('선수사진 런타임 패치를 불러오지 못했습니다.');
           document.body.appendChild(photoPatch);
 
@@ -66,6 +74,8 @@
           document.body.appendChild(handednessPatch);
         };
         document.body.appendChild(script);
+        };
+        loadLegacyMap();
       };
       const loader=document.createElement('script');
       loader.src='./player-photo-loader.js?v=15.4.7-photo-links';
