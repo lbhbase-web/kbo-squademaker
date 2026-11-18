@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.8-20261118-setdeck-normalized';
-  const DATA_URLS=['./players.json?v=15.4.8-20261118-setdeck-normalized','./data/players.json?v=15.4.8-20261118-setdeck-normalized'];
+  const APP_URL='./app.js?v=15.4.10-name-suffix-restore';
+  const DATA_URLS=['./players.json?v=15.4.10-name-suffix-restore','./data/players.json?v=15.4.10-name-suffix-restore'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -56,7 +56,7 @@
           document.body.appendChild(logoPatch);
 
           const photoPatch=document.createElement('script');
-          photoPatch.src='./player-photo-runtime-patch.js?v=15.4.9-active-team-photo';
+          photoPatch.src='./player-photo-runtime-patch.js?v=15.4.10-name-suffix-restore';
           photoPatch.onerror=()=>console.warn('선수사진 런타임 패치를 불러오지 못했습니다.');
           document.body.appendChild(photoPatch);
 

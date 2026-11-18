@@ -29,7 +29,9 @@
   };
 
   window.fetchWikipediaPlayerPhoto=async function(name,team=''){
-    name=String(name||'').trim();team=String(team||'').trim();
+    // B/S/D/A are disambiguation suffixes: preserve them on player records and labels,
+    // but remove them only for the shared photo database key lookup.
+    name=String(name||'').trim().replace(/[BSDA]$/,'');team=String(team||'').trim();
     if(aliasNames.has(name))return null;
     const originalTeam=photoTeam(team);
     const currentTeam=activePhotoTeamByName[name]||'';
