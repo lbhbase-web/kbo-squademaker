@@ -1,0 +1,83 @@
+{
+  "version": "15.4.7-photo-links",
+  "note": "These are remote image URLs in the team photo modules, not locally embedded image bytes. External host availability and reuse terms may change.",
+  "images": [
+    {
+      "player": "김기태",
+      "team_key": "SSG",
+      "image_url": "https://ojsfile.ohmynews.com/down/images/1/icecap_193571_11%5B257755%5D.jpg",
+      "source": "https://www.ohmynews.com/NWS_Web/View/img_pg.aspx?CNTN_CD=IA000257755",
+      "verification": "OhmyNews photo caption identifies the SK Wyverns batter 김기태."
+    },
+    {
+      "player": "김상진",
+      "team_key": "SSG",
+      "image_url": "https://file2.nocutnews.co.kr/newsroom/image/2020/01/14/20200114111840802283_7_506_733.jpg",
+      "source": "https://www.nocutnews.co.kr/news/5272532",
+      "verification": "NoCut caption identifies 김상진 pitching for OB; story confirms his OB, Samsung and SK playing career."
+    },
+    {
+      "player": "이정훈",
+      "team_key": "한화",
+      "image_url": "https://blog.kakaocdn.net/dn/bzb7Q8/btr8MqcerI0/FUKaBFKpXjJcta1HHkn7X0/img.png",
+      "source": "https://ivypop0617.tistory.com/58",
+      "verification": "Source identifies 1980s/1990s Binggrae Eagles outfielder 이정훈; photo shows him in Binggrae uniform."
+    },
+    {
+      "player": "김상호",
+      "team_key": "두산",
+      "image_url": "https://wimg.mk.co.kr/meet/neds/2013/09/image_readtop_2013_674751_13780470401002478.jpg",
+      "source": "https://www.mksports.co.kr/news/sports/5658569",
+      "verification": "MK Sports interview identifies OB Bears slugger 김상호; image shows him in OB uniform."
+    },
+    {
+      "player": "김상진",
+      "team_key": "두산",
+      "image_url": "https://file2.nocutnews.co.kr/newsroom/image/2020/01/14/20200114111840802283_7_506_733.jpg",
+      "source": "https://www.nocutnews.co.kr/news/5272532",
+      "verification": "NoCut caption identifies the player as OB-era pitcher 김상진."
+    },
+    {
+      "player": "김민호",
+      "team_key": "두산",
+      "image_url": "https://ojsfile.ohmynews.com/STD_IMG_FILE/2008/0305/IE000877798_STD.jpg",
+      "source": "https://star.ohmynews.com/NWS_Web/OhmyStar/at_pg.aspx?CNTN_CD=A0000848914",
+      "verification": "OhmyNews caption identifies the pictured athlete as OB Bears shortstop 김민호."
+    },
+    {
+      "player": "김성한",
+      "team_key": "KIA",
+      "image_url": "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosunbiz/QOFWHWCUGNXX6VH7PWWUKVLUNU.png",
+      "source": "https://biz.chosun.com/en/en-sports/2025/05/22/KCL5RRUTYZHRFMOR55L3CM3VPE/",
+      "verification": "CHOSUNBIZ identifies former Haitai Tigers player 김성한; image shows him in Haitai uniform."
+    },
+    {
+      "player": "김봉연",
+      "team_key": "KIA",
+      "image_url": "https://thumbnews.nateimg.co.kr/view610/news.nateimg.co.kr/orgImg/sh/2020/04/01/dkryuji20200401001958_P_02_C_1.jpg",
+      "source": "https://sports.news.nate.com/view/20200620n06191",
+      "verification": "Sports Seoul/Nate identifies the pictured person as Haitai Tigers player 김봉연."
+    },
+    {
+      "player": "김정수",
+      "team_key": "KIA",
+      "image_url": "https://thumbnews.nateimg.co.kr/view610///news.nateimg.co.kr/orgImg/sw/2024/12/01/20241201500710.jpg",
+      "source": "https://sports.news.nate.com/view/20241201n01629",
+      "verification": "Sports World/Nate article identifies 현역 시절 김정수; selected image shows him pitching in a Haitai Tigers uniform."
+    },
+    {
+      "player": "김재박",
+      "team_key": "키움",
+      "image_url": "https://img3.daumcdn.net/thumb/R658x0.q70/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fnews%2F202511%2F04%2F551779-QJaPwRx%2F20251104004320868ijqm.jpg",
+      "source": "https://v.daum.net/v/yJCp3vJ6tL",
+      "verification": "Daum article identifies the player as 김재박; image shows the player at bat."
+    },
+    {
+      "player": "염경엽",
+      "team_key": "키움",
+      "image_url": "https://file.sportsseoul.com/news/legacy/2018/05/26/news/20180526010013443000974813.jpg",
+      "source": "https://www.sportsseoul.com/news/read/639040",
+      "verification": "Sports Seoul identifies former Hyundai player/manager 염경엽; image shows him in Hyundai uniform."
+    }
+  ]
+}

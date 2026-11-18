@@ -68,7 +68,7 @@
         document.body.appendChild(script);
       };
       const loader=document.createElement('script');
-      loader.src='./player-photo-loader.js?v=14.0';
+      loader.src='./player-photo-loader.js?v=15.4.7-photo-links';
       loader.onload=startApp;
       loader.onerror=()=>{console.warn('선수사진 로더를 불러오지 못했습니다.');startApp();};
       document.head.appendChild(loader);
