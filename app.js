@@ -334,7 +334,7 @@ function family(p){
  if(t.includes("라이브 올스타")||t.includes("올스타"))return "allstar";
  if(String(p.type||"").includes("시즌"))return "season";
  if(t.includes("임팩트")||["여름사나이","얼리스타터","저니맨","베테랑","빅게임 헌터","라이징스타","필승계투","스위치 히터","비FA계약","분위기메이커","난세의 영웅","외국인"].includes(p.series))return "impact";
- if(t.includes("LIVE"))return "live";
+ if(t.includes("라이브")||t.includes("LIVE"))return "live";
  return "other";
 }
 
@@ -369,7 +369,10 @@ function allstarGroup(team){
 }
 function hasPreferredTeam(){return PREFERRED_TEAM_OPTIONS.includes(preferredTeam)}
 function effectiveSetdeckScore(p){
- const f=family(p),year=Number(p.year),pastSeason=Number.isFinite(year)&&year>0&&(year<=25||(year>=1900&&year<=2025));
+ const f=family(p),rawYear=String(p.year??"").trim();
+ // Current Excel import uses "01" as its marker for 2026 LIVE cards.
+ const year=(f==="live"&&rawYear==="01")?2026:Number(p.year);
+ const pastSeason=Number.isFinite(year)&&year>0&&(year<=25||(year>=1900&&year<=2025));
  const pref=canonicalPreferredTeam();
  if(!pref)return 0;
  const cardTeam=canonicalSearchTeam(effectiveTeam(p));
@@ -378,12 +381,17 @@ function effectiveSetdeckScore(p){
    const own=cardTeam===pref;
    const sameGroup=!own&&allstarGroup(cardTeam)&&allstarGroup(cardTeam)===allstarGroup(pref);
    const currentScore=own?8:sameGroup?4:2;
-   return pastSeason?Math.floor(currentScore/2):currentScore;
+   // 2026 All-Star cards use 8/4/2. Only 2025 and 2024 cards are half value;
+   // older All-Star cards retain their imported original setdeck score.
+   if(year===2026)return currentScore;
+   if(year===2025||year===2024)return Math.floor(currentScore/2);
+   const original=Number(p.setdeck);
+   return Number.isFinite(original)?original:currentScore;
  }
  const base=Number(p.setdeck);
  if(!Number.isFinite(base))return null;
  // LIVE 세트덱 연차 규칙: 매년 4월 1일부터 직전 연도 LIVE 카드의
- // 세트덱 포인트만 50% 적용한다. 선수 기본 능력치/카드 데이터는 변경하지 않는다.
+ // 세트덱 포인트만 50% 적용한다. 2026 LIVE의 "01" 표기는 2026년으로 처리한다.
  if(f==="live"&&Number.isFinite(year)&&year>0){
    const now=new Date();
    const currentYear=now.getFullYear();
@@ -2648,7 +2656,7 @@ function pickerBaseCardHTML(p,{disabled=false,current=false,slot=""}={}){
       <span>${esc(p.type)}</span>${p.series?`<span>${esc(p.series)}</span>`:""}<span>${esc(p.team)}</span><span>${esc(p.pos)}</span>${cardStars(p)?`<span>${cardStars(p)}성</span>`:""}
     </div>
     <div class="base-picker-stats">${baseStatsInlineHTML(p)}</div>
-    <div class="base-picker-setdeck">적용 세트덱 스코어: ${effectiveSetdeckScore(p)??"—"}${family(p)==="live"&&[25,2025].includes(Number(p.year))?` (25시즌 1/2)`:family(p)==="allstar"?` (${!hasPreferredTeam()?"선호구단 미선택":`${Number(p.year)<=25?"과거 시즌 1/2 · ":""}${canonicalSearchTeam(p.team)===canonicalPreferredTeam()?"자팀":allstarGroup(p.team)===allstarGroup(canonicalPreferredTeam())?"같은 올스타팀":"반대 올스타팀"}`})`:""} · <strong>기본 능력치</strong></div>
+    <div class="base-picker-setdeck">적용 세트덱 스코어: ${effectiveSetdeckScore(p)??"—"}${family(p)==="live"&&[25,2025].includes(Number(p.year))?` (25시즌 1/2)`:family(p)==="allstar"?` (${!hasPreferredTeam()?"선호구단 미선택":`${[24,25,2024,2025].includes(Number(p.year))?"24·25시즌 1/2 · ":""}${canonicalSearchTeam(p.team)===canonicalPreferredTeam()?"자팀":allstarGroup(p.team)===allstarGroup(canonicalPreferredTeam())?"같은 올스타팀":"반대 올스타팀"}`})`:""} · <strong>기본 능력치</strong></div>
    </div></div>
    ${disabled?`<div class="base-picker-disabled">이미 현재 라인업에 같은 선수가 있어</div>`:""}
   </div>`;

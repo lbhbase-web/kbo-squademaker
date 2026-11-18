@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.6-20261118-franchise-setdeck-fa';
-  const DATA_URLS=['./players.json?v=15.4.6-20261118-franchise-setdeck-fa','./data/players.json?v=15.4.6-20261118-franchise-setdeck-fa'];
+  const APP_URL='./app.js?v=15.4.8-20261118-setdeck-normalized';
+  const DATA_URLS=['./players.json?v=15.4.8-20261118-setdeck-normalized','./data/players.json?v=15.4.8-20261118-setdeck-normalized'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -42,7 +42,7 @@
           positionChoicePatch.onerror=()=>console.warn('포지션 특훈 선택 패치를 불러오지 못했습니다.');
           document.body.appendChild(positionChoicePatch);
           const importMobilePatch=document.createElement('script');
-          importMobilePatch.src='./lineup-import-mobile-runtime-patch.js?v=15.4.6-20261118-franchise-setdeck-fa';
+          importMobilePatch.src='./lineup-import-mobile-runtime-patch.js?v=15.4.8-20261118-setdeck-normalized';
           importMobilePatch.onerror=()=>console.warn('라인업 가져오기/모바일 화면 패치를 불러오지 못했습니다.');
           document.body.appendChild(importMobilePatch);
           const skillStatPatch=document.createElement('script');
@@ -51,7 +51,7 @@
           document.body.appendChild(skillStatPatch);
 
           const logoPatch=document.createElement('script');
-          logoPatch.src='./historic-logo-transparent.js?v=15.4.6-20261118-franchise-setdeck-fa';
+          logoPatch.src='./historic-logo-transparent.js?v=15.4.8-20261118-setdeck-normalized';
           logoPatch.onerror=()=>console.warn('옛 구단 로고 투명 배경 패치를 불러오지 못했습니다.');
           document.body.appendChild(logoPatch);
 
