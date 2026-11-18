@@ -56,7 +56,7 @@
           document.body.appendChild(logoPatch);
 
           const photoPatch=document.createElement('script');
-          photoPatch.src='./player-photo-runtime-patch.js?v=15.4.4';
+          photoPatch.src='./player-photo-runtime-patch.js?v=15.4.9-active-team-photo';
           photoPatch.onerror=()=>console.warn('선수사진 런타임 패치를 불러오지 못했습니다.');
           document.body.appendChild(photoPatch);
 
