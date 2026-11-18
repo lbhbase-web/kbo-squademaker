@@ -362,8 +362,9 @@ const ALLSTAR_GROUPS={
  nanum:new Set(["LG","KIA","키움","NC","한화"])
 };
 function allstarGroup(team){
- if(ALLSTAR_GROUPS.dream.has(team))return "dream";
- if(ALLSTAR_GROUPS.nanum.has(team))return "nanum";
+ const currentTeam=canonicalSearchTeam(team);
+ if(ALLSTAR_GROUPS.dream.has(currentTeam))return "dream";
+ if(ALLSTAR_GROUPS.nanum.has(currentTeam))return "nanum";
  return "";
 }
 function hasPreferredTeam(){return PREFERRED_TEAM_OPTIONS.includes(preferredTeam)}
@@ -371,10 +372,11 @@ function effectiveSetdeckScore(p){
  const f=family(p),year=Number(p.year),pastSeason=Number.isFinite(year)&&year>0&&(year<=25||(year>=1900&&year<=2025));
  const pref=canonicalPreferredTeam();
  if(!pref)return 0;
- if(!["gold","allstar"].includes(f)&&effectiveTeam(p)!==pref)return 0;
+ const cardTeam=canonicalSearchTeam(effectiveTeam(p));
+ if(!["gold","allstar"].includes(f)&&cardTeam!==pref)return 0;
  if(f==="allstar"){
-   const own=p.team===pref;
-   const sameGroup=!own&&allstarGroup(p.team)&&allstarGroup(p.team)===allstarGroup(pref);
+   const own=cardTeam===pref;
+   const sameGroup=!own&&allstarGroup(cardTeam)&&allstarGroup(cardTeam)===allstarGroup(pref);
    const currentScore=own?8:sameGroup?4:2;
    return pastSeason?Math.floor(currentScore/2):currentScore;
  }
@@ -739,13 +741,14 @@ function nationalVariantLabel(p,g=getGrowth(p)){
 function baseCardOvrForSetdeck(p,g=getGrowth(p)){
  const v=Number(p.ovr);
  if(!Number.isFinite(v))return null;
- return v-(isNationalWildcard(p,g)?3:0);
+ return v-(isNationalWildcard(p,g)?3:0)-(isFa(p,g)?3:0);
 }
 function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
  const base=Number(p.ovr);
  if(!Number.isFinite(base))return null;
 
  const wildcardBase=nationalWildcardBasePenaltyMap(p,g);
+ const faBase=faBasePenaltyMap(p,g);
  const specialMap=specialBonusMap(p,g);
  const train=trainingBonuses(p,g);
  const enhancement=enhancementBonusMap(p,g);
@@ -762,6 +765,7 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
    if(!Number.isFinite(Number(p.stats?.[k])))continue;
    totalDelta+=
      Number(wildcardBase[k]||0)+
+     Number(faBase[k]||0)+
      Number(specialMap[k]||0)+
      Number(train[k]||0)+
      Number(enhancement[k]||0)+
@@ -778,6 +782,12 @@ function effectiveCardOvr(p,g=getGrowth(p),slot=null,mode=currentMode){
 function nationalWildcardBasePenaltyMap(p,g=getGrowth(p)){
  const out={};for(const [k] of statMeta(p))out[k]=0;
  if(isNationalWildcard(p,g))for(const k of Object.keys(out))out[k]=-3;
+ return out;
+}
+function faBasePenaltyMap(p,g=getGrowth(p)){
+ const out={};for(const [k] of statMeta(p))out[k]=0;
+ // FA 임팩트/시그니처는 원본 데이터를 바꾸지 않고 최종 6개 능력치에서 각각 -3 적용.
+ if(isFa(p,g))for(const k of Object.keys(out))out[k]=-3;
  return out;
 }
 function usesSharedCardLimit(p,g=getGrowth(p)){return Boolean(isFa(p,g)||isNationalWildcard(p,g))}
@@ -851,21 +861,22 @@ function getGrowth(p){
  if(!g.specialStat||!validStats.includes(g.specialStat))g.specialStat=(["SP","RP","CP"].includes(p.pos)?"stuff":"power");
  return g;
 }
-function isFa(p,g=getGrowth(p)){return canFa(p)&&g.faTeam&&g.faTeam!==p.team}
+function isFa(p,g=getGrowth(p)){return Boolean(canFa(p)&&g.faTeam&&canonicalSearchTeam(g.faTeam)!==canonicalSearchTeam(p.team))}
 function canChangeTeam(p,g=getGrowth(p)){return canFa(p)||isNationalWildcard(p,g)}
-function effectiveTeam(p,g=getGrowth(p)){return canChangeTeam(p,g)&&TEAMS.includes(g.faTeam)?g.faTeam:p.team}
+function effectiveTeam(p,g=getGrowth(p)){return canChangeTeam(p,g)&&isFa(p,g)&&TEAMS.includes(g.faTeam)?g.faTeam:p.team}
 function teamForEffects(p,g=getGrowth(p)){
  if(family(p)==="gold")return canonicalPreferredTeam();
- if(isNationalWildcard(p,g))return effectiveTeam(p,g);
+ if(isNationalWildcard(p,g))return canonicalSearchTeam(effectiveTeam(p,g));
  if(family(p)==="national"&&isNationalSpecial(p,g))return canonicalPreferredTeam();
- return effectiveTeam(p,g);
+ // 카드 원본 구단명은 그대로 두되 세트덱/팀 효과 계산에서는 현 프랜차이즈로 통합한다.
+ return canonicalSearchTeam(effectiveTeam(p,g));
 }
 function receivesTeamEffect(p,team,g=getGrowth(p)){
- return teamForEffects(p,g)===team;
+ return teamForEffects(p,g)===canonicalSearchTeam(team);
 }
 function specialBounds(p,faTeam){
  const f=family(p),ng=growth[p.id]||{};
- const fa=canFa(p)&&faTeam&&faTeam!==p.team;
+ const fa=canFa(p)&&faTeam&&canonicalSearchTeam(faTeam)!==canonicalSearchTeam(p.team);
  if(f==="national"&&ng.nationalVariant==="wildcard")return [1,7];
  if(fa&&f==="impact")return [1,5];
  if(fa&&f==="signature")return [2,7];
@@ -999,7 +1010,7 @@ function antiSynergyStatus(mode=currentMode){
 
  const allstarRaw=ps.filter(p=>family(p)==="allstar").length;
  // 스크린샷 규칙: 세트덱 팀의 라이브 올스타는 전부 역시너지 카운트 제외.
- const ownAllstar=ps.filter(p=>family(p)==="allstar"&&effectiveTeam(p)===canonicalPreferredTeam()).length;
+ const ownAllstar=ps.filter(p=>family(p)==="allstar"&&canonicalSearchTeam(effectiveTeam(p))===canonicalPreferredTeam()).length;
  // 사용자가 지정한 규칙: 자팀 라이브 올스타도 최대 1장까지만 역시너지 카운트에서 제외.
  const allstarExempt=Math.min(1,ownAllstar);
  const allstarCount=Math.max(0,allstarRaw-allstarExempt);
@@ -1545,14 +1556,14 @@ function skillControls(p,slot){
  return `<section><h3>스킬</h3><p>${family(p)==='national'?'<span style="color:#c62828">● 국가대표</span> · ':''}<span style="color:#8e24aa">● 메이저</span> · <span style="color:#1565c0">● 마이너</span> · <span style="color:#238636">● 루키</span> · <span style="color:#6b7280">● 아마추어</span></p><small>국가대표 스킬은 국가대표 카드만 선택 가능하며 최대 6·5·5, 특훈 증가 없음. 기본 증가·타순·포지션·모드 효과를 계산합니다. 상대 감소 및 8회·주자 등 경기 중 조건은 제외합니다.</small>${controls}${position}${support}<p>본인 스킬: ${format(b.self)}<br>동료 효과: ${format(b.team)}<br><b>스킬 합계: ${format(b.total)}</b></p>${conditionalSkillPanel(p,slot,currentMode)}<small>${b.notes.map(esc).join('<br>')}</small></section>`;
 }
 function effectiveStats(p,slot=null,mode=currentMode,includeSkills=true){
- const g=getGrowth(p),wildcardBase=nationalWildcardBasePenaltyMap(p,g),specialMap=specialBonusMap(p,g),train=trainingBonuses(p,g),enhancement=enhancementBonusMap(p,g),awakening=awakeningBonusMap(p,g),posBonus=positionTrainingBonuses(p,slot,mode),bullpenBonus=bullpenTacticBonusMap(p,slot,mode),modeBonus=lineupModeBonus(p,mode),deckBonus=setdeckBonusMap(p,slot,mode),anti=antiSynergyStatus(mode);
+ const g=getGrowth(p),wildcardBase=nationalWildcardBasePenaltyMap(p,g),faBase=faBasePenaltyMap(p,g),specialMap=specialBonusMap(p,g),train=trainingBonuses(p,g),enhancement=enhancementBonusMap(p,g),awakening=awakeningBonusMap(p,g),posBonus=positionTrainingBonuses(p,slot,mode),bullpenBonus=bullpenTacticBonusMap(p,slot,mode),modeBonus=lineupModeBonus(p,mode),deckBonus=setdeckBonusMap(p,slot,mode),anti=antiSynergyStatus(mode);
  const skills=includeSkills?skillBonuses(p,slot,mode):{total:{}};
  const out={};
  for(const [k] of statMeta(p)){
   const v=p.stats?.[k];
-  out[k]=Number.isFinite(Number(v))?Number(v)+Number(wildcardBase[k]||0)+Number(specialMap[k]||0)+Number(train[k]||0)+Number(enhancement[k]||0)+Number(awakening[k]||0)+Number(posBonus[k]||0)+Number(bullpenBonus[k]||0)+modeBonus+Number(deckBonus[k]||0)+Number(anti.totalPenalty||0)+Number(skills.total[k]||0):null;
+  out[k]=Number.isFinite(Number(v))?Number(v)+Number(wildcardBase[k]||0)+Number(faBase[k]||0)+Number(specialMap[k]||0)+Number(train[k]||0)+Number(enhancement[k]||0)+Number(awakening[k]||0)+Number(posBonus[k]||0)+Number(bullpenBonus[k]||0)+modeBonus+Number(deckBonus[k]||0)+Number(anti.totalPenalty||0)+Number(skills.total[k]||0):null;
  }
- return {stats:out,skillBonus:skills.total,skillEffects:skills,wildcardBasePenalty:wildcardBase,specialBonus:specialMap,trainingBonus:train,enhancementBonus:enhancement,awakeningBonus:awakening,positionBonus:posBonus,bullpenTacticBonus:bullpenBonus,modeBonus,setdeckBonus:deckBonus,antiSynergyPenalty:anti.totalPenalty,antiSynergy:anti};
+ return {stats:out,skillBonus:skills.total,skillEffects:skills,wildcardBasePenalty:wildcardBase,faBasePenalty:faBase,specialBonus:specialMap,trainingBonus:train,enhancementBonus:enhancement,awakeningBonus:awakening,positionBonus:posBonus,bullpenTacticBonus:bullpenBonus,modeBonus,setdeckBonus:deckBonus,antiSynergyPenalty:anti.totalPenalty,antiSynergy:anti};
 }
 
 function ensureTrainingData(p,g=getGrowth(p)){
@@ -2637,7 +2648,7 @@ function pickerBaseCardHTML(p,{disabled=false,current=false,slot=""}={}){
       <span>${esc(p.type)}</span>${p.series?`<span>${esc(p.series)}</span>`:""}<span>${esc(p.team)}</span><span>${esc(p.pos)}</span>${cardStars(p)?`<span>${cardStars(p)}성</span>`:""}
     </div>
     <div class="base-picker-stats">${baseStatsInlineHTML(p)}</div>
-    <div class="base-picker-setdeck">적용 세트덱 스코어: ${effectiveSetdeckScore(p)??"—"}${family(p)==="live"&&[25,2025].includes(Number(p.year))?` (25시즌 1/2)`:family(p)==="allstar"?` (${!hasPreferredTeam()?"선호구단 미선택":`${Number(p.year)<=25?"과거 시즌 1/2 · ":""}${p.team===canonicalPreferredTeam()?"자팀":allstarGroup(p.team)===allstarGroup(canonicalPreferredTeam())?"같은 올스타팀":"반대 올스타팀"}`})`:""} · <strong>기본 능력치</strong></div>
+    <div class="base-picker-setdeck">적용 세트덱 스코어: ${effectiveSetdeckScore(p)??"—"}${family(p)==="live"&&[25,2025].includes(Number(p.year))?` (25시즌 1/2)`:family(p)==="allstar"?` (${!hasPreferredTeam()?"선호구단 미선택":`${Number(p.year)<=25?"과거 시즌 1/2 · ":""}${canonicalSearchTeam(p.team)===canonicalPreferredTeam()?"자팀":allstarGroup(p.team)===allstarGroup(canonicalPreferredTeam())?"같은 올스타팀":"반대 올스타팀"}`})`:""} · <strong>기본 능력치</strong></div>
    </div></div>
    ${disabled?`<div class="base-picker-disabled">이미 현재 라인업에 같은 선수가 있어</div>`:""}
   </div>`;
@@ -3255,7 +3266,7 @@ function setWildcardTeam(team){
  const g=getGrowth(p),old=nationalVariant(p,g);
  g.nationalVariant="wildcard";
  if(old!=="wildcard")g.special=1;
- g.faTeam=team===p.team?null:team;
+ g.faTeam=canonicalSearchTeam(team)===canonicalSearchTeam(p.team)?null:team;
  const [lo,hi]=specialBounds(p,g.faTeam);
  g.special=Math.max(lo,Math.min(hi,Number(g.special)||lo));
  faMenuOpen=false;
@@ -3281,7 +3292,7 @@ function closeFa(){faMenuOpen=false;const modal=$("faModal");if(modal)modal.clas
 function setFaTeam(team){
  const p=players.find(x=>x.id===currentFaId);if(!p||!TEAMS.includes(team)||!canChangeTeam(p))return;
  const g=getGrowth(p);
- const proposed={...g,faTeam:team===p.team?null:team};
+ const proposed={...g,faTeam:canonicalSearchTeam(team)===canonicalSearchTeam(p.team)?null:team};
  if(usesSharedCardLimit(p,proposed)){
    for(const mode of Object.keys(MODES)){
      const L=ensureLineupState(mode);
