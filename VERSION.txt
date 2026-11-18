@@ -1,3 +1,2 @@
-v15.4.10
-
-15.4.11 - 구버전 Google 계정 라인업 선수 ID 호환 수정
+v15.4.12
+Google 라인업 구버전 ID 복원: index.html 캐시 버전 갱신 및 bootstrap/map/app 로딩 순서 확인
