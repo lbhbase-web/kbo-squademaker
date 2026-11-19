@@ -1,6 +1,6 @@
 (()=>{
-  const APP_URL='./app.js?v=15.4.14-live26-v2-3star';
-  const DATA_URLS=['./players.json?v=15.4.14-live26-v2-3star','./data/players.json?v=15.4.14-live26-v2-3star'];
+  const APP_URL='./app.js?v=15.4.15-backtoback-skill';
+  const DATA_URLS=['./players.json?v=15.4.15-backtoback-skill','./data/players.json?v=15.4.15-backtoback-skill'];
 
   const showError=(msg)=>{
     const el=document.getElementById('app-loading');
@@ -35,7 +35,7 @@
       const startApp=()=>{
         const loadLegacyMap=()=>{
           const mapScript=document.createElement('script');
-          mapScript.src='./legacy-player-id-map.js?v=15.4.14-live26-v2-3star';
+          mapScript.src='./legacy-player-id-map.js?v=15.4.15-backtoback-skill';
           mapScript.onload=()=>{if(!window.__KBO_LEGACY_PLAYER_ID_MAP__||!window.__KBO_LEGACY_PLAYER_ID_MAP__['site-01009'])console.error('구버전 라인업 ID 연결표가 비정상입니다.');loadMainApp();};
           mapScript.onerror=()=>{console.warn('구버전 선수 ID 연결표를 불러오지 못했습니다.');loadMainApp();};
           document.head.appendChild(mapScript);
@@ -64,7 +64,7 @@
           document.body.appendChild(logoPatch);
 
           const photoPatch=document.createElement('script');
-          photoPatch.src='./player-photo-runtime-patch.js?v=15.4.14-live26-v2-3star';
+          photoPatch.src='./player-photo-runtime-patch.js?v=15.4.15-backtoback-skill';
           photoPatch.onerror=()=>console.warn('선수사진 런타임 패치를 불러오지 못했습니다.');
           document.body.appendChild(photoPatch);
 
