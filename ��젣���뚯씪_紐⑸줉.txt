@@ -1,0 +1,102 @@
+===== 삭제해도 되는 파일 목록 =====
+(구글 로그인·검색 노출·사이트 동작에 필요한 파일은 제외)
+
+[1] 구버전 선수 데이터
+players_8697.json
+players_8737.json
+players_8958.json
+players_8982.json
+players_test.json
+added_101.json
+added_firefighters_40.json
+added_live_v1_221.json
+added_national_2026_sep_24.json
+SETDECK_CHANGED_ROWS.csv
+LIVE26_V2_3STAR_SETDECK_CHANGED.csv
+skill-score-photo-rows.csv
+
+[2] 변경 로그 / 패치 노트 / 리포트
+V10_3_CHANGELOG.txt
+V10_4_CHANGELOG.txt
+V10_7_CHANGELOG.txt
+V10_9_CHANGELOG.txt
+V11_0_CHANGELOG.txt
+V11_1_CHANGELOG.txt
+V11_2_CHANGELOG.txt
+V11_3_CHANGELOG.txt
+V11_4_CHANGELOG.txt
+V11_5_CHANGELOG.txt
+V11_6_CHANGELOG.txt
+V11_7_CHANGELOG.txt
+V11_8_CHANGELOG.txt
+V11_9_CHANGELOG.txt
+V12_0_CHANGELOG.txt
+V12_1_CHANGELOG.txt
+V12_2_CHANGELOG.txt
+V12_3_CHANGELOG.txt
+V12_4_CHANGELOG.txt
+V12_5_CHANGELOG.txt
+V12_6_CHANGELOG.txt
+V12_7_CHANGELOG.txt
+V12_8_CHANGELOG.txt
+V12_9_CHANGELOG.txt
+V13_0_CHANGELOG.txt
+V15_4_5_CHANGELOG.txt
+V15_4_6_CHANGELOG.txt
+V15_4_8_CHANGELOG.txt
+ACTIVE_TEAM_PHOTO_UPDATE_REPORT.md
+BATTING_ORDER_VISUAL_CHANGE.txt
+FIREBASE_SETUP.md
+GITHUB_PAGES_FIX.txt
+GOOGLE_LINEUP_FIX_REPORT.md
+GRID_SELECTORS_CHANGE.txt
+HANDEDNESS-SOURCE.txt
+IMPACT_DETAIL_SEARCH_NOTES.txt
+LEGACY_LINEUP_COMPAT_REPORT.md
+LIGHT_BACKGROUND_FIX.txt
+LIVE26_V2_3STAR_SETDECK_REPORT.md
+LIVE_ENHANCEMENT_FIX_NOTES.txt
+LOGO_FIX_NOTES.txt
+MANUAL-HANDEDNESS.txt
+NAME_SUFFIX_RESTORE_REPORT.md
+PATCH_NOTES.txt
+PERFORMANCE_PATCH_NOTES.txt
+PLAYER-ALIAS-RULES.txt
+PLAYER-PHOTO-MATCHING.txt
+PLAYER_PHOTO_WEB_SOURCES.json
+PREFERRED_TEAM_CHANGE.txt
+README_PATCH.txt
+README_PLAYER_PHOTO_PATCH.txt
+SCORE_CHECK_NOTES.txt
+SEASON-CARD-RULES.txt
+SEASON-CUSTOM-ONLY.txt
+SEO-SETUP.txt
+SEO_CHANGES.md
+SETDECK_NORMALIZATION_REPORT.md
+SITE_BUILDER_PROMPT.txt
+TEAM_LOGO_FIX_NOTES.txt
+TOP3_YEAR_SEARCH_FIX_NOTES.txt
+UPDATE_2026-10-21_TOP3_SKILLS.txt
+YEAR_GRID_PICKER_CHANGE.txt
+백투백홈런_스킬추가패치.txt
+
+[3] 구버전 HTML / 중복 README
+index_squademaker_only_v15.1.html
+index_seo_optimized.html
+컴프야V26_전체능력치_반영본.html  (또는 #Ucef4...html)
+README.txt
+README_ALL_IN_ONE.md
+VERSION.txt
+
+[4] 선택 삭제
+vercel.json
+MANIFEST.json
+.github/workflows/android-apk.yml
+download
+
+===== 삭제하면 안 되는 것 =====
+index.html, app.js, bootstrap.js, players.json
+firebase-config.js, cloud-lineups.js, firestore.rules
+robots.txt, sitemap.xml, baseball-field.png, googlee294eebe068b86c9.html
+player-photo-*.js, logo-*.webp, *-runtime-patch.js, legacy-player-id-map.js
+major-skills.json, lower-skills.json 등 스킬/사진/로고 관련
